@@ -1,8 +1,13 @@
 import React from "react";
 
-const LoginButton = () => {
+interface LoginButtonProps {
+    onLogin: () => void;
+}
+
+const LoginButton: React.FC<LoginButtonProps> = ({ onLogin }) => {
     const handleLogin = (provider: string) => {
         console.log(`Login with ${provider}`);
+        onLogin();
     }
     return (
         <div>
