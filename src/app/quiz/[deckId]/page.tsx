@@ -1,4 +1,6 @@
-import { useRouter } from 'next/router';
+"use client";
+
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 interface Word {
@@ -8,22 +10,20 @@ interface Word {
 
 const Quiz = () => {
     const router = useRouter();
-    const { deckId } = router.query;
+    const [deckId, setDeckId] = useState(2);
     const [words, setWords] = useState<Word[]>([]);
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
     useEffect(() => {
-        if (deckId) {
-            fetch(`http://localhost:8080/api/decks/${deckId}/words`)
-                .then(response => response.json())
-                .then(data => {
-                    setWords(data);
-                })
-                .catch(error => {
-                    console.error("Error fetching words:", error);
-                });
-        }
-    }, [deckId]);
+        fetch(`http://localhost:8080/api/decks/${deckId}/words`)
+            .then(response => response.json())
+            .then(data => {
+                setWords(data);
+            })
+            .catch(error => {
+                console.error("Error fetching words:", error);
+            });
+    }, []);
 
     const handleKnowClick = () => {
         setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
