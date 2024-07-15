@@ -1,9 +1,8 @@
 "use client"
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import SampleRequestPage from "./samples/SampleRequestPage";
-import LoginButton from "./components/LoginButton";
-import DeckList from "./components/DeckList";
+import LoginButton from "./components/elements/button/LoginButton";
+import DeckList from "../features/deck/components/DeckList/DeckList";
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);

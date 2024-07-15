@@ -23,7 +23,7 @@ const Quiz = () => {
             .catch(error => {
                 console.error("Error fetching words:", error);
             });
-    }, []);
+    }, [deckId]);
 
     const handleKnowClick = () => {
         setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
