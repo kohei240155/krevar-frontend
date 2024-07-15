@@ -15,7 +15,7 @@ const Quiz = () => {
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/decks/${deckId}/words`)
+        fetch(`http://localhost:8080/api/quiz/${deckId}`)
             .then(response => response.json())
             .then(data => {
                 setWords(data);
