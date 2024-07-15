@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import LoginButton from "./components/elements/button/LoginButton";
 import * as Deck from "../features/deck/Index";
 import Header from "./components/layouts/header/Header";
+import Footer from "./components/layouts/footer/Footer";
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -14,11 +15,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <header>
-        <Header />
-        <h1>Welcome to IRUKA</h1>
-        <p>Your personal vocabulary memorization assistant.</p>
-      </header>
+      <Header />
       <main className={styles.main}>
         {loggedIn ? (
           <Deck.DeckList />
@@ -26,6 +23,7 @@ export default function Home() {
           <LoginButton onLogin={handleLogin} />
         )}
       </main>
+      <Footer />
     </div>
   );
 }
