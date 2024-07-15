@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import LoginButton from "./components/elements/button/LoginButton";
-import DeckList from "../features/deck/components/DeckList/DeckList";
+import * as Deck from "../features/deck/Index";
+import Header from "./components/layouts/header/Header";
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -14,12 +15,13 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <header>
+        <Header />
         <h1>Welcome to IRUKA</h1>
         <p>Your personal vocabulary memorization assistant.</p>
       </header>
       <main className={styles.main}>
         {loggedIn ? (
-          <DeckList />
+          <Deck.DeckList />
         ) : (
           <LoginButton onLogin={handleLogin} />
         )}
