@@ -13,7 +13,22 @@ const Header = ({ session }: { session: Session | null }) => {
             IRUKA
           </Link>
         </div>
-        <ul className="flex items-center space-x-4">
+        <ul className="flex items-center space-x-8">
+          <li>
+            <Link href="/new-deck" className="text-lg">
+              New Deck
+            </Link>
+          </li>
+          <li>
+            <Link href="/statistic" className="text-lg">
+              Statistic
+            </Link>
+          </li>
+          <li>
+            <Link href="/information" className="text-lg">
+              Information
+            </Link>
+          </li>
           {session ? (
             <>
               <li>
