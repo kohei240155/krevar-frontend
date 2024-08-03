@@ -5,6 +5,7 @@ import Header from "./components/layouts/header/Header";
 import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "./utils/next-auth-options";
 import NextAuthProvider from "./providers";
+import Footer from "./components/layouts/footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default async function RootLayout({
         <NextAuthProvider>
           <Header session={session} />
           {children}
+          <Footer />
         </NextAuthProvider>
       </body>
     </html>

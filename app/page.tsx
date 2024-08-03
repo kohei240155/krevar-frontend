@@ -10,7 +10,6 @@ export default function Home() {
       <main className={styles.main}>
         <Deck.DeckList />
       </main>
-      <Footer />
     </div>
   );
 }
