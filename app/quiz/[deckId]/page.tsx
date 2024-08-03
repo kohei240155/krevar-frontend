@@ -34,17 +34,27 @@ const Quiz = () => {
     }
 
     if (words.length === 0) {
-        return <p>Loading words...</p>
+        return <p className="text-gray-500 text-center mt-4">Loading words...</p>
     }
 
     const currentWord = words[currentWordIndex];
 
     return (
-        <div>
-            <h2>Quiz</h2>
-            <p>{currentWord.originalText}</p>
-            <button onClick={handleKnowClick}>わかる</button>
-            <button onClick={handleDontKnowClick}>わからない</button>
+        <div className="p-4">
+            <h2 className="text-2xl font-bold mb-4 text-center">Quiz</h2>
+            <p className="text-xl text-center mb-6">{currentWord.originalText}</p>
+            <button
+                onClick={handleKnowClick}
+                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700 transition"
+            >
+                わかる
+            </button>
+            <button
+                onClick={handleDontKnowClick}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition"
+            >
+                わからない
+            </button>
         </div>
     )
 }
