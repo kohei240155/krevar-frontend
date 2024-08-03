@@ -15,13 +15,14 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Header />
+      {/* <Header /> */}
       <main className={styles.main}>
-        {loggedIn ? (
+        {/* {loggedIn ? (
           <Deck.DeckList />
         ) : (
           <LoginButton onLogin={handleLogin} />
-        )}
+        )} */}
+        <Deck.DeckList />
       </main>
       <Footer />
     </div>

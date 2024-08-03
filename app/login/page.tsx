@@ -1,27 +1,51 @@
 "use client";
 
-import React from 'react';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { NextPage } from 'next';
+import React from "react";
+import { useEffect } from "react";
 
-const Login: NextPage = () => {
-  const { data: session } = useSession();
+import { redirect } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
+
+const LoginPage = () => {
+  const { data: session, status } = useSession();
+  useEffect(() => {
+    // ログイン済みの場合はTOPページにリダイレクト
+    if (status === "authenticated") {
+      redirect("/");
+    }
+  }, [session, status]);
+
+  const handleLogin = (provider: string) => async (event: React.MouseEvent) => {
+    event.preventDefault();
+    const result = await signIn(provider);
+
+    // ログインに成功したらTOPページにリダイレクト
+    if (result) {
+      redirect("/");
+    }
+  };
 
   return (
-    <>
-      {session ? (
-        <div>
-          <h1>ようこそ, {session.user?.email}</h1>
-          <button onClick={() => signOut()}>ログアウト</button>
-        </div>
-      ) : (
-        <div>
-          <p>ログインしていません</p>
-          <button onClick={() => signIn()}>ログイン</button>
-        </div>
-      )}
-    </>
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <form className="w-full max-w-xs space-y-6 rounded bg-white p-8 shadow-md">
+        <button
+          onClick={handleLogin("google")}
+          type="button"
+          className="w-full bg-red-500 text-white rounded-lg px-4 py-2"
+        >
+          Googleでログイン
+        </button>
+        {/* <button
+          onClick={handleLogin("twitter")}
+          type="button"
+          className="w-full bg-blue-500 text-white rounded-lg px-4 py-2"
+        >
+          Twitterでログイン
+        </button> */}
+      </form>
+    </div>
   );
 };
 
-export default Login;
+export default LoginPage;
