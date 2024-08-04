@@ -10,7 +10,7 @@ const Header = ({ session }: { session: Session | null }) => {
       <header className="flex items-center justify-between bg-white p-4 shadow-md">
         <div className="flex items-center">
           <Link href="/" className="text-4xl font-bold">
-            IRUKA
+            ▶ IRUKA
           </Link>
         </div>
         <ul className="flex items-center space-x-8">
