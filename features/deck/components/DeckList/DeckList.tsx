@@ -79,7 +79,7 @@ const DeckList = () => {
                                 onClick={() => handleDeckClick(deck.id)}
                                 className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
                             >
-                                クイズ
+                                Quiz
                             </button>
                             <button
                                 onClick={(e) => handleOptionClick(e, deck.id)}
@@ -95,19 +95,19 @@ const DeckList = () => {
                                         onClick={(e) => handleOptionItemClick(e, "new-word", deck)}
                                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                                     >
-                                        単語追加
+                                        Add New Word
                                     </li>
                                     <li
                                         onClick={(e) => handleOptionItemClick(e, "edit", deck)}
                                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                                     >
-                                        編集
+                                        Edit Word
                                     </li>
                                     <li
                                         onClick={(e) => handleOptionItemClick(e, "settings", deck)}
                                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                                     >
-                                        設定
+                                        Deck Settings
                                     </li>
                                 </ul>
                             </div>
