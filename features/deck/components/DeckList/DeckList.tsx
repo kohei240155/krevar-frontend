@@ -1,3 +1,4 @@
+"use client"
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -51,6 +52,7 @@ const DeckList = () => {
     const handleOptionItemClick = (e: React.MouseEvent, option: string, deckId: number) => {
         e.stopPropagation();
         console.log(`Option ${option} for deck with ID: ${deckId}`);
+        router.push(`/${option}`);
         setShowOptions(null);
     }
 
@@ -86,19 +88,19 @@ const DeckList = () => {
                             <div ref={optionsRef} className="absolute bottom-full right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-2 mb-2">
                                 <ul>
                                     <li
-                                        onClick={(e) => handleOptionItemClick(e, "単語追加", deck.id)}
+                                        onClick={(e) => handleOptionItemClick(e, "new-word", deck.id)}
                                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                                     >
                                         単語追加
                                     </li>
                                     <li
-                                        onClick={(e) => handleOptionItemClick(e, "編集", deck.id)}
+                                        onClick={(e) => handleOptionItemClick(e, "edit", deck.id)}
                                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                                     >
                                         編集
                                     </li>
                                     <li
-                                        onClick={(e) => handleOptionItemClick(e, "設定", deck.id)}
+                                        onClick={(e) => handleOptionItemClick(e, "setting", deck.id)}
                                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                                     >
                                         設定

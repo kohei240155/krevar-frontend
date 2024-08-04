@@ -1,12 +1,25 @@
 "use client"
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 
-const DeckForm = () => {
-    const [deckName, setDeckName] = useState('');
-    // const router = useRouter();
+interface DeckFormProps {
+    onDeckCreated: () => void;
+}
 
-    const handleSubmit = () => {};
+const DeckForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
+    const [deckName, setDeckName] = useState('');
+
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8080/api/decks', { deckName, userId: 1 });
+            console.log("Deck created successfully:", response.data);
+            onDeckCreated();
+        } catch (error) {
+            console.error("Error registering deck:", error);
+        }
+    };
 
     return (
         <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
