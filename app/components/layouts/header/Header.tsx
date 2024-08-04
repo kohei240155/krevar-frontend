@@ -35,7 +35,7 @@ const Header = ({ session }: { session: Session | null }) => {
       </div>
       <ul className="flex items-center space-x-8">
         <li>
-          <Link href="/new-deck" className="text-lg">
+          <Link href="/decks/new" className="text-lg">
             New Deck
           </Link>
         </li>
