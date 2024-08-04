@@ -5,9 +5,8 @@ import React, { useEffect, useState } from 'react'
 
 interface Word {
     id: number;
-    originalText: string;
-    translatedText: string;
-    deckId:number;
+    original_text: string;
+    translated_text: string;
 }
 
 const Quiz = () => {
@@ -55,11 +54,11 @@ const Quiz = () => {
                     <div>
                         <h2 className="text-xl font-bold mb-2 text-center">Deck Name</h2>
                         <p className="text-gray-700 mb-4 text-center">{`Question ${currentWordIndex + 1} of ${words.length}`}</p>
-                        <p className="text-2xl font-bold mb-6 text-center">{currentWord.originalText}</p>
+                        <p className="text-2xl font-bold mb-6 text-center">{currentWord.original_text}</p>
 
                         {/* 翻訳を表示 */}
                         {showTranslation && (
-                            <p className="text-xl text-center text-blue-500 mb-6">{currentWord.translatedText}</p>
+                            <p className="text-xl text-center text-blue-500 mb-6">{currentWord.translated_text}</p>
                         )}
                     </div>
 
@@ -67,7 +66,7 @@ const Quiz = () => {
                     <div className="flex justify-end">
                         <button
                             onClick={handleShowAnswerClick}
-                            className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition"
+                            className="px-4 py-2 bg-yellow-700 text-white rounded-md hover:bg-yellow-800 transition"
                         >
                             答え
                         </button>
