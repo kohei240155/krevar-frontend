@@ -25,9 +25,13 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NextAuthProvider>
-          <Header session={session} />
-          {children}
-          <Footer />
+          <div className="flex flex-col min-h-screen">
+            <Header session={session} />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </div>
         </NextAuthProvider>
       </body>
     </html>
