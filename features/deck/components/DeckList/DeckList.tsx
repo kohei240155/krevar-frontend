@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 interface Deck {
     id: number;
@@ -9,7 +9,9 @@ interface Deck {
 const DeckList = () => {
     const [decks, setDecks] = useState<Deck[]>([]);
     const [loading, setLoading] = useState(true);
+    const [showOptions, setShowOptions] = useState<number | null>(null);
     const router = useRouter();
+    const optionsRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         fetch("http://localhost:8080/api/decks")
@@ -22,11 +24,35 @@ const DeckList = () => {
                 console.log("Error fetching decks:", error);
                 setLoading(false);
             });
+
+        const handleClickOutside = (event: MouseEvent) => {
+            if (optionsRef.current && !optionsRef.current.contains(event.target as Node)) {
+                setShowOptions(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
     }, []);
 
     const handleDeckClick = (deckId: number) => {
         router.push(`/quiz/${deckId}`);
     };
+
+    const handleOptionClick = (e: React.MouseEvent, deckId: number) => {
+        e.stopPropagation();
+        setShowOptions(deckId === showOptions ? null : deckId);
+    }
+
+    const handleOptionItemClick = (e: React.MouseEvent, option: string, deckId: number) => {
+        e.stopPropagation();
+        console.log(`Option ${option} for deck with ID: ${deckId}`);
+        setShowOptions(null);
+    }
 
     if (loading) {
         return <p className="text-gray-500 text-center mt-4">Loading decks...</p>
@@ -34,17 +60,52 @@ const DeckList = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-2xl font-bold mb-4 text-center">Deck List</h2>
+            <h2 className="text-2xl font-bold mb-4 text-left">Deck List</h2>
             <ul className="space-y-4">
                 {decks.map(deck => (
-                    <li key={deck.id} className="flex justify-between items-center p-4 bg-white rounded-lg shadow">
+                    <li
+                        key={deck.id}
+                        className="relative flex justify-between items-center p-4 bg-white rounded-lg shadow"
+                    >
                         <span className="text-lg font-medium">{deck.deckName}</span>
-                        <button
-                            onClick={() => handleDeckClick(deck.id)}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
-                        >
-                            {deck.deckName}
-                        </button>
+                        <div className="flex items-center space-x-2">
+                            <button
+                                onClick={() => handleDeckClick(deck.id)}
+                                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
+                            >
+                                クイズ
+                            </button>
+                            <button
+                                onClick={(e) => handleOptionClick(e, deck.id)}
+                                className="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center hover:bg-gray-400 transition"
+                            >
+                                &#8230;
+                            </button>
+                        </div>
+                        {showOptions == deck.id && (
+                            <div ref={optionsRef} className="absolute bottom-full right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-2 mb-2">
+                                <ul>
+                                    <li
+                                        onClick={(e) => handleOptionItemClick(e, "単語追加", deck.id)}
+                                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                                    >
+                                        単語追加
+                                    </li>
+                                    <li
+                                        onClick={(e) => handleOptionItemClick(e, "編集", deck.id)}
+                                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                                    >
+                                        編集
+                                    </li>
+                                    <li
+                                        onClick={(e) => handleOptionItemClick(e, "設定", deck.id)}
+                                        className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                                    >
+                                        設定
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
                     </li>
                 ))}
             </ul>
