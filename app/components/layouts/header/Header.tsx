@@ -65,7 +65,7 @@ const Header = ({ session }: { session: Session | null }) => {
                 onClick={() => signOut()}
                 className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600"
               >
-                ログアウト
+                Logout
               </button>
             </li>
           </>
@@ -73,7 +73,7 @@ const Header = ({ session }: { session: Session | null }) => {
           <li>
             <Link href="/login">
               <button className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600">
-                ログイン
+                Login
               </button>
             </Link>
           </li>
