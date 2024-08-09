@@ -49,16 +49,18 @@ const DeckList = () => {
         setShowOptions(deckId === showOptions ? null : deckId);
     }
 
-    const handleOptionItemClick = (e: React.MouseEvent, option: string, deck: Deck) => {
-        e.stopPropagation();
-        console.log(`Option ${option} for deck with ID: ${deck.id}`);
-        if (option === "settings") {
-            router.push(`/decks/${deck.id}/settings?deckName=${encodeURIComponent(deck.deckName)}`);
-        } else {
-            router.push(`/${option}`);
-        }
-        setShowOptions(null);
+const handleOptionItemClick = (e: React.MouseEvent, option: string, deck: Deck) => {
+    e.stopPropagation();
+    console.log(`Option ${option} for deck with ID: ${deck.id}`);
+    if (option === "settings") {
+        router.push(`/decks/${deck.id}/settings?deckName=${encodeURIComponent(deck.deckName)}`);
+    } else if (option === "edit") {
+        router.push(`/words/${deck.id}`);
+    } else {
+        router.push(`/${option}`);
     }
+    setShowOptions(null);
+}
 
     if (loading) {
         return <p className="text-gray-500 text-center mt-4">Loading decks...</p>
@@ -72,10 +74,10 @@ const DeckList = () => {
                     {decks.map(deck => (
                         <li
                             key={deck.id}
-                            className="relative flex justify-between items-center p-4 bg-white rounded-lg shadow"
+                            className="relative flex flex-col md:flex-row justify-between items-center p-4 bg-white rounded-lg shadow"
                         >
                             <span className="text-lg font-medium">{deck.deckName}</span>
-                            <div className="flex items-center space-x-4"> {/* Increase the space between the buttons */}
+                            <div className="flex items-center space-x-4 mt-4 md:mt-0">
                                 <button
                                     onClick={() => handleDeckClick(deck.id)}
                                     className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
