@@ -1,14 +1,14 @@
 "use client"
 import React from 'react'
 import { useParams } from 'next/navigation'
+import * as Word from '../../../features/word/components/index'
 
 const WordList = () => {
-  const { deckId } = useParams();
+  const { deckId } = useParams() as { deckId: string };
 
   return (
     <div>
-      <h1>Word List for Deck ID: {deckId}</h1>
-      {/* 他のコンテンツ */}
+        <Word.WordList deckId={deckId} />
     </div>
   )
 }
