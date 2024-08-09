@@ -12,7 +12,7 @@ const WordForm = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:8080/api/decks/${deckId}/words`, {
+      const response = await axios.post(`http://localhost:8080/api/word/${deckId}`, {
         original_text: word,
         translated_text: meaning,
         original_image_url: originalImageUrl,
