@@ -3,7 +3,7 @@ import React from 'react'
 import { useParams } from 'next/navigation'
 import * as Word from '../../../features/word/components/index'
 
-const WordList = () => {
+const WordListPage = () => {
   const { deckId } = useParams() as { deckId: string };
 
   return (
@@ -13,4 +13,4 @@ const WordList = () => {
   )
 }
 
-export default WordList;
+export default WordListPage;
