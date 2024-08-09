@@ -1,6 +1,7 @@
-"use client"; // Added this line to mark the component as a client component
+"use client";
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface Word {
   id: number;
@@ -15,6 +16,7 @@ interface WordListProps {
 const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/word/${deckId}`)
@@ -28,6 +30,10 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
         setLoading(false);
       });
   }, [deckId]);
+
+  const handleEditClick = (wordId: number) => {
+    router.push(`/words/edit/${wordId}`);
+  };
 
   if (loading) {
     return <p className="text-gray-500 text-center mt-4">Loading words...</p>;
@@ -51,7 +57,12 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
                   {word.translated_text && word.translated_text.length > 20 ? word.translated_text.substring(0, 20) + "..." : word.translated_text || ""}
                 </span>
               </div>
-              <button className="text-blue-500 hover:underline">Edit</button>
+              <button
+                className="text-blue-500 hover:underline"
+                onClick={() => handleEditClick(word.id)}
+              >
+                Edit
+              </button>
             </li>
           ))}
         </ul>
