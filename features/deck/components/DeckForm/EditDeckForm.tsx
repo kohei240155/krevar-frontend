@@ -36,7 +36,7 @@ const EditDeckForm: React.FC<DeckSettingsProps> = ({ deckId, deckName: initialDe
 
     return (
         <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold mb-6 text-left">Deck Settings</h1>
+            <h1 className="text-2xl font-bold mb-6 text-left">Edit Deck</h1>
             <form onSubmit={handleUpdate}>
                 <div className="mb-4">
                     <label htmlFor="deckName" className="block text-sm font-medium text-gray-700">

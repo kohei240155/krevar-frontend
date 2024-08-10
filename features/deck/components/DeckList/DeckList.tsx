@@ -110,7 +110,7 @@ const handleOptionItemClick = (e: React.MouseEvent, option: string, deck: Deck) 
                                             onClick={(e) => handleOptionItemClick(e, "settings", deck)}
                                             className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                                         >
-                                            Deck Settings
+                                            Edit Deck
                                         </li>
                                     </ul>
                                 </div>
