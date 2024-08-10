@@ -22,7 +22,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
 
     return (
         <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold mb-6 text-left">Create New Deck</h1>
+            <h1 className="text-2xl font-bold mb-6 text-left">Add Deck</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label htmlFor="deckName" className="block text-sm font-medium text-gray-700">
