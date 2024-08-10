@@ -19,7 +19,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/word/${deckId}`)
+    fetch(`http://localhost:8080/api/word/deck/${deckId}`)
       .then(response => response.json())
       .then(data => {
         setWords(data);
