@@ -98,7 +98,7 @@ const handleOptionItemClick = (e: React.MouseEvent, option: string, deck: Deck) 
                                             onClick={(e) => handleOptionItemClick(e, "words/new", deck)}
                                             className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                                         >
-                                            Add New Word
+                                            Add Word
                                         </li>
                                         <li
                                             onClick={(e) => handleOptionItemClick(e, "edit", deck)}
