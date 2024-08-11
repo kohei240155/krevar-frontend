@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Word {
   id: number;
@@ -17,6 +17,8 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const deckName = searchParams.get('deckName') || '';
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/word/deck/${deckId}`)
@@ -43,6 +45,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
     <div className="p-4">
       <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4 text-left">Word List</h2>
+        <h3 className="text-xl font-semibold mb-4 text-left">Deck Name:  {deckName}</h3>
         <ul className="space-y-4">
           {words.map(word => (
             <li

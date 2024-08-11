@@ -55,7 +55,7 @@ const handleOptionItemClick = (e: React.MouseEvent, option: string, deck: Deck) 
     if (option === "settings") {
         router.push(`/decks/${deck.id}/settings?deckName=${encodeURIComponent(deck.deckName)}`);
     } else if (option === "edit") {
-        router.push(`/words/${deck.id}`);
+        router.push(`/words/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}`);
     } else {
         router.push(`/${option}`);
     }
