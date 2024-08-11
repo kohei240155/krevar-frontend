@@ -50,12 +50,8 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
               className="flex justify-between items-center p-4 bg-white rounded-lg shadow h-18"
             >
               <div className="flex flex-col items-start space-y-2">
-                <span className="text-lg font-medium">
-                  {word.original_text && word.original_text.length > 20 ? word.original_text.substring(0, 20) + "..." : word.original_text || ""}
-                </span>
-                <span className="text-gray-600">
-                  {word.translated_text && word.translated_text.length > 20 ? word.translated_text.substring(0, 20) + "..." : word.translated_text || ""}
-                </span>
+                <span className="text-lg font-medium" dangerouslySetInnerHTML={{ __html: word.original_text }} />
+                <span className="text-gray-600" dangerouslySetInnerHTML={{ __html: word.translated_text }} />
               </div>
               <button
                 className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
