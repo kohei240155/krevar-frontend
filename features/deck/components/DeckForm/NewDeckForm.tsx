@@ -1,6 +1,8 @@
 "use client"
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface DeckFormProps {
     onDeckCreated: () => void;
@@ -13,10 +15,14 @@ const DeckForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
         event.preventDefault();
         try {
             const response = await axios.post('http://localhost:8080/api/decks', { deckName, userId: 1 });
-            console.log("Deck created successfully:", response.data);
-            onDeckCreated();
+            if (response.status === 200) {
+                toast.success("Deck created successfully!");
+                onDeckCreated();
+            } else {
+                toast.error("Unexpected response from the server.");
+            }
         } catch (error) {
-            console.error("Error registering deck:", error);
+            toast.error("Error registering deck: " + error);
         }
     };
 
