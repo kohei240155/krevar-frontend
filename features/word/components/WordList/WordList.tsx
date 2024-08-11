@@ -89,7 +89,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
                 <span className="text-gray-600" dangerouslySetInnerHTML={{ __html: word.translated_text }} />
               </div>
               <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                 onClick={() => handleEditClick(word.id)}
               >
                 Edit

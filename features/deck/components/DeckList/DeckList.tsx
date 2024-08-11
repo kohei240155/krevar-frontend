@@ -103,7 +103,7 @@ const handleOptionItemClick = (e: React.MouseEvent, option: string, deck: Deck) 
                             <div className="flex items-center space-x-4 mt-4 md:mt-0">
                                 <button
                                     onClick={() => handleDeckClick(deck.id)}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-md transition hover:bg-blue-700"
                                 >
                                     Quiz
                                 </button>

@@ -63,7 +63,7 @@ const Header = ({ session }: { session: Session | null }) => {
             <li>
               <button
                 onClick={() => signOut()}
-                className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-gray-600"
+                className="rounded-lg bg-blue-600 px-4 py-[7px] text-white hover:bg-gray-600"
               >
                 Logout
               </button>
@@ -72,7 +72,7 @@ const Header = ({ session }: { session: Session | null }) => {
         ) : (
           <li>
             <Link href="/login">
-              <button className="rounded-lg bg-blue-500 px-4 py-[7px] text-white hover:bg-blue-700">
+              <button className="rounded-lg bg-blue-600 px-4 py-[7px] text-white hover:bg-blue-700">
                 Login
               </button>
             </Link>

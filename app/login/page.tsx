@@ -39,7 +39,7 @@ const LoginPage = () => {
         {/* <button
           onClick={handleLogin("twitter")}
           type="button"
-          className="w-full bg-blue-500 text-white rounded-lg px-4 py-2"
+          className="w-full bg-blue-600 text-white rounded-lg px-4 py-2"
         >
           Twitterでログイン
         </button> */}
