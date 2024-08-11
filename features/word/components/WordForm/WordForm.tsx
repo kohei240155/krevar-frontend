@@ -14,6 +14,7 @@ const WordForm = () => {
   const wordRef = useRef('');
   const [highlightColor, setHighlightColor] = useState('#ffff00');
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
+  const [nuance, setNuance] = useState('');
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -28,6 +29,7 @@ const WordForm = () => {
         correct_count: 0,
         incorrect_count: 0,
         deck_id: deckId,
+        nuance: nuance,
       });
       console.log("Word created successfully:", response.data);
     } catch (error) {
@@ -74,7 +76,7 @@ const WordForm = () => {
               className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               style={{ height: '30px' }}
             >
-              Highlight
+              Apply
             </button>
             {displayColorPicker && (
               <div style={{ position: 'absolute', zIndex: 2, top: '100%', left: 0 }}>
@@ -95,9 +97,20 @@ const WordForm = () => {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
+        {/* ニュアンスを入力する欄 */}
+        <div className="mb-4">
+          <label htmlFor="nuance" className="block text-sm font-medium text-gray-700">Nuance:</label>
+          <input
+            type="text"
+            id="nuance"
+            value={nuance}
+            onChange={(e) => setNuance(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
         {/* イメージ画像を貼り付ける欄 */}
         <div className="mb-5">
-          <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image URL:</label>
+          <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
           <input
             type="text"
             id="imageUrl"

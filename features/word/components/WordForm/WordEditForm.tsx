@@ -17,6 +17,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const [meaning, setMeaning] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [deckId, setDeckId] = useState('1');
+  const [nuance, setNuance] = useState(''); // Added for nuance
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -29,6 +30,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
         setMeaning(wordData.translated_text);
         setImageUrl(wordData.image_url);
         setDeckId(wordData.deck_id);
+        setNuance(wordData.nuance); // Added for nuance
       } catch (error) {
         console.log("Error fetching word data:", error);
       }
@@ -45,6 +47,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
         translated_text: meaning,
         image_url: imageUrl,
         deck_id: deckId,
+        nuance: nuance, // Added nuance
       });
       if (response.status === 200) {
         toast.success("Word updated successfully!");
@@ -103,6 +106,17 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
             id="meaning"
             value={meaning}
             onChange={(e) => setMeaning(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+        {/* ニュアンスを入力する欄 */}
+        <div className="mb-4">
+          <label htmlFor="nuance" className="block text-sm font-medium text-gray-700">Nuance:</label>
+          <input
+            type="text"
+            id="nuance"
+            value={nuance}
+            onChange={(e) => setNuance(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
