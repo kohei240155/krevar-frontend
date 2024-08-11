@@ -15,6 +15,10 @@ const DeckList = () => {
     const router = useRouter();
     const optionsRef = useRef<HTMLDivElement>(null);
 
+    const truncateDeckName = (name: string) => {
+        return name.length > 20 ? name.substring(0, 20) + '...' : name;
+    };
+
     useEffect(() => {
         fetch("http://localhost:8080/api/decks")
             .then(response => response.json())
@@ -97,7 +101,7 @@ const handleOptionItemClick = (e: React.MouseEvent, option: string, deck: Deck) 
                             className="relative flex flex-col md:flex-row justify-between items-center p-4 bg-white rounded-lg shadow space-y-2 md:space-y-0 md:space-x-4"
                         >
                             <div className="flex flex-col space-y-1">
-                                <span className="text-xl font-medium">{deck.deckName}</span>
+                                <span className="text-xl font-medium">{truncateDeckName(deck.deckName)}</span>
                                 <span className="text-lg text-gray-600">Today: {deck.dueToday}</span>
                             </div>
                             <div className="flex items-center space-x-4 mt-4 md:mt-0">
