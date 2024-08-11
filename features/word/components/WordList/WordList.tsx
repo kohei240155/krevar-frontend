@@ -41,6 +41,10 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
     router.back();
   };
 
+  const handleAddWordClick = () => {
+    router.push('/words/new');
+  };
+
   if (loading) {
     return <p className="text-gray-500 text-center mt-4">Loading words...</p>;
   }
@@ -51,12 +55,20 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
         <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md">
           <h2 className="text-2xl font-bold mb-4 text-left">{deckName}</h2>
           <p className="text-gray-500 text-center mt-4">No words to display.</p>
-          <button
-            className="w-full mt-4 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            onClick={handleBackClick}
-          >
-            Backward
-          </button>
+          <div className="flex space-x-4">
+            <button
+              className="w-full mt-4 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              onClick={handleBackClick}
+            >
+              Backward
+            </button>
+            <button
+              className="w-full mt-4 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              onClick={handleAddWordClick}
+            >
+              Add Word
+            </button>
+          </div>
         </div>
       </div>
     );
