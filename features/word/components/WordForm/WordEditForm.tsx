@@ -2,6 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface WordEditFormProps {
   wordId: string;
@@ -13,6 +16,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const [originalImageUrl, setOriginalImageUrl] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [deckId, setDeckId] = useState('1');
+  const router = useRouter();
 
   useEffect(() => {
     const fetchWordData = async () => {
@@ -42,9 +46,13 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
         image_url: imageUrl,
         deck_id: deckId,
       });
-      console.log("Word updated successfully:", response.data);
+      if (response.status === 200) {
+        toast.success("Word updated successfully!");
+      } else {
+        toast.error("Unexpected response from the server.");
+      }
     } catch (error) {
-      console.log("Error updating word:", error);
+      toast.error("Error updating word: " + error);
     }
   };
 
@@ -96,11 +104,20 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
+        <div className="mb-2">
+          <button
+            type="submit"
+            className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Update
+          </button>
+        </div>
         <button
-          type="submit"
-          className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          type="button"
+          onClick={() => router.push('/')}
+          className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Update
+          backward
         </button>
       </form>
     </div>
