@@ -15,6 +15,7 @@ const WordForm = () => {
   const [highlightColor, setHighlightColor] = useState('#ffff00');
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [nuance, setNuance] = useState('');
+  const [isImageGenerated, setIsImageGenerated] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -49,6 +50,12 @@ const WordForm = () => {
 
   const handleColorChange = (color: ColorResult) => {
     setHighlightColor(color.hex);
+  };
+
+  const handleImageGenerate = () => {
+    // 画像生成のロジックをここに追加
+    console.log("Image generate button clicked");
+    setIsImageGenerated(true);
   };
 
   return (
@@ -86,54 +93,68 @@ const WordForm = () => {
             )}
           </div>
         </div>
-        {/* 単語の意味を入力する欄 */}
+        {/* Image generate ボタン */}
         <div className="mb-4">
-          <label htmlFor="meaning" className="block text-sm font-medium text-gray-700">Meaning:</label>
-          <input
-            type="text"
-            id="meaning"
-            value={meaning}
-            onChange={(e) => setMeaning(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        {/* ニュアンスを入力する欄 */}
-        <div className="mb-4">
-          <label htmlFor="nuance" className="block text-sm font-medium text-gray-700">Nuance:</label>
-          <input
-            type="text"
-            id="nuance"
-            value={nuance}
-            onChange={(e) => setNuance(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        {/* イメージ画像を貼り付ける欄 */}
-        <div className="mb-5">
-          <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
-          <input
-            type="text"
-            id="imageUrl"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="flex justify-between mb-2">
           <button
             type="button"
-            onClick={() => router.push('/decks')}
-            className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={handleImageGenerate}
+            className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105"
           >
-            Backward
-          </button>
-          <button
-            type="submit"
-            className="w-1/2 ml-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-              Register
+            Image generate
           </button>
         </div>
+        {isImageGenerated && (
+          <>
+            {/* 単語の意味を入力する欄 */}
+            <div className="mb-4">
+              <label htmlFor="meaning" className="block text-sm font-medium text-gray-700">Meaning:</label>
+              <input
+                type="text"
+                id="meaning"
+                value={meaning}
+                onChange={(e) => setMeaning(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            {/* ニュアンスを入力する欄 */}
+            <div className="mb-4">
+              <label htmlFor="nuance" className="block text-sm font-medium text-gray-700">Nuance:</label>
+              <input
+                type="text"
+                id="nuance"
+                value={nuance}
+                onChange={(e) => setNuance(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            {/* イメージ画像を貼り付ける欄 */}
+            <div className="mb-5">
+              <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
+              <input
+                type="text"
+                id="imageUrl"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div className="flex justify-between mb-2">
+              <button
+                type="button"
+                onClick={() => router.push('/decks')}
+                className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Backward
+              </button>
+              <button
+                type="submit"
+                className="w-1/2 ml-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Register
+              </button>
+            </div>
+          </>
+        )}
       </form>
     </div>
   )
