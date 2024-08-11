@@ -20,8 +20,9 @@ const WordForm = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
+      const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
       const response = await axios.post(`http://localhost:8080/api/word/${deckId}`, {
-        original_text: word,
+        original_text: wordHtml,
         translated_text: meaning,
         image_url: imageUrl,
         mastery_status_id: 1,
