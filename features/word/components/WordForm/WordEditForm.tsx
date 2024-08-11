@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaTrash } from 'react-icons/fa';
 import Modal from 'react-modal';
+import ContentEditable from 'react-contenteditable';
+import { SketchPicker, ColorResult } from 'react-color';
 
 interface WordEditFormProps {
   wordId: string;
@@ -20,6 +22,9 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const [nuance, setNuance] = useState(''); // Added for nuance
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const wordRef = useRef('');
+  const [highlightColor, setHighlightColor] = useState('#ffff00');
+  const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
   useEffect(() => {
     const fetchWordData = async () => {
@@ -39,15 +44,30 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
     fetchWordData();
   }, [wordId]);
 
+  const handleHighlight = () => {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const span = document.createElement('span');
+      span.style.backgroundColor = highlightColor;
+      range.surroundContents(span);
+    }
+  };
+
+  const handleColorChange = (color: ColorResult) => {
+    setHighlightColor(color.hex);
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
+      const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
       const response = await axios.put(`http://localhost:8080/api/word/${wordId}`, {
-        original_text: word,
+        original_text: wordHtml,
         translated_text: meaning,
         image_url: imageUrl,
         deck_id: deckId,
-        nuance: nuance, // Added nuance
+        nuance: nuance,
       });
       if (response.status === 200) {
         toast.success("Word updated successfully!");
@@ -90,13 +110,33 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
         {/* 単語を入力する欄 */}
         <div className="mb-4">
           <label htmlFor="word" className="block text-sm font-medium text-gray-700">Word:</label>
-          <input
-            type="text"
-            id="word"
-            value={word}
+          <ContentEditable
+            innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
+            html={word}
             onChange={(e) => setWord(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
           />
+          <div className="relative mt-2 inline-flex items-center">
+            <div
+              onClick={() => setDisplayColorPicker(!displayColorPicker)}
+              className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              style={{ backgroundColor: highlightColor, cursor: 'pointer', width: '30px', height: '30px' }}
+            />
+            <button
+              type="button"
+              onClick={handleHighlight}
+              className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              style={{ height: '30px' }}
+            >
+              Apply
+            </button>
+            {displayColorPicker && (
+              <div style={{ position: 'absolute', zIndex: 2, top: '100%', left: 0 }}>
+                <div style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 }} onClick={() => setDisplayColorPicker(false)} />
+                <SketchPicker color={highlightColor} onChange={handleColorChange} />
+              </div>
+            )}
+          </div>
         </div>
         {/* 単語の意味を入力する欄 */}
         <div className="mb-4">
