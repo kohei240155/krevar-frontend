@@ -6,6 +6,11 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --background-color: rgb(243, 248, 252); /* 薄い水色をRGB指定で追加 */
+}
+
+body {
+  background-color: var(--background-color); /* 背景色を設定 */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,6 +18,7 @@
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
+    --background-color: #004d40; /* ダークモード用の背景色 */
   }
 }
 
