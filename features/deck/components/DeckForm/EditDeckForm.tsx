@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { FaTrash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface DeckSettingsProps {
     deckId: string;
@@ -18,10 +20,14 @@ const EditDeckForm: React.FC<DeckSettingsProps> = ({ deckId, deckName: initialDe
         event.preventDefault();
         try {
             const response = await axios.put(`http://localhost:8080/api/decks/${deckId}`, { deckName });
-            console.log("Deck updated successfully:", response.data);
-            onDeckUpdated();
+            if (response.status === 200) {
+                toast.success("Deck updated successfully!");
+                onDeckUpdated();
+            } else {
+                toast.error("Unexpected response from the server.");
+            }
         } catch (error) {
-            console.log("Error updating deck:", error);
+            toast.error("Error updating deck: " + error);
         }
     };
 
@@ -33,10 +39,6 @@ const EditDeckForm: React.FC<DeckSettingsProps> = ({ deckId, deckName: initialDe
         } catch (error) {
             console.log("Error deleting deck:", error);
         }
-    };
-
-    const handleCancel = () => {
-        router.back();
     };
 
     return (
@@ -72,10 +74,11 @@ const EditDeckForm: React.FC<DeckSettingsProps> = ({ deckId, deckName: initialDe
                     </button>
                 </div>
                 <button
-                    onClick={handleCancel}
+                    type="button"
+                    onClick={() => router.push('/')}
                     className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Cancel
+                    backward
                 </button>
             </form>
         </div>
