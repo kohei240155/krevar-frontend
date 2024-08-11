@@ -13,7 +13,6 @@ interface WordEditFormProps {
 const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const [word, setWord] = useState('');
   const [meaning, setMeaning] = useState('');
-  const [originalImageUrl, setOriginalImageUrl] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [deckId, setDeckId] = useState('1');
   const router = useRouter();
@@ -25,7 +24,6 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
         const wordData = response.data;
         setWord(wordData.original_text);
         setMeaning(wordData.translated_text);
-        setOriginalImageUrl(wordData.original_image_url);
         setImageUrl(wordData.image_url);
         setDeckId(wordData.deck_id);
       } catch (error) {
@@ -42,7 +40,6 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
       const response = await axios.put(`http://localhost:8080/api/word/${wordId}`, {
         original_text: word,
         translated_text: meaning,
-        original_image_url: originalImageUrl,
         image_url: imageUrl,
         deck_id: deckId,
       });
@@ -82,23 +79,12 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
-        {/* 元画像を貼り付ける欄 */}
-        <div className="mb-4">
-          <label htmlFor="originalImageUrl" className="block text-sm font-medium text-gray-700">Original Image URL:</label>
-          <input
-            type="text"
-            id="originalImageUrl"
-            value={originalImageUrl}
-            onChange={(e) => setOriginalImageUrl(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
         {/* イメージ画像を貼り付ける欄 */}
         <div className="mb-4">
-          <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image URL:</label>
+          <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
           <input
             type="text"
-            id="imageUrl"
+            id="imageU"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
