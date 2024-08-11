@@ -117,6 +117,8 @@ const DeckList = () => {
             router.push(`/decks/${deck.id}/settings?deckName=${encodeURIComponent(deck.deckName)}`);
         } else if (option === "list") {
             router.push(`/words/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}`);
+        } else if (option === "extra-quiz") {
+            router.push(`/extra-quiz/${deck.id}`);
         } else {
             router.push(`/${option}`);
         }
@@ -194,6 +196,12 @@ const DeckList = () => {
                                             className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                                         >
                                             Edit Deck
+                                        </li>
+                                        <li
+                                            onClick={(e) => handleOptionItemClick(e, "extra-quiz", deck)}
+                                            className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                                        >
+                                            Extra Quiz
                                         </li>
                                     </ul>
                                 </div>
