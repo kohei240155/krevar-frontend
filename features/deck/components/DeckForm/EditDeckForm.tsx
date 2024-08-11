@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Modal from 'react-modal';
 
 interface DeckSettingsProps {
     deckId: string;
@@ -14,6 +15,7 @@ interface DeckSettingsProps {
 
 const EditDeckForm: React.FC<DeckSettingsProps> = ({ deckId, deckName: initialDeckName, onDeckUpdated}) => {
     const [deckName, setDeckName] = useState(initialDeckName);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const router = useRouter();
 
     const handleUpdate = async (event: React.FormEvent) => {
@@ -32,12 +34,18 @@ const EditDeckForm: React.FC<DeckSettingsProps> = ({ deckId, deckName: initialDe
     };
 
     const handleDelete = async () => {
+        setIsModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
         try {
             await axios.delete(`http://localhost:8080/api/decks/${deckId}`);
-            console.log("Deck deleted successfully");
+            toast.success("Deck deleted successfully!");
             router.push('/decks');
         } catch (error) {
-            console.log("Error deleting deck:", error);
+            toast.error("Error deleting deck: " + error);
+        } finally {
+            setIsModalOpen(false);
         }
     };
 
@@ -81,6 +89,33 @@ const EditDeckForm: React.FC<DeckSettingsProps> = ({ deckId, deckName: initialDe
                     backward
                 </button>
             </form>
+
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                contentLabel="Confirm Delete"
+                className="fixed inset-0 flex items-center justify-center p-4 bg-gray-800 bg-opacity-75"
+                overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+            >
+                <div className="bg-white p-6 rounded-lg shadow-lg">
+                    <h2 className="text-xl font-bold mb-4">Confirm to delete</h2>
+                    <p className="mb-4">Are you sure you want to delete this deck?</p>
+                    <div className="flex justify-end">
+                        <button
+                            onClick={() => setIsModalOpen(false)}
+                            className="mr-4 px-4 py-2 bg-gray-300 rounded-md"
+                        >
+                            No
+                        </button>
+                        <button
+                            onClick={confirmDelete}
+                            className="px-4 py-2 bg-red-600 text-white rounded-md"
+                        >
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     )
 }
