@@ -57,6 +57,10 @@ const WordForm = () => {
     // 画像生成のロジックをここに追加
     console.log("Image generate button clicked");
     setIsImageGenerated(true);
+
+    // Wordの背景色を保持するためにinnerHTMLを再設定
+    const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
+    setWord(wordHtml);
   };
 
   return (
