@@ -1,13 +1,14 @@
 "use client"
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const WordForm = () => {
   const [word, setWord] = useState('');
   const [meaning, setMeaning] = useState('');
-  const [originalImageUrl, setOriginalImageUrl] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [deckId, setDeckId] = useState('1');
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -15,7 +16,6 @@ const WordForm = () => {
       const response = await axios.post(`http://localhost:8080/api/word/${deckId}`, {
         original_text: word,
         translated_text: meaning,
-        original_image_url: originalImageUrl,
         image_url: imageUrl,
         mastery_status_id: 1,
         last_practiced_date: new Date(),
@@ -56,19 +56,8 @@ const WordForm = () => {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
-        {/* 元画像を貼り付ける欄 */}
-        <div className="mb-4">
-          <label htmlFor="originalImageUrl" className="block text-sm font-medium text-gray-700">Original Image URL:</label>
-          <input
-            type="text"
-            id="originalImageUrl"
-            value={originalImageUrl}
-            onChange={(e) => setOriginalImageUrl(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
-        </div>
         {/* イメージ画像を貼り付ける欄 */}
-        <div className="mb-4">
+        <div className="mb-5">
           <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image URL:</label>
           <input
             type="text"
@@ -78,12 +67,21 @@ const WordForm = () => {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
-        <button
-          type="submit"
-          className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-            Register
-        </button>
+        <div className="flex justify-between mb-2">
+          <button
+            type="button"
+            onClick={() => router.push('/decks')}
+            className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Backward
+          </button>
+          <button
+            type="submit"
+            className="w-1/2 ml-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+              Register
+          </button>
+        </div>
       </form>
     </div>
   )
