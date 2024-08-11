@@ -63,6 +63,30 @@ const WordForm = () => {
     setWord(wordHtml);
   };
 
+  const handlePaste = (event: React.ClipboardEvent) => {
+    const items = event.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf("image") !== -1) {
+        const blob = items[i].getAsFile();
+        if (blob) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const img = document.createElement("img");
+            img.src = e.target?.result as string;
+            img.style.maxWidth = "100%";
+            const range = window.getSelection()?.getRangeAt(0);
+            if (range) {
+              range.deleteContents();
+              range.insertNode(img);
+            }
+          };
+          reader.readAsDataURL(blob);
+        }
+        event.preventDefault();
+      }
+    }
+  };
+
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-left">Add Word</h1>
@@ -74,6 +98,7 @@ const WordForm = () => {
             innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
             html={word}
             onChange={(e) => setWord(e.target.value)}
+            onPaste={handlePaste}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
           />
           <div className="relative mt-2 inline-flex items-center">
@@ -146,12 +171,12 @@ const WordForm = () => {
             {/* イメージ画像を貼り付ける欄 */}
             <div className="mb-5">
               <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
-              <input
-                type="text"
-                id="imageUrl"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              <ContentEditable
+                innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
+                html={word}
+                onChange={(e) => setWord(e.target.value)}
+                onPaste={handlePaste}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div className="flex justify-between mb-2">
