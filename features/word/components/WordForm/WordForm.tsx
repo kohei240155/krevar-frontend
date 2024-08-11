@@ -1,7 +1,9 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import ContentEditable from 'react-contenteditable';
+import { SketchPicker, ColorResult } from 'react-color';
 
 const WordForm = () => {
   const [word, setWord] = useState('');
@@ -9,6 +11,9 @@ const WordForm = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [deckId, setDeckId] = useState('1');
   const router = useRouter();
+  const wordRef = useRef('');
+  const [highlightColor, setHighlightColor] = useState('#ffff00');
+  const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -30,6 +35,20 @@ const WordForm = () => {
     }
   };
 
+  const handleHighlight = () => {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const span = document.createElement('span');
+      span.style.backgroundColor = highlightColor;
+      range.surroundContents(span);
+    }
+  };
+
+  const handleColorChange = (color: ColorResult) => {
+    setHighlightColor(color.hex);
+  };
+
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-left">Add Word</h1>
@@ -37,13 +56,33 @@ const WordForm = () => {
         {/* 単語を入力する欄 */}
         <div className="mb-4">
           <label htmlFor="word" className="block text-sm font-medium text-gray-700">Word:</label>
-          <input
-            type="text"
-            id="word"
-            value={word}
+          <ContentEditable
+            innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
+            html={word}
             onChange={(e) => setWord(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
           />
+          <div className="relative mt-2 inline-flex items-center">
+            <div
+              onClick={() => setDisplayColorPicker(!displayColorPicker)}
+              className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              style={{ backgroundColor: highlightColor, cursor: 'pointer', width: '30px', height: '30px' }}
+            />
+            <button
+              type="button"
+              onClick={handleHighlight}
+              className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              style={{ height: '30px' }}
+            >
+              Highlight
+            </button>
+            {displayColorPicker && (
+              <div style={{ position: 'absolute', zIndex: 2, top: '100%', left: 0 }}>
+                <div style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 }} onClick={() => setDisplayColorPicker(false)} />
+                <SketchPicker color={highlightColor} onChange={handleColorChange} />
+              </div>
+            )}
+          </div>
         </div>
         {/* 単語の意味を入力する欄 */}
         <div className="mb-4">
