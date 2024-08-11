@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import { FaTrash } from 'react-icons/fa';
 
 interface DeckSettingsProps {
     deckId: string;
@@ -34,11 +35,23 @@ const EditDeckForm: React.FC<DeckSettingsProps> = ({ deckId, deckName: initialDe
         }
     };
 
+    const handleCancel = () => {
+        router.back();
+    };
+
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold mb-6 text-left">Edit Deck</h1>
+        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md relative">
+            <div className="flex items-center justify-between mb-6">
+                <h1 className="text-2xl font-bold text-left">Edit Deck</h1>
+                <button
+                    onClick={handleDelete}
+                    className="w-10 h-10 flex items-center justify-center rounded-full text-red-600 bg-white border border-red-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+                >
+                    <FaTrash />
+                </button>
+            </div>
             <form onSubmit={handleUpdate}>
-                <div className="mb-4">
+                <div className="mb-5">
                     <label htmlFor="deckName" className="block text-sm font-medium text-gray-700">
                         Deck Name:
                     </label>
@@ -59,10 +72,10 @@ const EditDeckForm: React.FC<DeckSettingsProps> = ({ deckId, deckName: initialDe
                     </button>
                 </div>
                 <button
-                    onClick={handleDelete}
-                    className="w-full inline-flex items-center justify-center px-4 py-2 border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    onClick={handleCancel}
+                    className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Delete
+                    Cancel
                 </button>
             </form>
         </div>
