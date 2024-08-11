@@ -115,7 +115,7 @@ const DeckList = () => {
         console.log(`Option ${option} for deck with ID: ${deck.id}`);
         if (option === "settings") {
             router.push(`/decks/${deck.id}/settings?deckName=${encodeURIComponent(deck.deckName)}`);
-        } else if (option === "edit") {
+        } else if (option === "list") {
             router.push(`/words/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}`);
         } else {
             router.push(`/${option}`);
@@ -184,10 +184,10 @@ const DeckList = () => {
                                             Add Word
                                         </li>
                                         <li
-                                            onClick={(e) => handleOptionItemClick(e, "edit", deck)}
+                                            onClick={(e) => handleOptionItemClick(e, "list", deck)}
                                             className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                                         >
-                                            Edit Word
+                                            Word List
                                         </li>
                                         <li
                                             onClick={(e) => handleOptionItemClick(e, "settings", deck)}
