@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { HiArrowCircleRight } from "react-icons/hi";
 
 interface Word {
     id: number;
@@ -69,19 +70,24 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                 )}
 
                 {/* わかる、わからないボタン */}
-                <div className="flex justify-center space-x-4 pb-6">
-                    <button
-                        onClick={handleDontKnowClick}
-                        className="px-6 py-3 bg-white text-indigo-600 border border-indigo-600 rounded-lg hover:bg-gray-100 transition"
-                    >
-                        No Idea
-                    </button>
-                    <button
-                        onClick={handleKnowClick}
-                        className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-                    >
-                        Got It
-                    </button>
+                <div className="relative">
+                    <div className="flex justify-center space-x-4 pb-6">
+                        <button
+                            onClick={handleDontKnowClick}
+                            className="px-6 py-3 bg-white text-indigo-600 border border-indigo-600 rounded-lg hover:bg-gray-100 transition"
+                        >
+                            No Idea
+                        </button>
+                        <div className="relative">
+                            <button
+                                onClick={handleKnowClick}
+                                className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+                            >
+                                Got It
+                            </button>
+                            <HiArrowCircleRight className="absolute -top-10 right-0 text-4xl text-gray-800" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
