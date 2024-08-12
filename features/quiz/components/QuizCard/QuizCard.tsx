@@ -30,13 +30,16 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
     }, [deckId]);
 
     const handleKnowClick = () => {
-        setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
         setShowTranslation(true);
     };
 
     const handleDontKnowClick = () => {
-        setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
         setShowTranslation(true);
+    }
+
+    const handleNextClick = () => {
+        setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
+        setShowTranslation(false);
     }
 
     if (words.length === 0) {
@@ -86,7 +89,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                         >
                             Got It
                         </button>
-                        <HiArrowCircleRight className="absolute -top-16 right-0 text-5xl text-gray-800"/>
+                        <HiArrowCircleRight 
+                            onClick={handleNextClick} 
+                            className="absolute -top-16 right-0 text-5xl text-gray-800 cursor-pointer"
+                        />
                     </div>
                 </div>
             </div>
