@@ -101,8 +101,8 @@ const DeckList = () => {
 
     }, []);
 
-    const handleDeckClick = (deckId: number) => {
-        router.push(`/quiz/${deckId}`);
+    const handleDeckClick = (deckId: number, deckName: string) => {
+        router.push(`/quiz/${deckId}?deckName=${encodeURIComponent(deckName)}`);
     };
 
     const handleOptionClick = (e: React.MouseEvent, deckId: number) => {
@@ -164,7 +164,7 @@ const DeckList = () => {
                             </div>
                             <div className="flex items-center space-x-4 mt-4 md:mt-0">
                                 <button
-                                    onClick={() => handleDeckClick(deck.id)}
+                                    onClick={() => handleDeckClick(deck.id, deck.deckName)}
                                     className="px-4 py-2 bg-blue-600 text-white rounded-md transition hover:bg-blue-700"
                                 >
                                     Quiz

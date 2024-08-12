@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HiArrowCircleRight } from "react-icons/hi";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Word {
     id: number;
@@ -21,6 +21,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
     const [arrowColor, setArrowColor] = useState("text-gray-800");
     const [isArrowActive, setIsArrowActive] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const deckName = searchParams.get('deckName') || 'Deck Name';
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/quiz/${deckId}`)
@@ -65,7 +67,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
             <div className="p-4">
                 <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                     <div className="flex-grow">
-                        <h2 className="text-2xl font-bold mb-2 text-left ml-4">Deck Name</h2>
+                        <h2 className="text-2xl font-bold mb-2 text-left ml-4">{deckName}</h2>
                         <p className="text-gray-700 mb-4 text-left ml-4">{`${words.length} / ${words.length}`}</p>
                         <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
                     </div>
@@ -89,7 +91,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
         <div className="p-4">
             <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                 <div className="flex-grow">
-                    <h2 className="text-2xl font-bold mb-2 text-left ml-4">Deck Name</h2>
+                    <h2 className="text-2xl font-bold mb-2 text-left ml-4">{deckName}</h2>
                     <p className="text-gray-700 mb-4 text-left ml-4">{`${currentWordIndex + 1} / ${words.length}`}</p>
                     <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.original_text }}></p>
 
