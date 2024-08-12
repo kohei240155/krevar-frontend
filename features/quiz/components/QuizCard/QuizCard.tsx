@@ -88,9 +88,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
             <div className="p-4">
                 <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                     <div className="flex-grow">
-                        <div className="flex justify-between items-center mb-4">
+                        <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
                             <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                            <p className="text-gray-700 text-right mr-4 border-b-2 border-gray-600 pb-1">{`${words.length} / ${words.length}`}</p>
+                            <p className="text-gray-700 text-right mr-8">{`${words.length} / ${words.length}`}</p>
                         </div>
                         <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
                     </div>
