@@ -26,10 +26,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const deckName = searchParams.get('deckName') || 'Deck Name';
 
     useEffect(() => {
-        // const apiUrl = isExtraQuiz
-        //     ? `http://localhost:8080/api/quiz/extra/${deckId}`
-        //     : `http://localhost:8080/api/quiz/normal/${deckId}`;
-        const apiUrl = `http://localhost:8080/api/quiz/normal/${deckId}`;
+        const apiUrl = isExtraQuiz
+            ? `http://localhost:8080/api/quiz/extra/${deckId}` // Changed
+            : `http://localhost:8080/api/quiz/normal/${deckId}`;
         console.log(apiUrl);
         fetch(apiUrl)
             .then(response => response.json())
@@ -39,7 +38,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             .catch(error => {
                 console.error("Error fetching words:", error);
             });
-    }, [deckId, isExtraQuiz]); // 変更なし
+    }, [deckId, isExtraQuiz]); // No change
 
     const handleKnowClick = () => {
         setShowTranslation(true);
