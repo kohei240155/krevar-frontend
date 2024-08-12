@@ -67,8 +67,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
             <div className="p-4">
                 <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                     <div className="flex-grow">
-                        <h2 className="text-2xl font-bold mb-2 text-left ml-4">{deckName}</h2>
-                        <p className="text-gray-700 mb-4 text-left ml-4">{`${words.length} / ${words.length}`}</p>
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
+                            <p className="text-gray-700 text-right mr-4 border-b-2 border-gray-600 pb-1">{`${words.length} / ${words.length}`}</p>
+                        </div>
                         <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
                     </div>
                     <div className="flex justify-center mt-4">
@@ -91,8 +93,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
         <div className="p-4">
             <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                 <div className="flex-grow">
-                    <h2 className="text-2xl font-bold mb-2 text-left ml-4">{deckName}</h2>
-                    <p className="text-gray-700 mb-4 text-left ml-4">{`${currentWordIndex + 1} / ${words.length}`}</p>
+                    <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
+                        <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
+                        <p className="text-gray-700 text-right mr-4">{`${currentWordIndex + 1} / ${words.length}`}</p>
+                    </div>
                     <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.original_text }}></p>
 
                     {/* 翻訳を表示 */}
