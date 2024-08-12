@@ -7,5 +7,5 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/words/:path*", "/decks/:path*"], // 認証が必要なパスを指定
+  matcher: ["/words/:path*", "/decks/:path*", "/quiz/:path*"], // 認証が必要なパスを指定
 };
