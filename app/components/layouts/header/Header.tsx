@@ -45,7 +45,7 @@ const Header = ({ session }: { session: Session | null }) => {
               {isDropdownOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </button>
             {isDropdownOpen && (
-              <ul className="absolute right-0 mt-2 w-48 bg-white shadow-lg">
+              <ul className="absolute right-0 mt-40 w-48 bg-white shadow-lg">
                 <li>
                   <button
                     onClick={handleLogout}
@@ -53,6 +53,11 @@ const Header = ({ session }: { session: Session | null }) => {
                   >
                     Logout
                   </button>
+                </li>
+                <li>
+                  <Link href="/information" className="block w-full px-4 py-2 text-left hover:bg-gray-100">
+                    Information
+                  </Link>
                 </li>
               </ul>
             )}
