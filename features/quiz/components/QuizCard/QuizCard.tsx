@@ -36,10 +36,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
         setShowTranslation(false);
     }
 
-    const handleShowAnswerClick = () => {
-        setShowTranslation(true);
-    }
-
     if (words.length === 0) {
         return <p className="text-gray-500 text-center mt-4">Loading words...</p>
     }
@@ -57,16 +53,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                 {showTranslation && (
                     <p className="text-xl text-center text-blue-500 mb-6">{currentWord.translated_text}</p>
                 )}
-
-                {/* 答えボタン */}
-                <div className="flex justify-end">
-                    <button
-                        onClick={handleShowAnswerClick}
-                        className="px-4 py-2 bg-yellow-700 text-white rounded-md hover:bg-yellow-800 transition"
-                    >
-                        答え
-                    </button>
-                </div>
 
                 {/* わかる、わからないボタン */}
                 <div className="flex justify-center space-x-4 pb-6">
