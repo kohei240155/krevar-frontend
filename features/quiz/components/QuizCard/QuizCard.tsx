@@ -57,16 +57,16 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                 {/* わかる、わからないボタン */}
                 <div className="flex justify-center space-x-4 pb-6">
                     <button
-                        onClick={handleKnowClick}
-                        className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
-                    >
-                        わかる
-                    </button>
-                    <button
                         onClick={handleDontKnowClick}
                         className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
                     >
                         わからない
+                    </button>
+                    <button
+                        onClick={handleKnowClick}
+                        className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+                    >
+                        わかる
                     </button>
                 </div>
             </div>
