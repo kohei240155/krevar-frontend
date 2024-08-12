@@ -97,8 +97,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                         >
                             Got It
                         </button>
-                        <HiArrowCircleRight 
-                            onClick={isArrowActive ? handleNextClick : undefined} 
+                        <HiArrowCircleRight
+                            onClick={isArrowActive ? handleNextClick : undefined}
                             className={`absolute -top-16 right-0 text-5xl cursor-pointer ${arrowColor} ${isArrowActive ? '' : 'opacity-50 cursor-not-allowed'}`}
                         />
                     </div>
