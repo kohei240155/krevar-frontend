@@ -18,6 +18,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [showTranslation, setShowTranslation] = useState(false);
     const [arrowColor, setArrowColor] = useState("text-gray-800");
+    const [isArrowActive, setIsArrowActive] = useState(false);
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/quiz/${deckId}`)
@@ -32,18 +33,21 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
 
     const handleKnowClick = () => {
         setShowTranslation(true);
-        setArrowColor("text-green-500");
+        setArrowColor("text-green-700");
+        setIsArrowActive(true);
     };
 
     const handleDontKnowClick = () => {
         setShowTranslation(true);
-        setArrowColor("text-red-500");
+        setArrowColor("text-red-700");
+        setIsArrowActive(true);
     }
 
     const handleNextClick = () => {
         setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
         setShowTranslation(false);
         setArrowColor("text-gray-800");
+        setIsArrowActive(false);
     }
 
     if (words.length === 0) {
@@ -94,8 +98,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                             Got It
                         </button>
                         <HiArrowCircleRight 
-                            onClick={handleNextClick} 
-                            className={`absolute -top-16 right-0 text-5xl cursor-pointer ${arrowColor}`}
+                            onClick={isArrowActive ? handleNextClick : undefined} 
+                            className={`absolute -top-16 right-0 text-5xl cursor-pointer ${arrowColor} ${isArrowActive ? '' : 'opacity-50 cursor-not-allowed'}`}
                         />
                     </div>
                 </div>
