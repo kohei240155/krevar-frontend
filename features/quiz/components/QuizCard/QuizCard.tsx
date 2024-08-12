@@ -4,6 +4,8 @@ interface Word {
     id: number;
     original_text: string;
     translated_text: string;
+    nuance: string;
+    image_url: string;
 }
 
 interface QuizCardProps {
@@ -28,12 +30,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
 
     const handleKnowClick = () => {
         setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
-        setShowTranslation(false);
+        setShowTranslation(true);
     };
 
     const handleDontKnowClick = () => {
         setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
-        setShowTranslation(false);
+        setShowTranslation(true);
     }
 
     if (words.length === 0) {
@@ -52,6 +54,18 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                 {/* 翻訳を表示 */}
                 {showTranslation && (
                     <p className="text-xl text-center text-blue-500 mb-6">{currentWord.translated_text}</p>
+                )}
+
+                {/* ニュアンスとイメージ画像を表示 */}
+                {showTranslation && (
+                    <>
+                        <p className="text-xl text-center text-gray-700 mb-6">{currentWord.nuance}</p>
+                        {currentWord.image_url && (
+                            <div className="flex justify-center mb-6">
+                                <img src={currentWord.image_url} alt="Word Image" className="max-w-full h-auto" />
+                            </div>
+                        )}
+                    </>
                 )}
 
                 {/* わかる、わからないボタン */}
