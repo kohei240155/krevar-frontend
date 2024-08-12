@@ -118,7 +118,7 @@ const DeckList = () => {
         } else if (option === "list") {
             router.push(`/words/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}`);
         } else if (option === "extra-quiz") {
-            router.push(`/extra-quiz/${deck.id}`);
+            router.push(`/extra-quiz/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}&isExtraQuiz=true`);
         } else {
             router.push(`/${option}`);
         }

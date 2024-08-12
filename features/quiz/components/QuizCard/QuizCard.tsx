@@ -12,9 +12,10 @@ interface Word {
 
 interface QuizCardProps {
     deckId: string;
+    isExtraQuiz?: boolean; // Added
 }
 
-const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
+const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => { // Changed
     const [words, setWords] = useState<Word[]>([]);
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [showTranslation, setShowTranslation] = useState(false);
@@ -25,7 +26,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
     const deckName = searchParams.get('deckName') || 'Deck Name';
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/quiz/${deckId}`)
+        // const apiUrl = isExtraQuiz
+        //     ? `http://localhost:8080/api/quiz/extra/${deckId}`
+        //     : `http://localhost:8080/api/quiz/normal/${deckId}`;
+        const apiUrl = `http://localhost:8080/api/quiz/normal/${deckId}`;
+        console.log(apiUrl);
+        fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 setWords(data);
@@ -33,7 +39,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
             .catch(error => {
                 console.error("Error fetching words:", error);
             });
-    }, [deckId]);
+    }, [deckId, isExtraQuiz]); // 変更なし
 
     const handleKnowClick = () => {
         setShowTranslation(true);
