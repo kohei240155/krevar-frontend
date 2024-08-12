@@ -59,7 +59,28 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
     }
 
     if (words.length === 0) {
-        return <p className="text-gray-500 text-center mt-4">Loading words...</p>
+        return (
+            <div className="p-4">
+                <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
+                    <div className="flex-grow">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
+                            <p className="text-gray-700 text-right mr-4 border-b-2 border-gray-600 pb-1">0 / 0</p>
+                        </div>
+                        <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
+                    </div>
+                    <div className="flex justify-center mt-4">
+                        <button
+                            type="button"
+                            onClick={() => router.push('/decks')}
+                            className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                            Backward
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     if (currentWordIndex >= words.length) {
