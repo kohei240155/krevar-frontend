@@ -47,7 +47,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
 
     return (
         <div className="p-4">
-            <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
+            <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                 <div>
                     <h2 className="text-2xl font-bold mb-4 text-center">Deck Name</h2>
                     <p className="text-gray-700 mb-4 text-center">{`Question ${currentWordIndex + 1} of ${words.length}`}</p>
@@ -75,18 +75,18 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                 <div className="flex justify-center space-x-4 mt-4">
                     <button
                         onClick={handleDontKnowClick}
-                        className="px-6 py-3 bg-white text-indigo-600 border border-indigo-600 rounded-lg hover:bg-gray-100 transition"
+                        className="w-40 px-6 py-3 bg-white text-indigo-600 border border-indigo-600 rounded-lg hover:bg-gray-100 transition"
                     >
                         No Idea
                     </button>
                     <div className="relative">
                         <button
                             onClick={handleKnowClick}
-                            className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+                            className="w-40 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
                         >
                             Got It
                         </button>
-                        <HiArrowCircleRight className="absolute -top-10 right-0 text-4xl text-gray-800" />
+                        <HiArrowCircleRight className="absolute -top-16 right-0 text-5xl text-gray-800"/>
                     </div>
                 </div>
             </div>
