@@ -47,27 +47,29 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
 
     return (
         <div className="p-4">
-            <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md h-600">
-                <h2 className="text-2xl font-bold mb-4 text-center">Deck Name</h2>
-                <p className="text-gray-700 mb-4 text-center">{`Question ${currentWordIndex + 1} of ${words.length}`}</p>
-                <p className="text-2xl font-bold mb-6 text-center">{currentWord.original_text}</p>
+            <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
+                <div>
+                    <h2 className="text-2xl font-bold mb-4 text-center">Deck Name</h2>
+                    <p className="text-gray-700 mb-4 text-center">{`Question ${currentWordIndex + 1} of ${words.length}`}</p>
+                    <p className="text-2xl font-bold mb-6 text-center">{currentWord.original_text}</p>
 
-                {/* 翻訳を表示 */}
-                {showTranslation && (
-                    <p className="text-xl text-center text-blue-500 mb-6">{currentWord.translated_text}</p>
-                )}
+                    {/* 翻訳を表示 */}
+                    {showTranslation && (
+                        <p className="text-xl text-center text-blue-500 mb-6">{currentWord.translated_text}</p>
+                    )}
 
-                {/* ニュアンスとイメージ画像を表示 */}
-                {showTranslation && (
-                    <>
-                        <p className="text-xl text-center text-gray-700 mb-6">{currentWord.nuance}</p>
-                        {currentWord.image_url && (
-                            <div className="flex justify-center mb-6">
-                                <img src={currentWord.image_url} alt="Word Image" className="max-w-full h-auto" />
-                            </div>
-                        )}
-                    </>
-                )}
+                    {/* ニュアンスとイメージ画像を表示 */}
+                    {showTranslation && (
+                        <>
+                            <p className="text-xl text-center text-gray-700 mb-6">{currentWord.nuance}</p>
+                            {currentWord.image_url && (
+                                <div className="flex justify-center mb-6">
+                                    <img src={currentWord.image_url} alt="Word Image" className="max-w-full h-auto" />
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
 
                 {/* わかる、わからないボタン */}
                 <div className="flex justify-center space-x-4 mt-4">
