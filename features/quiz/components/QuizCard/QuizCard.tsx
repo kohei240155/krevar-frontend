@@ -95,7 +95,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                 <div className="flex-grow">
                     <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
                         <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                        <p className="text-gray-700 text-right mr-4">{`${currentWordIndex + 1} / ${words.length}`}</p>
+                        <p className="text-gray-700 text-right mr-8">{`${currentWordIndex + 1} / ${words.length}`}</p>
                     </div>
                     <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.original_text }}></p>
 
