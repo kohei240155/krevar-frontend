@@ -67,7 +67,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                     <div className="flex-grow">
                         <h2 className="text-2xl font-bold mb-2 text-left ml-4">Deck Name</h2>
                         <p className="text-gray-700 mb-4 text-left ml-4">{`${words.length} / ${words.length}`}</p>
-                        <p className="text-gray-500 text-center mt-4">このDeck内のすべての問題が解き終わりました！</p>
+                        <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
                     </div>
                     <div className="flex justify-center mt-4">
                         <button
