@@ -36,6 +36,11 @@ const Header = ({ session }: { session: Session | null }) => {
       </div>
       <ul className="flex items-center space-x-8">
         <li className="hover:text-blue-600 transition-colors duration-300">
+          <Link href="/" className="text-lg">
+            Deck List
+          </Link>
+        </li>
+        <li className="hover:text-blue-600 transition-colors duration-300">
           <Link href="/decks/new" className="text-lg">
             Add Deck
           </Link>
@@ -43,11 +48,6 @@ const Header = ({ session }: { session: Session | null }) => {
         <li className="hover:text-blue-600 transition-colors duration-300">
           <Link href="/statistic" className="text-lg">
             Statistic
-          </Link>
-        </li>
-        <li className="hover:text-blue-600 transition-colors duration-300">
-          <Link href="/information" className="text-lg">
-            Information
           </Link>
         </li>
         {session ? (
