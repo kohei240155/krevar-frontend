@@ -5,9 +5,14 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Link from "next/link";
 import { type Session } from "next-auth";
 import { useState } from "react";
+import { signOut } from "next-auth/react";
 
 const Header = ({ session }: { session: Session | null }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
 
   return (
     <header className="flex items-center justify-between bg-white p-4 shadow-md">
@@ -33,12 +38,24 @@ const Header = ({ session }: { session: Session | null }) => {
           </Link>
         </li>
         {session ? (
-          <li className="flex items-center space-x-2">
+          <li className="relative flex items-center space-x-2">
             <IoPerson className="text-2xl" />
             <span>{session.user?.name}</span>
             <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
               {isDropdownOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </button>
+            {isDropdownOpen && (
+              <ul className="absolute right-0 mt-2 w-48 bg-white shadow-lg">
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full px-4 py-2 text-left hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            )}
           </li>
         ) : (
           <li>

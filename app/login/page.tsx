@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { redirect } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import googleIcon from "../../public/web_light_sq_ctn.svg";
@@ -38,6 +38,10 @@ const LoginPage = () => {
       setEmailError("");
       // Emailでのログイン処理をここに追加
     }
+  };
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/" });
   };
 
   return (
@@ -101,6 +105,13 @@ const LoginPage = () => {
           className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
         >
           Continue with email
+        </button>
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+        >
+          Logout
         </button>
       </form>
     </div>
