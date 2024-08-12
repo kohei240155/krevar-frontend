@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HiArrowCircleRight } from "react-icons/hi";
+import { useRouter } from 'next/navigation';
 
 interface Word {
     id: number;
@@ -19,6 +20,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
     const [showTranslation, setShowTranslation] = useState(false);
     const [arrowColor, setArrowColor] = useState("text-gray-800");
     const [isArrowActive, setIsArrowActive] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         fetch(`http://localhost:8080/api/quiz/${deckId}`)
@@ -44,7 +46,11 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
     }
 
     const handleNextClick = () => {
-        setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
+        if (currentWordIndex + 1 === words.length) {
+            setCurrentWordIndex(words.length); // インデックスを範囲外に設定
+        } else {
+            setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
+        }
         setShowTranslation(false);
         setArrowColor("text-gray-800");
         setIsArrowActive(false);
@@ -52,6 +58,29 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
 
     if (words.length === 0) {
         return <p className="text-gray-500 text-center mt-4">Loading words...</p>
+    }
+
+    if (currentWordIndex >= words.length) {
+        return (
+            <div className="p-4">
+                <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
+                    <div className="flex-grow">
+                        <h2 className="text-2xl font-bold mb-2 text-left ml-4">Deck Name</h2>
+                        <p className="text-gray-700 mb-4 text-left ml-4">{`${words.length} / ${words.length}`}</p>
+                        <p className="text-gray-500 text-center mt-4">このDeck内のすべての問題が解き終わりました！</p>
+                    </div>
+                    <div className="flex justify-center mt-4">
+                        <button
+                            type="button"
+                            onClick={() => router.push('/decks')}
+                            className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                            Backward
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     const currentWord = words[currentWordIndex];
