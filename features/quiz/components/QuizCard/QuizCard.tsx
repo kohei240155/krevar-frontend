@@ -51,11 +51,11 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                 <div className="flex-grow">
                     <h2 className="text-2xl font-bold mb-2 text-left ml-4">Deck Name</h2>
                     <p className="text-gray-700 mb-4 text-left ml-4">{`${currentWordIndex + 1} / ${words.length}`}</p>
-                    <p className="text-2xl font-bold mb-6 text-left ml-4">{currentWord.original_text}</p>
+                    <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.original_text }}></p>
 
                     {/* 翻訳を表示 */}
                     {showTranslation && (
-                        <p className="text-xl text-left text-blue-500 mb-6 ml-4">{currentWord.translated_text}</p>
+                        <p className="text-xl text-left text-blue-500 mb-6 ml-4" dangerouslySetInnerHTML={{ __html: currentWord.translated_text }}></p>
                     )}
 
                     {/* ニュアンスとイメージ画像を表示 */}
