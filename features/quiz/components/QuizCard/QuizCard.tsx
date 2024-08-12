@@ -48,8 +48,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
     return (
         <div className="p-4">
             <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
-                <div>
-                    <h2 className="text-2xl font-bold mb-4 text-center">Deck Name</h2>
+                <div className="flex-grow">
+                    <h2 className="text-2xl font-bold mb-4 text-left ml-4">Deck Name</h2>
                     <p className="text-gray-700 mb-4 text-center">{`Question ${currentWordIndex + 1} of ${words.length}`}</p>
                     <p className="text-2xl font-bold mb-6 text-center">{currentWord.original_text}</p>
 
