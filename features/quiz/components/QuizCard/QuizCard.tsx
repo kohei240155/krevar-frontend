@@ -46,21 +46,17 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
 
     const currentWord = words[currentWordIndex];
 
-
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-        <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full flex flex-col justify-between h-full">
-            <div className="flex-grow flex flex-col justify-between">
-                <div>
-                    <h2 className="text-xl font-bold mb-2 text-center">Deck Name</h2>
-                    <p className="text-gray-700 mb-4 text-center">{`Question ${currentWordIndex + 1} of ${words.length}`}</p>
-                    <p className="text-2xl font-bold mb-6 text-center">{currentWord.original_text}</p>
+        <div className="p-4">
+            <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md">
+                <h2 className="text-2xl font-bold mb-4 text-center">Deck Name</h2>
+                <p className="text-gray-700 mb-4 text-center">{`Question ${currentWordIndex + 1} of ${words.length}`}</p>
+                <p className="text-2xl font-bold mb-6 text-center">{currentWord.original_text}</p>
 
-                    {/* 翻訳を表示 */}
-                    {showTranslation && (
-                        <p className="text-xl text-center text-blue-500 mb-6">{currentWord.translated_text}</p>
-                    )}
-                </div>
+                {/* 翻訳を表示 */}
+                {showTranslation && (
+                    <p className="text-xl text-center text-blue-500 mb-6">{currentWord.translated_text}</p>
+                )}
 
                 {/* 答えボタン */}
                 <div className="flex justify-end">
@@ -89,7 +85,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId }) => {
                 </div>
             </div>
         </div>
-    </div>
     )
 }
 
