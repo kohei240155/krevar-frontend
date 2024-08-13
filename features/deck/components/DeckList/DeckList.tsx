@@ -15,11 +15,9 @@ const DeckList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const router = useRouter();
     const optionsRef = useRef<HTMLDivElement>(null);
+    const [totalDecks, setTotalDecks] = useState(0); // totalDecksの状態を追加
 
     const decksPerPage = 10;
-    const indexOfLastDeck = currentPage * decksPerPage;
-    const indexOfFirstDeck = indexOfLastDeck - decksPerPage;
-    const currentDecks = decks.slice(indexOfFirstDeck, indexOfLastDeck);
 
     const paginate = (pageNumber: number) => {
         setCurrentPage(pageNumber);
@@ -30,7 +28,7 @@ const DeckList = () => {
         return name.length > 20 ? name.substring(0, 20) + '...' : name;
     };
 
-    const totalPages = Math.ceil(decks.length / decksPerPage);
+    const totalPages = Math.ceil(totalDecks / decksPerPage); // 修正: decks.length -> totalDecks
     const pageNumbers: number[] = []; // 型を明示的に指定
 
     for (let i = 1; i <= totalPages; i++) {
@@ -84,7 +82,8 @@ const DeckList = () => {
         fetch(`http://localhost:8080/api/decks?page=${page - 1}`) // 修正: page - 1
             .then(response => response.json())
             .then(data => {
-                setDecks(data.content);
+                setDecks(data.decks);
+                setTotalDecks(data.totalDecks); // totalDecksを設定
                 setLoading(false);
             })
             .catch(error => {
@@ -95,19 +94,6 @@ const DeckList = () => {
 
     useEffect(() => {
         fetchDecks(currentPage);
-
-        const handleClickOutside = (event: MouseEvent) => {
-            if (optionsRef.current && !optionsRef.current.contains(event.target as Node)) {
-                setShowOptions(null);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        }
-
     }, [currentPage]);
 
     const handleDeckClick = (deckId: number, deckName: string) => {
@@ -127,7 +113,7 @@ const DeckList = () => {
         } else if (option === "list") {
             router.push(`/words/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}`);
         } else if (option === "extra-quiz") {
-            router.push(`/quiz/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}&isExtraQuiz=true`); // 修正
+            router.push(`/quiz/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}&isExtraQuiz=true`); // 修
         } else {
             router.push(`/${option}`);
         }
@@ -162,7 +148,7 @@ const DeckList = () => {
             <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md">
                 <h2 className="text-2xl font-bold mb-4 text-left">Deck List</h2>
                 <ul className="space-y-4">
-                    {currentDecks.map(deck => (
+                    {decks.map(deck => (
                         <li
                             key={deck.id}
                             className="relative flex flex-col md:flex-row justify-between items-center p-4 bg-white rounded-lg shadow space-y-2 md:space-y-0 md:space-x-4"
