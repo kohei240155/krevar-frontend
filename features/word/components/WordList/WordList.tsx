@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Word {
@@ -17,6 +17,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalWords, setTotalWords] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams();
   const deckName = searchParams.get('deckName') || '';
@@ -24,11 +25,14 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const wordsPerPage = 10;
   const indexOfLastWord = currentPage * wordsPerPage;
   const indexOfFirstWord = indexOfLastWord - wordsPerPage;
-  const currentWords = words.slice(indexOfFirstWord, indexOfLastWord);
+  const currentWords = words ? words.slice(indexOfFirstWord, indexOfLastWord) : [];
 
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    fetchWords(pageNumber);
+  };
 
-  const totalPages = Math.ceil(words.length / wordsPerPage);
+  const totalPages = Math.ceil(totalWords / wordsPerPage);
   const pageNumbers: number[] = [];
 
   for (let i = 1; i <= totalPages; i++) {
@@ -76,11 +80,13 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
     );
   };
 
-  useEffect(() => {
-    fetch(`http://localhost:8080/api/word/deck/${deckId}`)
+  const fetchWords = useCallback((page: number) => {
+    setLoading(true);
+    fetch(`http://localhost:8080/api/word/deck/${deckId}?page=${page - 1}`)
       .then(response => response.json())
       .then(data => {
         setWords(data);
+        setTotalWords(data.length);
         setLoading(false);
       })
       .catch(error => {
@@ -88,6 +94,10 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
         setLoading(false);
       });
   }, [deckId]);
+
+  useEffect(() => {
+    fetchWords(currentPage);
+  }, [deckId, currentPage, fetchWords]);
 
   const handleEditClick = (wordId: number) => {
     router.push(`/words/edit/${wordId}`);
@@ -105,7 +115,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
     return <p className="text-gray-500 text-center mt-4">Loading words...</p>;
   }
 
-  if (words.length === 0) {
+  if (!words || words.length === 0) {
     return (
       <div className="p-4">
         <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md">
