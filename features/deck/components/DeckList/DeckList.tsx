@@ -21,7 +21,10 @@ const DeckList = () => {
     const indexOfFirstDeck = indexOfLastDeck - decksPerPage;
     const currentDecks = decks.slice(indexOfFirstDeck, indexOfLastDeck);
 
-    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+    const paginate = (pageNumber: number) => {
+        setCurrentPage(pageNumber);
+        fetchDecks(pageNumber);
+    };
 
     const truncateDeckName = (name: string) => {
         return name.length > 20 ? name.substring(0, 20) + '...' : name;
@@ -75,8 +78,9 @@ const DeckList = () => {
         );
     };
 
-    useEffect(() => {
-        fetch("http://localhost:8080/api/decks")
+    const fetchDecks = (page: number) => {
+        setLoading(true);
+        fetch(`http://localhost:8080/api/decks?page=${page}`)
             .then(response => response.json())
             .then(data => {
                 setDecks(data);
@@ -86,6 +90,10 @@ const DeckList = () => {
                 console.log("Error fetching decks:", error);
                 setLoading(false);
             });
+    };
+
+    useEffect(() => {
+        fetchDecks(currentPage);
 
         const handleClickOutside = (event: MouseEvent) => {
             if (optionsRef.current && !optionsRef.current.contains(event.target as Node)) {
@@ -99,7 +107,7 @@ const DeckList = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         }
 
-    }, []);
+    }, [currentPage]);
 
     const handleDeckClick = (deckId: number, deckName: string) => {
         router.push(`/quiz/${deckId}?deckName=${encodeURIComponent(deckName)}`);
