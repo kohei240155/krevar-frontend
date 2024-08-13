@@ -26,11 +26,6 @@ const WordForm = () => {
         original_text: wordHtml,
         translated_text: meaning,
         image_url: imageUrl,
-        mastery_status_id: 1,
-        last_practiced_date: new Date(),
-        next_practice_date: new Date(),
-        correct_count: 0,
-        incorrect_count: 0,
         deck_id: deckId,
         nuance_text: nuanceText,
       });
