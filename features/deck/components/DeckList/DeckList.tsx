@@ -80,10 +80,11 @@ const DeckList = () => {
 
     const fetchDecks = (page: number) => {
         setLoading(true);
-        fetch(`http://localhost:8080/api/decks?page=${page}`)
+        console.log("Fetching decks for page:", page);
+        fetch(`http://localhost:8080/api/decks?page=${page - 1}`) // 修正: page - 1
             .then(response => response.json())
             .then(data => {
-                setDecks(data);
+                setDecks(data.content);
                 setLoading(false);
             })
             .catch(error => {
