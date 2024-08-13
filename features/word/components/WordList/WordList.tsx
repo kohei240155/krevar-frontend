@@ -94,7 +94,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
 
   useEffect(() => {
     fetchWords(currentPage);
-  }, [deckId, fetchWords]);
+  }, [deckId, fetchWords, currentPage]); // 'currentPage' を依存配列に追加
 
   const handleEditClick = (wordId: number) => {
     router.push(`/words/edit/${wordId}`);
