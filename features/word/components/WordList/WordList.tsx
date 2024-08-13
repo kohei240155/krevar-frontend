@@ -23,9 +23,6 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const deckName = searchParams.get('deckName') || '';
 
   const wordsPerPage = 10;
-  const indexOfLastWord = currentPage * wordsPerPage;
-  const indexOfFirstWord = indexOfLastWord - wordsPerPage;
-  const currentWords = words ? words.slice(indexOfFirstWord, indexOfLastWord) : [];
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -85,8 +82,8 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
     fetch(`http://localhost:8080/api/word/deck/${deckId}?page=${page - 1}`)
       .then(response => response.json())
       .then(data => {
-        setWords(data);
-        setTotalWords(data.length);
+        setWords(data.words);  // 直接 words を使う
+        setTotalWords(data.totalCount);
         setLoading(false);
       })
       .catch(error => {
@@ -97,7 +94,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
 
   useEffect(() => {
     fetchWords(currentPage);
-  }, [deckId, currentPage, fetchWords]);
+  }, [deckId, fetchWords]);
 
   const handleEditClick = (wordId: number) => {
     router.push(`/words/edit/${wordId}`);
@@ -145,7 +142,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
       <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4 text-left">{deckName}</h2>
         <ul className="space-y-4">
-          {currentWords.map(word => (
+          {words.map(word => (  // currentWordsではなくwordsを使う
             <li
               key={word.id}
               className="flex justify-between items-center p-4 bg-white rounded-lg shadow h-18"
