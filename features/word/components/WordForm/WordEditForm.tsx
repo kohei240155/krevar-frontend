@@ -31,11 +31,11 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
       try {
         const response = await axios.get(`http://localhost:8080/api/word/${wordId}`);
         const wordData = response.data;
-        setWord(wordData.original_text);
-        setMeaning(wordData.translated_text);
-        setImageUrl(wordData.image_url);
-        setDeckId(wordData.deck_id);
-        setNuance(wordData.nuance); // Added for nuance
+        setWord(wordData.originalText);
+        setMeaning(wordData.translatedText);
+        setImageUrl(wordData.imageUrl);
+        setDeckId(wordData.deckId);
+        setNuance(wordData.nuanceText); // Added for nuance
       } catch (error) {
         console.log("Error fetching word data:", error);
       }
@@ -63,11 +63,11 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
     try {
       const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
       const response = await axios.put(`http://localhost:8080/api/word/${wordId}`, {
-        original_text: wordHtml,
-        translated_text: meaning,
-        image_url: imageUrl,
-        deck_id: deckId,
-        nuance: nuance,
+        originalText: wordHtml,
+        translatedText: meaning,
+        imageUrl: imageUrl,
+        deckId: deckId,
+        nuanceText: nuance,
       });
       if (response.status === 200) {
         toast.success("Word updated successfully!");

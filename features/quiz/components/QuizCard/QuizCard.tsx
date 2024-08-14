@@ -4,10 +4,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Word {
     id: number;
-    original_text: string;
-    translated_text: string;
+    originalText: string;
+    translatedText: string;
     nuance: string;
-    image_url: string;
+    imageUrl: string;
 }
 
 interface QuizCardProps {
@@ -123,20 +123,20 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                         <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
                         <p className="text-gray-700 text-right mr-8">{`${currentWordIndex + 1} / ${words.length}`}</p>
                     </div>
-                    <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.original_text }}></p>
+                    <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.originalText }}></p>
 
                     {/* 翻訳を表示 */}
                     {showTranslation && (
-                        <p className="text-xl text-left text-blue-500 mb-6 ml-4" dangerouslySetInnerHTML={{ __html: currentWord.translated_text }}></p>
+                        <p className="text-xl text-left text-blue-500 mb-6 ml-4" dangerouslySetInnerHTML={{ __html: currentWord.translatedText }}></p>
                     )}
 
                     {/* ニュアンスとイメージ画像を表示 */}
                     {showTranslation && (
                         <>
                             <p className="text-xl text-center text-gray-700 mb-6">{currentWord.nuance}</p>
-                            {currentWord.image_url && (
+                            {currentWord.imageUrl && (
                                 <div className="flex justify-center mb-6">
-                                    <img src={currentWord.image_url} alt="Word Image" className="max-w-full h-auto" />
+                                    <img src={currentWord.imageUrl} alt="Word Image" className="max-w-full h-auto" />
                                 </div>
                             )}
                         </>

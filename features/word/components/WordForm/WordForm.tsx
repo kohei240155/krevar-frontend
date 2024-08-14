@@ -23,11 +23,11 @@ const WordForm = () => {
       const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
       const nuanceText = nuance.trim() !== '' ? nuance : '';
       const response = await axios.post(`http://localhost:8080/api/word/${deckId}`, {
-        original_text: wordHtml,
-        translated_text: meaning,
-        image_url: imageUrl,
-        deck_id: deckId,
-        nuance_text: nuanceText,
+        originalText: wordHtml,
+        translatedText: meaning,
+        imageUrl: imageUrl,
+        deckId: deckId,
+        nuanceText: nuanceText,
       });
       console.log("Word created successfully:", response.data);
     } catch (error) {
