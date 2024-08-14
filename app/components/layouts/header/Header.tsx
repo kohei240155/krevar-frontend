@@ -9,6 +9,7 @@ import { signOut } from "next-auth/react";
 
 const Header = ({ session }: { session: Session | null }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });
@@ -34,7 +35,10 @@ const Header = ({ session }: { session: Session | null }) => {
           ▶ IRUKA
         </Link>
       </div>
-      <ul className="flex items-center space-x-8">
+      <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        ☰
+      </button>
+      <ul className={`flex-col md:flex-row md:flex items-center space-x-8 ${isMenuOpen ? 'flex' : 'hidden'}`}>
         <li className="hover:text-blue-600 transition-colors duration-300">
           <Link href="/" className="text-lg">
             Deck List
