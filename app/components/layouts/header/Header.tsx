@@ -15,6 +15,10 @@ const Header = ({ session }: { session: Session | null }) => {
     await signOut({ callbackUrl: "/" });
   };
 
+  const handleMenuClick = () => {
+    setIsMenuOpen(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isDropdownOpen && !event.composedPath().some(el => (el as HTMLElement).classList?.contains('dropdown'))) {
@@ -37,7 +41,7 @@ const Header = ({ session }: { session: Session | null }) => {
         <button
           data-collapse-toggle="navbar-multi-level"
           type="button"
-          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 transition-transform transform hover:scale-110"
           aria-controls="navbar-multi-level"
           aria-expanded={isMenuOpen}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -50,24 +54,24 @@ const Header = ({ session }: { session: Session | null }) => {
         <div className={`${isMenuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto z-50`} id="navbar-multi-level">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 items-center">
             <li>
-              <Link href="/" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Deck List</Link>
+              <Link href="/" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" onClick={handleMenuClick}>Deck List</Link>
             </li>
             <li>
-              <Link href="/decks/new" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Add Deck</Link>
+              <Link href="/decks/new" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" onClick={handleMenuClick}>Add Deck</Link>
             </li>
             <li>
-              <Link href="/statistic" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Statistic</Link>
+              <Link href="/statistic" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" onClick={handleMenuClick}>Statistic</Link>
             </li>
             {session && (
               <>
                 <li className="block md:hidden">
-                  <Link href="/information" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Information</Link>
+                  <Link href="/information" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700" onClick={handleMenuClick}>Information</Link>
                 </li>
                 <li className="block md:hidden">
-                  <Link href="/user-settings" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">User Settings</Link>
+                  <Link href="/user-settings" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700" onClick={handleMenuClick}>User Settings</Link>
                 </li>
                 <li className="block md:hidden">
-                  <button onClick={handleLogout} className="block w-full py-2 px-3 text-left text-gray-900 rounded hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Logout</button>
+                  <button onClick={() => { handleLogout(); handleMenuClick(); }} className="block w-full py-2 px-3 text-left text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700">Logout</button>
                 </li>
               </>
             )}
