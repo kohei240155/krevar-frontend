@@ -90,7 +90,7 @@ const Header = ({ session }: { session: Session | null }) => {
                 )}
               </li>
             )}
-            {!session && !isMenuOpen && (
+            {!session && (
               <li>
                 <Link href="/login">
                   <button className="rounded-lg bg-blue-600 px-4 py-[7px] text-white hover:bg-blue-700">
