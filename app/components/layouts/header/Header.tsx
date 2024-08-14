@@ -24,13 +24,19 @@ const Header = ({ session }: { session: Session | null }) => {
       if (isDropdownOpen && !event.composedPath().some(el => (el as HTMLElement).classList?.contains('dropdown'))) {
         setIsDropdownOpen(false);
       }
+      if (isMenuOpen && !event.composedPath().some(el => {
+        const element = el as HTMLElement;
+        return element.id === 'navbar-multi-level' || element.getAttribute?.('aria-controls') === 'navbar-multi-level';
+      })) {
+        setIsMenuOpen(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isDropdownOpen]);
+  }, [isDropdownOpen, isMenuOpen]);
 
   return (
     <header className="bg-white border-gray-200 dark:bg-gray-900">
