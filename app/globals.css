@@ -42,13 +42,4 @@ body {
     width: 100%;
     justify-content: space-between;
   }
-
-  .header-menu {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .header-menu .menu-item {
-    margin-bottom: 1rem;
-  }
 }
