@@ -151,13 +151,13 @@ const DeckList = () => {
                     {decks.map(deck => (
                         <li
                             key={deck.id}
-                            className="relative flex flex-col md:flex-row justify-between items-center p-4 bg-white rounded-lg shadow space-y-2 md:space-y-0 md:space-x-4"
+                            className="relative flex flex-col md:flex-row justify-between items-center p-4 bg-white rounded-lg shadow space-y-2 md:space-y-0 md:space-x-4 deck-list-item"
                         >
-                            <div className="flex flex-col space-y-1">
+                            <div className="flex flex-col space-y-1 deck-info">
                                 <span className="text-xl font-medium">{truncateDeckName(deck.deckName)}</span>
                                 <span className="text-lg text-gray-600">Today: {deck.dueToday}</span>
                             </div>
-                            <div className="flex items-center space-x-4 mt-4 md:mt-0">
+                            <div className="flex items-center space-x-4 mt-4 md:mt-0 deck-actions">
                                 <button
                                     onClick={() => handleDeckClick(deck.id, deck.deckName)}
                                     className="px-4 py-2 bg-blue-600 text-white rounded-md transition hover:bg-blue-700"

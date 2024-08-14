@@ -27,3 +27,19 @@ body {
     text-wrap: balance;
   }
 }
+
+@media (max-width: 768px) {
+  .deck-list-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .deck-list-item .deck-info {
+    margin-bottom: 1rem;
+  }
+
+  .deck-list-item .deck-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
