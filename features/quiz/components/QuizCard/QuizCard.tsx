@@ -139,13 +139,13 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
 
                     {/* 翻訳を表示 */}
                     {showTranslation && currentWord && (
-                        <p className="text-xl text-left text-blue-500 mb-6" dangerouslySetInnerHTML={{ __html: currentWord.translatedText }}></p>
+                        <p className="text-xl text-left text-blue-500 mb-6 ml-4" dangerouslySetInnerHTML={{ __html: currentWord.translatedText }}></p>
                     )}
 
                     {/* ニュアンスとイメージ画像を表示 */}
                     {showTranslation && currentWord && (
                         <>
-                            <p className="text-xl text-center text-gray-700 mb-6">{currentWord.nuance}</p>
+                            <p className="text-xl text-left text-gray-700 mb-6 ml-4">{currentWord.nuance}</p>
                             {currentWord.imageUrl && (
                                 <div className="flex justify-center mb-6">
                                     <img src={currentWord.imageUrl} alt="Word Image" className="max-w-full h-auto" />
