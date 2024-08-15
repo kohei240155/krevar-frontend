@@ -27,18 +27,26 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
 
     useEffect(() => {
         const apiUrl = isExtraQuiz
-            ? `http://localhost:8080/api/quiz/extra/${deckId}` // Changed
+            ? `http://localhost:8080/api/quiz/extra/${deckId}`
             : `http://localhost:8080/api/quiz/normal/${deckId}`;
         console.log(apiUrl);
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                setWords(data);
+                console.log("Fetched data:", data); // デバッグ用ログ
+                const formattedData = [{
+                    id: data.id,
+                    originalText: data.originalText,
+                    translatedText: data.translatedText,
+                    nuance: data.nuanceText,
+                    imageUrl: data.imageUrl
+                }];
+                setWords(formattedData);
             })
             .catch(error => {
                 console.error("Error fetching words:", error);
             });
-    }, [deckId, isExtraQuiz]); // No change
+    }, [deckId, isExtraQuiz]);
 
     const handleKnowClick = () => {
         setShowTranslation(true);
@@ -64,6 +72,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     }
 
     if (words.length === 0) {
+        console.log("Words array is empty"); // Added for debugging
         return (
             <div className="p-4">
                 <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
@@ -89,6 +98,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     }
 
     if (currentWordIndex >= words.length) {
+        console.log("Current word index is out of bounds"); // Added for debugging
         return (
             <div className="p-4">
                 <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
@@ -123,15 +133,17 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                         <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
                         <p className="text-gray-700 text-right mr-8">{`${currentWordIndex + 1} / ${words.length}`}</p>
                     </div>
-                    <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.originalText }}></p>
+                    {currentWord && (
+                        <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.originalText }}></p>
+                    )}
 
                     {/* 翻訳を表示 */}
-                    {showTranslation && (
-                        <p className="text-xl text-left text-blue-500 mb-6 ml-4" dangerouslySetInnerHTML={{ __html: currentWord.translatedText }}></p>
+                    {showTranslation && currentWord && (
+                        <p className="text-xl text-left text-blue-500 mb-6" dangerouslySetInnerHTML={{ __html: currentWord.translatedText }}></p>
                     )}
 
                     {/* ニュアンスとイメージ画像を表示 */}
-                    {showTranslation && (
+                    {showTranslation && currentWord && (
                         <>
                             <p className="text-xl text-center text-gray-700 mb-6">{currentWord.nuance}</p>
                             {currentWord.imageUrl && (
