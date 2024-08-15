@@ -21,6 +21,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [showTranslation, setShowTranslation] = useState(false);
     const [arrowColor, setArrowColor] = useState("text-gray-800");
     const [isArrowActive, setIsArrowActive] = useState(false);
+    const [isCorrect, setIsCorrect] = useState<boolean | null>(null); // Added
     const router = useRouter();
     const searchParams = useSearchParams();
     const deckName = searchParams.get('deckName') || 'Deck Name';
@@ -52,15 +53,31 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         setShowTranslation(true);
         setArrowColor("text-green-700");
         setIsArrowActive(true);
+        setIsCorrect(true); // Added
     };
 
     const handleDontKnowClick = () => {
         setShowTranslation(true);
         setArrowColor("text-red-700");
         setIsArrowActive(true);
+        setIsCorrect(false); // Added
     }
 
     const handleNextClick = () => {
+        if (isCorrect !== null) {
+            const apiUrl = `http://localhost:8080/api/quiz/answer/${words[currentWordIndex].id}`;
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ isCorrect })
+            })
+                .then(response => response.json())
+                .then(data => console.log("Answer submitted:", data))
+                .catch(error => console.error("Error submitting answer:", error));
+        }
+
         if (currentWordIndex + 1 === words.length) {
             setCurrentWordIndex(words.length); // インデックスを範囲外に設定
         } else {
@@ -69,6 +86,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         setShowTranslation(false);
         setArrowColor("text-gray-800");
         setIsArrowActive(false);
+        setIsCorrect(null); // Added
     }
 
     if (words.length === 0) {
