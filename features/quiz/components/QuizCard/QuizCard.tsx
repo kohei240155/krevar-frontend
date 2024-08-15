@@ -139,7 +139,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
 
                     {/* 翻訳を表示 */}
                     {showTranslation && currentWord && (
-                        <p className="text-xl text-left text-blue-500 mb-6 ml-4" dangerouslySetInnerHTML={{ __html: currentWord.translatedText }}></p>
+                        <p className="text-xl text-left text-blue-700 font-semibold mb-6 ml-4" dangerouslySetInnerHTML={{ __html: currentWord.translatedText }}></p>
                     )}
 
                     {/* ニュアンスとイメージ画像を表示 */}
