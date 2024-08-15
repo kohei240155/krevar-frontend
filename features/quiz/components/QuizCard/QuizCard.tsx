@@ -25,6 +25,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const deckName = searchParams.get('deckName') || 'Deck Name';
+    const [correctWordCount, setCorrectWordCount] = useState(0); // Added
+    const [todayQuestionCount, setTodayQuestionCount] = useState(0); // Added
 
     useEffect(() => {
         const apiUrl = isExtraQuiz
@@ -36,13 +38,15 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             .then(data => {
                 console.log("Fetched data:", data); // デバッグ用ログ
                 const formattedData = [{
-                    id: data.id,
-                    originalText: data.originalText,
-                    translatedText: data.translatedText,
-                    nuance: data.nuanceText,
-                    imageUrl: data.imageUrl
+                    id: data.firstQuestion.id,
+                    originalText: data.firstQuestion.originalText,
+                    translatedText: data.firstQuestion.translatedText,
+                    nuance: data.firstQuestion.nuanceText,
+                    imageUrl: data.firstQuestion.imageUrl
                 }];
                 setWords(formattedData);
+                setCorrectWordCount(data.correctWordCount); // Added
+                setTodayQuestionCount(data.todayQuestionCount); // Added
             })
             .catch(error => {
                 console.error("Error fetching words:", error);
@@ -79,7 +83,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         }
 
         if (currentWordIndex + 1 === words.length) {
-            setCurrentWordIndex(words.length); // インデックスを範囲外に設定
+            setCurrentWordIndex(words.length); // インデックスを範��外に設定
         } else {
             setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
         }
@@ -97,7 +101,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                     <div className="flex-grow">
                         <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
                             <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                            <p className="text-gray-700 text-right mr-4">0 / 0</p>
+                            <p className="text-gray-700 text-right mr-4">{`${correctWordCount} / ${todayQuestionCount}`}</p>
                         </div>
                         <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
                     </div>
@@ -123,7 +127,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                     <div className="flex-grow">
                         <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
                             <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                            <p className="text-gray-700 text-right mr-8">{`${words.length} / ${words.length}`}</p>
+                            <p className="text-gray-700 text-right mr-8">{`${correctWordCount} / ${todayQuestionCount}`}</p>
                         </div>
                         <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
                     </div>
@@ -149,7 +153,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 <div className="flex-grow">
                     <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
                         <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                        <p className="text-gray-700 text-right mr-8">{`${currentWordIndex + 1} / ${words.length}`}</p>
+                        <p className="text-gray-700 text-right mr-8">{`${correctWordCount} / ${todayQuestionCount}`}</p>
                     </div>
                     {currentWord && (
                         <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.originalText }}></p>
@@ -173,7 +177,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                     )}
                 </div>
 
-                {/* わかる、わからないボタン */}
+                {/* わかる、わからない���タン */}
                 <div className="flex justify-center space-x-4 mt-4">
                     <button
                         onClick={handleDontKnowClick}
