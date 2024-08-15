@@ -27,6 +27,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [correctWordCount, setCorrectWordCount] = useState(0);
     const [todayQuestionCount, setTodayQuestionCount] = useState(0);
     const [currentWord, setCurrentWord] = useState<Word | null>(null);
+    const [isAllDone, setIsAllDone] = useState(false); // New state
 
     useEffect(() => {
         const fetchData = async () => {
@@ -94,20 +95,23 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             const response = await fetch(fetchApiUrl);
             const data = await response.json();
             console.log("Fetched data:", data);
-            const formattedWord = {
-                id: data.firstQuestion.id,
-                originalText: data.firstQuestion.originalText,
-                translatedText: data.firstQuestion.translatedText,
-                nuance: data.firstQuestion.nuanceText,
-                imageUrl: data.firstQuestion.imageUrl
-            };
+            const formattedWord = data.firstQuestion
+                ? {
+                    id: data.firstQuestion.id,
+                    originalText: data.firstQuestion.originalText,
+                    translatedText: data.firstQuestion.translatedText,
+                    nuance: data.firstQuestion.nuanceText,
+                    imageUrl: data.firstQuestion.imageUrl
+                }
+                : null;
+
             setCurrentWord(formattedWord);
             setCorrectWordCount(data.correctWordCount);
             setTodayQuestionCount(data.todayQuestionCount);
 
             // All Doneの条件をチェック
-            if (data.todayQuestionCount === 0 || data.correctWordCount === data.todayQuestionCount) {
-                router.push('/decks');  // All doneの場合、デッキ画面に戻る
+            if (data.todayQuestionCount === 0 || data.correctWordCount === data.todayQuestionCount || !formattedWord) {
+                setIsAllDone(true); // Set to true to show All Done message
             } else {
                 setShowTranslation(false);
                 setArrowColor("text-gray-800");
@@ -119,7 +123,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         }
     }
 
-    if (todayQuestionCount === 0 || correctWordCount === todayQuestionCount) {
+    if (isAllDone) { // Display All Done message
         return (
             <div className="p-4">
                 <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
@@ -136,7 +140,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                             onClick={() => router.push('/decks')}
                             className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            Backward
+                            Back to Decks
                         </button>
                     </div>
                 </div>
