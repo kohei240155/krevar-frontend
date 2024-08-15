@@ -27,9 +27,19 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [correctWordCount, setCorrectWordCount] = useState(0);
     const [todayQuestionCount, setTodayQuestionCount] = useState(0);
     const [currentWord, setCurrentWord] = useState<Word | null>(null);
-    const [isAllDone, setIsAllDone] = useState(false); // New state
+    const [isAllDone, setIsAllDone] = useState(false);
 
     useEffect(() => {
+        const initializeState = () => {
+            setWords([]);
+            setShowTranslation(false);
+            setArrowColor("text-gray-800");
+            setIsArrowActive(false);
+            setIsCorrect(null);
+            setIsAllDone(false);
+            setCurrentWord(null);
+        };
+
         const fetchData = async () => {
             const apiUrl = isExtraQuiz
                 ? `http://localhost:8080/api/quiz/extra/${deckId}`
@@ -38,21 +48,28 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 console.log("Fetched data:", data);
-                const formattedWord = {
-                    id: data.firstQuestion.id,
-                    originalText: data.firstQuestion.originalText,
-                    translatedText: data.firstQuestion.translatedText,
-                    nuance: data.firstQuestion.nuanceText,
-                    imageUrl: data.firstQuestion.imageUrl
-                };
-                setCurrentWord(formattedWord);
+                
                 setCorrectWordCount(data.correctWordCount);
                 setTodayQuestionCount(data.todayQuestionCount);
+
+                if (data.firstQuestion) {
+                    const formattedWord = {
+                        id: data.firstQuestion.id,
+                        originalText: data.firstQuestion.originalText,
+                        translatedText: data.firstQuestion.translatedText,
+                        nuance: data.firstQuestion.nuanceText,
+                        imageUrl: data.firstQuestion.imageUrl
+                    };
+                    setCurrentWord(formattedWord);
+                } else if (data.correctWordCount === data.todayQuestionCount) {
+                    setIsAllDone(true);
+                }
             } catch (error) {
                 console.error("Error fetching words:", error);
             }
         };
 
+        initializeState();
         fetchData();
     }, [deckId, isExtraQuiz]);
 
@@ -87,7 +104,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             }
         }
 
-        // APIを再度実行して、新しい単語を取得
         const fetchApiUrl = isExtraQuiz
             ? `http://localhost:8080/api/quiz/extra/${deckId}`
             : `http://localhost:8080/api/quiz/normal/${deckId}`;
@@ -95,35 +111,31 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             const response = await fetch(fetchApiUrl);
             const data = await response.json();
             console.log("Fetched data:", data);
-            const formattedWord = data.firstQuestion
-                ? {
+            setCorrectWordCount(data.correctWordCount);
+            setTodayQuestionCount(data.todayQuestionCount);
+
+            if (data.firstQuestion) {
+                const formattedWord = {
                     id: data.firstQuestion.id,
                     originalText: data.firstQuestion.originalText,
                     translatedText: data.firstQuestion.translatedText,
                     nuance: data.firstQuestion.nuanceText,
                     imageUrl: data.firstQuestion.imageUrl
-                }
-                : null;
-
-            setCurrentWord(formattedWord);
-            setCorrectWordCount(data.correctWordCount);
-            setTodayQuestionCount(data.todayQuestionCount);
-
-            // All Doneの条件をチェック
-            if (data.todayQuestionCount === 0 || data.correctWordCount === data.todayQuestionCount || !formattedWord) {
-                setIsAllDone(true); // Set to true to show All Done message
-            } else {
+                };
+                setCurrentWord(formattedWord);
                 setShowTranslation(false);
                 setArrowColor("text-gray-800");
                 setIsArrowActive(false);
                 setIsCorrect(null);
+            } else if (data.correctWordCount === data.todayQuestionCount) {
+                setIsAllDone(true);
             }
         } catch (error) {
             console.error("Error fetching words:", error);
         }
     }
 
-    if (isAllDone) { // Display All Done message
+    if (isAllDone) {
         return (
             <div className="p-4">
                 <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
