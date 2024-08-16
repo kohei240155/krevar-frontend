@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import ContentEditable from 'react-contenteditable';
@@ -16,6 +16,23 @@ const WordForm = () => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [nuance, setNuance] = useState('');
   const [isImageGenerated, setIsImageGenerated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
+
+  useEffect(() => {
+    // ローディングをシミュレートするためのタイムアウト
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // 1秒後にローディングを終了
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="absolute top-0 mt-20 text-xl">Loading...</div>
+      </div>
+    );
+  }
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -54,7 +71,7 @@ const WordForm = () => {
     console.log("Image generate button clicked");
     setIsImageGenerated(true);
 
-    // Wordの背景色を保持するためにinnerHTMLを再設定
+    // Wordの���景色を保持するためにinnerHTMLを再設定
     const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
     setWord(wordHtml);
   };
