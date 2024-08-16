@@ -16,6 +16,7 @@ const DeckList = () => {
     const router = useRouter();
     const optionsRef = useRef<HTMLDivElement>(null);
     const [totalDecks, setTotalDecks] = useState(0); // totalDecksの状態を追加
+    const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
 
     const decksPerPage = 10;
 
@@ -94,6 +95,11 @@ const DeckList = () => {
 
     useEffect(() => {
         fetchDecks(currentPage);
+        // ローディングをシミュレートするためのタイムアウト
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1000); // 1秒後にローディングを終了
+        return () => clearTimeout(timer);
     }, [currentPage]);
 
     const handleDeckClick = (deckId: number, deckName: string) => {
@@ -132,6 +138,14 @@ const DeckList = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [optionsRef]);
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="absolute top-0 mt-20 text-xl">Loading...</div>
+            </div>
+        );
+    }
 
     if (loading) {
         return <p className="text-gray-500 text-center mt-4">Loading decks...</p>
