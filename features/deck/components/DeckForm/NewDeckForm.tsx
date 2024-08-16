@@ -1,6 +1,6 @@
 "use client"
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,24 @@ interface DeckFormProps {
 
 const DeckForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
     const [deckName, setDeckName] = useState('');
+    const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
     const router = useRouter();
+
+    useEffect(() => {
+        // ローディングをシミュレートするためのタイムアウト
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1000); // 1秒後にローディングを終了
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="absolute top-0 mt-20 text-xl">Loading...</div>
+            </div>
+        );
+    }
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
