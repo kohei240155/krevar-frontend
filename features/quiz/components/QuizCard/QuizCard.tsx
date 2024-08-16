@@ -48,17 +48,17 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 console.log("Fetched data:", data);
-                
+
                 setCorrectWordCount(data.correctWordCount);
                 setTodayQuestionCount(data.todayQuestionCount);
 
-                if (data.firstQuestion) {
+                if (data.randomQuestion) {
                     const formattedWord = {
-                        id: data.firstQuestion.id,
-                        originalText: data.firstQuestion.originalText,
-                        translatedText: data.firstQuestion.translatedText,
-                        nuance: data.firstQuestion.nuanceText,
-                        imageUrl: data.firstQuestion.imageUrl
+                        id: data.randomQuestion.id,
+                        originalText: data.randomQuestion.originalText,
+                        translatedText: data.randomQuestion.translatedText,
+                        nuance: data.randomQuestion.nuanceText,
+                        imageUrl: data.randomQuestion.imageUrl
                     };
                     setCurrentWord(formattedWord);
                 } else if (data.correctWordCount === data.todayQuestionCount) {
@@ -114,13 +114,13 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             setCorrectWordCount(data.correctWordCount);
             setTodayQuestionCount(data.todayQuestionCount);
 
-            if (data.firstQuestion) {
+            if (data.randomQuestion) {
                 const formattedWord = {
-                    id: data.firstQuestion.id,
-                    originalText: data.firstQuestion.originalText,
-                    translatedText: data.firstQuestion.translatedText,
-                    nuance: data.firstQuestion.nuanceText,
-                    imageUrl: data.firstQuestion.imageUrl
+                    id: data.randomQuestion.id,
+                    originalText: data.randomQuestion.originalText,
+                    translatedText: data.randomQuestion.translatedText,
+                    nuance: data.randomQuestion.nuanceText,
+                    imageUrl: data.randomQuestion.imageUrl
                 };
                 setCurrentWord(formattedWord);
                 setShowTranslation(false);
