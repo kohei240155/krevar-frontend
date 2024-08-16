@@ -5,12 +5,12 @@ import React, { useEffect, useRef, useState } from 'react'
 interface Deck {
     id: number;
     deckName: string;
-    dueToday: number;
+    totalQuestions: number;
+    correctQuestions: number;
 }
 
 const DeckList = () => {
     const [decks, setDecks] = useState<Deck[]>([]);
-    const [loading, setLoading] = useState(true);
     const [showOptions, setShowOptions] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const router = useRouter();
@@ -78,18 +78,21 @@ const DeckList = () => {
     };
 
     const fetchDecks = (page: number) => {
-        setLoading(true);
         console.log("Fetching decks for page:", page);
-        fetch(`http://localhost:8080/api/decks?page=${page - 1}`) // 修正: page - 1
+        fetch(`http://localhost:8080/api/decks?page=${page - 1}`)
             .then(response => response.json())
             .then(data => {
-                setDecks(data.decks);
-                setTotalDecks(data.totalDecks); // totalDecksを設定
-                setLoading(false);
+                const formattedDecks = data.decks.map((item: any) => ({
+                    id: item.deck.id,
+                    deckName: item.deck.deckName,
+                    totalQuestions: item.totalQuestions,
+                    correctQuestions: item.correctQuestions
+                }));
+                setDecks(formattedDecks);
+                setTotalDecks(data.totalDecks);
             })
             .catch(error => {
                 console.log("Error fetching decks:", error);
-                setLoading(false);
             });
     };
 
@@ -147,10 +150,6 @@ const DeckList = () => {
         );
     }
 
-    if (loading) {
-        return <p className="text-gray-500 text-center mt-4">Loading decks...</p>
-    }
-
     if (decks.length === 0) {
         return (
             <div className="p-4">
@@ -182,7 +181,7 @@ const DeckList = () => {
                         >
                             <div className="flex flex-col space-y-1 deck-info">
                                 <span className="text-xl font-medium">{truncateDeckName(deck.deckName)}</span>
-                                <span className="text-lg text-gray-600">Today: {deck.dueToday}</span>
+                                <span className="text-lg text-gray-600">Today: {deck.correctQuestions}/{deck.totalQuestions}</span>
                             </div>
                             <div className="flex items-center space-x-4 mt-4 md:mt-0 deck-actions">
                                 <button
