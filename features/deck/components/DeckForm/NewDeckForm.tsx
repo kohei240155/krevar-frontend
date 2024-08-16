@@ -18,7 +18,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
         // ローディングをシミュレートするためのタイムアウト
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 1000); // 1秒後にローディングを終了
+        }, 500); // 1秒後にローディングを終了
         return () => clearTimeout(timer);
     }, []);
 
