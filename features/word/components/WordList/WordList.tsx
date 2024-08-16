@@ -18,6 +18,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalWords, setTotalWords] = useState(0);
+  const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
   const router = useRouter();
   const searchParams = useSearchParams();
   const deckName = searchParams.get('deckName') || '';
@@ -82,7 +83,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
     fetch(`http://localhost:8080/api/word/deck/${deckId}?page=${page - 1}`)
       .then(response => response.json())
       .then(data => {
-        setWords(data.words);  // 直接 words を使う
+        setWords(data.words);
         setTotalWords(data.totalCount);
         setLoading(false);
       })
@@ -96,6 +97,13 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
     fetchWords(currentPage);
   }, [deckId, fetchWords, currentPage]); // 'currentPage' を依存配列に追加
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // 1秒後にローディングを終了
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleEditClick = (wordId: number) => {
     router.push(`/words/edit/${wordId}`);
   };
@@ -107,6 +115,12 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const handleAddWordClick = () => {
     router.push('/words/new');
   };
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center h-screen">
+      <div className="absolute top-0 mt-20 text-xl">Loading...</div>
+    </div>;
+  }
 
   if (loading) {
     return <p className="text-gray-500 text-center mt-4">Loading words...</p>;
@@ -142,7 +156,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
       <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4 text-left">{deckName}</h2>
         <ul className="space-y-4">
-          {words.map(word => (  // currentWordsではなくwordsを使う
+          {words.map(word => (
             <li
               key={word.id}
               className="flex justify-between items-center p-4 bg-white rounded-lg shadow h-18"
