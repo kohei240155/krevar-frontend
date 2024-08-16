@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { HiArrowCircleRight } from "react-icons/hi";
+import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { useRouter, useSearchParams } from 'next/navigation';
+import { GiSpeaker } from "react-icons/gi";
 
 interface Word {
     id: number;
@@ -149,6 +151,14 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         }
     }
 
+    const handleSpeakClick = () => {
+        if (currentWord) {
+            const utterance = new SpeechSynthesisUtterance(currentWord.originalText);
+            utterance.lang = 'en-US';
+            speechSynthesis.speak(utterance);
+        }
+    };
+
     if (isAllDone) {
         return (
             <div className="p-4">
@@ -216,6 +226,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                         >
                             Got It
                         </button>
+                        <GiSpeaker
+                            onClick={handleSpeakClick}
+                            className="absolute -top-16 right-14 text-5xl cursor-pointer text-gray-800"
+                        />
                         <HiArrowCircleRight
                             onClick={isArrowActive ? handleNextClick : undefined}
                             className={`absolute -top-16 right-0 text-5xl cursor-pointer ${arrowColor} ${isArrowActive ? '' : 'opacity-50 cursor-not-allowed'}`}
