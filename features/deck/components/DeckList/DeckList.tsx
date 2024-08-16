@@ -120,6 +120,19 @@ const DeckList = () => {
         setShowOptions(null);
     }
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (optionsRef.current && !optionsRef.current.contains(event.target as Node)) {
+                setShowOptions(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [optionsRef]);
+
     if (loading) {
         return <p className="text-gray-500 text-center mt-4">Loading decks...</p>
     }
