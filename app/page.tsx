@@ -1,16 +1,11 @@
 "use client"
 import { useSession, signIn } from "next-auth/react";
-import { useEffect } from "react";
 import styles from "./page.module.css";
 import Decks from "./decks/page";
 import Header from "./components/layouts/header/Header";
 
 export default function Home() {
   const { data: session, status } = useSession();
-
-  if (status === "loading") {
-    return <div>Loading...</div>; // 認証状態を確認中のローディング表示
-  }
 
   return (
     <div className={styles.container}>
