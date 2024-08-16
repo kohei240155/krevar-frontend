@@ -25,6 +25,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const wordRef = useRef('');
   const [highlightColor, setHighlightColor] = useState('#ffff00');
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
 
   useEffect(() => {
     const fetchWordData = async () => {
@@ -42,7 +43,20 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
     };
 
     fetchWordData();
+    // ローディングをシミュレートするためのタイムアウト
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // 1秒後にローディングを終了
+    return () => clearTimeout(timer);
   }, [wordId]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="absolute top-0 mt-20 text-xl">Loading...</div>
+      </div>
+    );
+  }
 
   const handleHighlight = () => {
     const selection = window.getSelection();
