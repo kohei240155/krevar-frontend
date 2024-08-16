@@ -28,6 +28,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [todayQuestionCount, setTodayQuestionCount] = useState(0);
     const [currentWord, setCurrentWord] = useState<Word | null>(null);
     const [isAllDone, setIsAllDone] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
 
     useEffect(() => {
         const initializeState = () => {
@@ -71,7 +72,20 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
 
         initializeState();
         fetchData();
+        // ローディングをシミュレートするためのタイムアウト
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 1000); // 1秒後にローディングを終了
+        return () => clearTimeout(timer);
     }, [deckId, isExtraQuiz]);
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <div className="absolute top-0 mt-20 text-xl">Loading...</div>
+            </div>
+        );
+    }
 
     const handleKnowClick = () => {
         setShowTranslation(true);
