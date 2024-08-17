@@ -53,13 +53,14 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
 
                 setTodayQuestionCount(data.todayQuestionCount);
 
-                if (data.randomQuestion) {
+                const question = isExtraQuiz ? data.extraQuestion : data.randomQuestion;
+                if (question) {
                     const formattedWord = {
-                        id: data.randomQuestion.id,
-                        originalText: data.randomQuestion.originalText,
-                        translatedText: data.randomQuestion.translatedText,
-                        nuance: data.randomQuestion.nuanceText,
-                        imageUrl: data.randomQuestion.imageUrl
+                        id: question.id,
+                        originalText: question.originalText,
+                        translatedText: question.translatedText,
+                        nuance: question.nuanceText,
+                        imageUrl: question.imageUrl
                     };
                     setCurrentWord(formattedWord);
                 } else if (data.todayQuestionCount === 0) {
@@ -127,13 +128,14 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             console.log("Fetched data:", data);
             setTodayQuestionCount(data.todayQuestionCount);
 
-            if (data.randomQuestion) {
+            const question = isExtraQuiz ? data.extraQuestion : data.randomQuestion;
+            if (question) {
                 const formattedWord = {
-                    id: data.randomQuestion.id,
-                    originalText: data.randomQuestion.originalText,
-                    translatedText: data.randomQuestion.translatedText,
-                    nuance: data.randomQuestion.nuanceText,
-                    imageUrl: data.randomQuestion.imageUrl
+                    id: question.id,
+                    originalText: question.originalText,
+                    translatedText: question.translatedText,
+                    nuance: question.nuanceText,
+                    imageUrl: question.imageUrl
                 };
                 setCurrentWord(formattedWord);
                 setShowTranslation(false);
