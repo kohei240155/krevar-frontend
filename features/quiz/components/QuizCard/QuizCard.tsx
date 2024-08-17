@@ -22,12 +22,13 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [showTranslation, setShowTranslation] = useState(false);
     const [arrowColor, setArrowColor] = useState("text-gray-800");
     const [isArrowActive, setIsArrowActive] = useState(false);
-    const [isNormalModeCorrect, setisNormalModeCorrect] = useState<boolean | null>(null);
+    const [isNormalModeCorrect, setIsNormalModeCorrect] = useState<boolean | null>(null);
     const [isExtraModeCorrect, setIsExtraModeCorrect] = useState<boolean | null>(null); // Added
     const router = useRouter();
     const searchParams = useSearchParams();
     const deckName = searchParams.get('deckName') || 'Deck Name';
-    const [todayQuestionCount, setTodayQuestionCount] = useState(0);
+    const [todayNormalQuestionCount, setTodayNormalQuestionCount] = useState(0);
+    const [todayExtraQuestionCount, setTodayExtraQuestionCount] = useState(0);
     const [currentWord, setCurrentWord] = useState<Word | null>(null);
     const [isAllDone, setIsAllDone] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
@@ -38,7 +39,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             setShowTranslation(false);
             setArrowColor("text-gray-800");
             setIsArrowActive(false);
-            setisNormalModeCorrect(null);
+            setIsNormalModeCorrect(null);
             setIsExtraModeCorrect(null); // Added
             setIsAllDone(false);
             setCurrentWord(null);
@@ -53,7 +54,11 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 const data = await response.json();
                 console.log("Fetched data:", data);
 
-                setTodayQuestionCount(data.todayQuestionCount);
+                if (isExtraQuiz) {
+                    setTodayExtraQuestionCount(data.todayExtraQuestionCount);
+                } else {
+                    setTodayNormalQuestionCount(data.todayNormalQuestionCount);
+                }
 
                 const question = isExtraQuiz ? data.extraQuestion : data.randomQuestion;
                 if (question) {
@@ -65,7 +70,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                         imageUrl: question.imageUrl
                     };
                     setCurrentWord(formattedWord);
-                } else if (data.todayQuestionCount === 0) {
+                } else if (isExtraQuiz ? data.todayExtraQuestionCount === 0 : data.todayNormalQuestionCount === 0) {
                     setIsAllDone(true);
                 }
             } catch (error) {
@@ -94,7 +99,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         setShowTranslation(true);
         setArrowColor("text-green-700");
         setIsArrowActive(true);
-        setisNormalModeCorrect(true);
+        setIsNormalModeCorrect(true);
         if (isExtraQuiz) setIsExtraModeCorrect(true); // Added
     };
 
@@ -102,7 +107,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         setShowTranslation(true);
         setArrowColor("text-red-700");
         setIsArrowActive(true);
-        setisNormalModeCorrect(false);
+        setIsNormalModeCorrect(false);
         if (isExtraQuiz) setIsExtraModeCorrect(false); // Added
     }
 
@@ -135,7 +140,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             const response = await fetch(fetchApiUrl);
             const data = await response.json();
             console.log("Fetched data:", data);
-            setTodayQuestionCount(data.todayQuestionCount);
+
+            if (isExtraQuiz) {
+                setTodayExtraQuestionCount(data.todayExtraQuestionCount);
+            } else {
+                setTodayNormalQuestionCount(data.todayNormalQuestionCount);
+            }
 
             const question = isExtraQuiz ? data.extraQuestion : data.randomQuestion;
             if (question) {
@@ -150,9 +160,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 setShowTranslation(false);
                 setArrowColor("text-gray-800");
                 setIsArrowActive(false);
-                setisNormalModeCorrect(null);
+                setIsNormalModeCorrect(null);
                 setIsExtraModeCorrect(null); // Added
-            } else if (data.todayQuestionCount === 0) {
+            } else if (isExtraQuiz ? data.todayExtraQuestionCount === 0 : data.todayNormalQuestionCount === 0) {
                 setIsAllDone(true);
             }
         } catch (error) {
@@ -175,7 +185,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                     <div className="flex-grow">
                         <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
                             <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                            <p className="text-gray-700 text-right mr-4">{`Left: ${todayQuestionCount}`}</p>
+                            <p className="text-gray-700 text-right mr-4">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
                         </div>
                         <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
                     </div>
@@ -199,7 +209,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 <div className="flex-grow">
                     <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
                         <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                        <p className="text-gray-700 text-right mr-8">{`Left: ${todayQuestionCount}`}</p>
+                        <p className="text-gray-700 text-right mr-8">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
                     </div>
                     {currentWord && (
                         <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.originalText }}></p>
