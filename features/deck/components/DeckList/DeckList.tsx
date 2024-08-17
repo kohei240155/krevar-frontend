@@ -6,7 +6,6 @@ interface Deck {
     id: number;
     deckName: string;
     totalQuestions: number;
-    correctQuestions: number;
 }
 
 const DeckList = () => {
@@ -86,7 +85,6 @@ const DeckList = () => {
                     id: item.deck.id,
                     deckName: item.deck.deckName,
                     totalQuestions: item.totalQuestions,
-                    correctQuestions: item.correctQuestions
                 }));
                 setDecks(formattedDecks);
                 setTotalDecks(data.totalDecks);
@@ -181,7 +179,7 @@ const DeckList = () => {
                         >
                             <div className="flex flex-col space-y-1 deck-info">
                                 <span className="text-xl font-medium">{truncateDeckName(deck.deckName)}</span>
-                                <span className="text-lg text-gray-600">Today: {deck.correctQuestions}/{deck.totalQuestions}</span>
+                                <span className="text-lg text-gray-600">Left: {deck.totalQuestions}</span>
                             </div>
                             <div className="flex items-center space-x-4 mt-4 md:mt-0 deck-actions">
                                 <button
