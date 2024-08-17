@@ -141,8 +141,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                     <div className="flex-grow">
                         <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
-                            <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                            <p className="text-gray-700 text-right mr-4">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
+                            <h2 className="text-2xl font-bold text-left ml-4 truncate">{deckName}</h2>
+                            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
                         </div>
                         <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
                     </div>
@@ -261,8 +261,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                 <div className="flex-grow">
                     <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
-                        <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                        <p className="text-gray-700 text-right mr-8">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
+                        <h2 className="text-2xl font-bold text-left ml-4 truncate">{deckName}</h2>
+                        <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
                     </div>
                     {currentWord && (
                         <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.originalText }}></p>
