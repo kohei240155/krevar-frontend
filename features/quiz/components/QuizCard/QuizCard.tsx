@@ -111,16 +111,16 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             const apiUrl = isExtraQuiz
                 ? `http://localhost:8080/api/quiz/extra/answer/${currentWord.id}`
                 : `http://localhost:8080/api/quiz/normal/answer/${currentWord.id}`;
+            const body = isExtraQuiz
+                ? { isExtraModeCorrect }
+                : { isNormalModeCorrect };
             try {
                 await fetch(apiUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ 
-                        isNormalModeCorrect, 
-                        isExtraModeCorrect // Added
-                    })
+                    body: JSON.stringify(body) // 修正
                 });
                 console.log("Answer submitted");
             } catch (error) {
