@@ -26,7 +26,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const deckName = searchParams.get('deckName') || 'Deck Name';
-    const [correctWordCount, setCorrectWordCount] = useState(0);
     const [todayQuestionCount, setTodayQuestionCount] = useState(0);
     const [currentWord, setCurrentWord] = useState<Word | null>(null);
     const [isAllDone, setIsAllDone] = useState(false);
@@ -52,7 +51,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 const data = await response.json();
                 console.log("Fetched data:", data);
 
-                setCorrectWordCount(data.correctWordCount);
                 setTodayQuestionCount(data.todayQuestionCount);
 
                 if (data.randomQuestion) {
@@ -64,7 +62,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                         imageUrl: data.randomQuestion.imageUrl
                     };
                     setCurrentWord(formattedWord);
-                } else if (data.correctWordCount === data.todayQuestionCount) {
+                } else if (data.todayQuestionCount === 0) {
                     setIsAllDone(true);
                 }
             } catch (error) {
@@ -127,7 +125,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             const response = await fetch(fetchApiUrl);
             const data = await response.json();
             console.log("Fetched data:", data);
-            setCorrectWordCount(data.correctWordCount);
             setTodayQuestionCount(data.todayQuestionCount);
 
             if (data.randomQuestion) {
@@ -143,7 +140,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 setArrowColor("text-gray-800");
                 setIsArrowActive(false);
                 setIsCorrect(null);
-            } else if (data.correctWordCount === data.todayQuestionCount) {
+            } else if (data.todayQuestionCount === 0) {
                 setIsAllDone(true);
             }
         } catch (error) {
