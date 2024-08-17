@@ -32,8 +32,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [currentWord, setCurrentWord] = useState<Word | null>(null);
     const [isAllDone, setIsAllDone] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
+    const [isResetting, setIsResetting] = useState(false); // 追加
 
     const fetchData = async () => {
+        if (isResetting) return; // リセット中はfetchDataを実行しない
         const apiUrl = isExtraQuiz
             ? `http://localhost:8080/api/quiz/extra/${deckId}`
             : `http://localhost:8080/api/quiz/normal/${deckId}`;
@@ -66,6 +68,40 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         }
     };
 
+    const resetQuiz = async () => {
+        setIsResetting(true); // 追加
+        const apiUrl = `http://localhost:8080/api/quiz/extra/${deckId}/reset`;
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            console.log("Reset data:", data);
+            setTodayExtraQuestionCount(data.todayExtraQuestionCount);
+            const question = data.extraQuestion;
+            if (question) {
+                const formattedWord = {
+                    id: question.id,
+                    originalText: question.originalText,
+                    translatedText: question.translatedText,
+                    nuance: question.nuanceText,
+                    imageUrl: question.imageUrl
+                };
+                setCurrentWord(formattedWord);
+            } else if (data.todayExtraQuestionCount === 0) {
+                setIsAllDone(true);
+            }
+        } catch (error) {
+            console.error("Error resetting quiz:", error);
+        } finally {
+            setIsLoading(false);
+            setIsResetting(false); // 追加
+        }
+    };
+
     useEffect(() => {
         const initializeState = () => {
             setWords([]);
@@ -85,7 +121,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             setIsLoading(false);
         }, 500); // 1秒後にローディングを終了
         return () => clearTimeout(timer);
-    }, [deckId, isExtraQuiz]);
+    }, [deckId, isExtraQuiz, isResetting]); // isResettingを依存関係に追加
 
     if (isLoading) {
         return (
@@ -193,10 +229,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                         {isExtraQuiz && (
                             <button
                                 type="button"
-                                onClick={() => {
+                                onClick={async () => {
                                     setIsAllDone(false);
                                     setIsLoading(true);
-                                    fetchData(); // 修正
+                                    await resetQuiz(); // 修正
                                 }}
                                 className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
                             >
