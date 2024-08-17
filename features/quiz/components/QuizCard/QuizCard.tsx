@@ -104,7 +104,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
 
     const handleNextClick = async () => {
         if (isCorrect !== null && currentWord !== null) {
-            const apiUrl = `http://localhost:8080/api/quiz/answer/${currentWord.id}`;
+            const apiUrl = isExtraQuiz
+                ? `http://localhost:8080/api/quiz/extra/answer/${currentWord.id}`
+                : `http://localhost:8080/api/quiz/normal/answer/${currentWord.id}`;
             try {
                 await fetch(apiUrl, {
                     method: 'POST',
