@@ -166,7 +166,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                     <div className="flex-grow">
                         <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
                             <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                            <p className="text-gray-700 text-right mr-4">{`${correctWordCount} / ${todayQuestionCount}`}</p>
+                            <p className="text-gray-700 text-right mr-4">{`Left: ${todayQuestionCount}`}</p>
                         </div>
                         <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
                     </div>
@@ -190,7 +190,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 <div className="flex-grow">
                     <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
                         <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                        <p className="text-gray-700 text-right mr-8">{`${correctWordCount} / ${todayQuestionCount}`}</p>
+                        <p className="text-gray-700 text-right mr-8">{`Left: ${todayQuestionCount}`}</p>
                     </div>
                     {currentWord && (
                         <p className="text-2xl font-bold mb-6 text-left ml-4" dangerouslySetInnerHTML={{ __html: currentWord.originalText }}></p>
