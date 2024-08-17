@@ -20,7 +20,7 @@ const Footer = () => {
                     </Link>
                 </div>
                 <div>
-                    <span className="text-gray-400 text-xs">© 2024 IRUKA.</span>
+                    <span className="text-gray-400 text-xs">© 2024 IRUKA</span>
                 </div>
             </div>
         </footer>
