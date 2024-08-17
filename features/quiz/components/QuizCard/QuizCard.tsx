@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { HiArrowCircleRight } from "react-icons/hi";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -34,8 +34,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
     const [isResetting, setIsResetting] = useState(false); // 追加
 
-    const fetchData = async () => {
-        if (isResetting) return; // リセット中はfetchDataを実行しない
+    const fetchData = useCallback(async () => {
         const apiUrl = isExtraQuiz
             ? `http://localhost:8080/api/quiz/extra/${deckId}`
             : `http://localhost:8080/api/quiz/normal/${deckId}`;
@@ -60,15 +59,17 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                     imageUrl: question.imageUrl
                 };
                 setCurrentWord(formattedWord);
-            } else if (isExtraQuiz ? data.todayExtraQuestionCount === 0 : data.todayNormalQuestionCount === 0) {
-                setIsAllDone(true);
+                setIsAllDone(false); // 新たな問題がある場合はAll Doneを解除
+            } else {
+                setIsAllDone(true); // 問題がない場合はAll Doneを設定
             }
         } catch (error) {
             console.error("Error fetching words:", error);
         }
-    };
+    }, [deckId, isExtraQuiz]);
 
-    const resetQuiz = async () => {
+    const resetQuiz = useCallback(async () => {
+        setIsLoading(true); // 追加
         setIsResetting(true); // 追加
         const apiUrl = `http://localhost:8080/api/quiz/extra/${deckId}/reset`;
         try {
@@ -91,16 +92,19 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                     imageUrl: question.imageUrl
                 };
                 setCurrentWord(formattedWord);
-            } else if (data.todayExtraQuestionCount === 0) {
-                setIsAllDone(true);
+                setIsAllDone(false); // 新たな問題がある場合はAll Doneを解除
+            } else {
+                setIsAllDone(true); // 問題がない場合はAll Doneを設定
             }
         } catch (error) {
             console.error("Error resetting quiz:", error);
         } finally {
-            setIsLoading(false);
-            setIsResetting(false); // 追加
+            setTimeout(() => {
+                setIsLoading(false);
+                setIsResetting(false); // 追加
+            }, 500); // 500ミリ秒の遅延を追加
         }
-    };
+    }, [deckId]);
 
     useEffect(() => {
         const initializeState = () => {
@@ -110,7 +114,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             setIsArrowActive(false);
             setIsNormalModeCorrect(null);
             setIsExtraModeCorrect(null); // Added
-            setIsAllDone(false);
+            setIsAllDone(false); // クイズ開始時にAll Doneを解除
             setCurrentWord(null);
         };
 
@@ -119,14 +123,52 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         // ローディングをシミュレートするためのタイムアウト
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 500); // 1秒後にローディングを終了
+        }, 500); // 500ミリ秒後にローディングを終了
         return () => clearTimeout(timer);
-    }, [deckId, isExtraQuiz, isResetting]); // isResettingを依存関係に追加
+    }, [deckId, isExtraQuiz, isResetting, fetchData]); // fetchDataを依存関係に追加
 
     if (isLoading) {
         return (
             <div className="flex items-center justify-center h-screen">
                 <div className="absolute top-0 mt-20 text-xl">Loading...</div>
+            </div>
+        );
+    }
+
+    if (isAllDone) {
+        return (
+            <div className="p-4">
+                <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
+                    <div className="flex-grow">
+                        <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
+                            <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
+                            <p className="text-gray-700 text-right mr-4">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
+                        </div>
+                        <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
+                    </div>
+                    <div className="flex flex-col justify-center mt-4 space-y-4">
+                        {isExtraQuiz && (
+                            <button
+                                type="button"
+                                onClick={async () => {
+                                    setIsAllDone(false);
+                                    setIsLoading(true);
+                                    await resetQuiz(); // 修正
+                                }}
+                                className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+                            >
+                                Reset
+                            </button>
+                        )}
+                        <button
+                            type="button"
+                            onClick={() => router.push('/decks')}
+                            className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                            Back to Decks
+                        </button>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -213,44 +255,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             speechSynthesis.speak(utterance);
         }
     };
-
-    if (isAllDone) {
-        return (
-            <div className="p-4">
-                <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
-                    <div className="flex-grow">
-                        <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
-                            <h2 className="text-2xl font-bold text-left ml-4">{deckName}</h2>
-                            <p className="text-gray-700 text-right mr-4">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
-                        </div>
-                        <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
-                    </div>
-                    <div className="flex flex-col justify-center mt-4 space-y-4">
-                        {isExtraQuiz && (
-                            <button
-                                type="button"
-                                onClick={async () => {
-                                    setIsAllDone(false);
-                                    setIsLoading(true);
-                                    await resetQuiz(); // 修正
-                                }}
-                                className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-                            >
-                                Reset
-                            </button>
-                        )}
-                        <button
-                            type="button"
-                            onClick={() => router.push('/decks')}
-                            className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                            Back to Decks
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="p-4">
