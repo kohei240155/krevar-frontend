@@ -33,6 +33,39 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [isAllDone, setIsAllDone] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
 
+    const fetchData = async () => {
+        const apiUrl = isExtraQuiz
+            ? `http://localhost:8080/api/quiz/extra/${deckId}`
+            : `http://localhost:8080/api/quiz/normal/${deckId}`;
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            console.log("Fetched data:", data);
+
+            if (isExtraQuiz) {
+                setTodayExtraQuestionCount(data.todayExtraQuestionCount);
+            } else {
+                setTodayNormalQuestionCount(data.todayNormalQuestionCount);
+            }
+
+            const question = isExtraQuiz ? data.extraQuestion : data.randomQuestion;
+            if (question) {
+                const formattedWord = {
+                    id: question.id,
+                    originalText: question.originalText,
+                    translatedText: question.translatedText,
+                    nuance: question.nuanceText,
+                    imageUrl: question.imageUrl
+                };
+                setCurrentWord(formattedWord);
+            } else if (isExtraQuiz ? data.todayExtraQuestionCount === 0 : data.todayNormalQuestionCount === 0) {
+                setIsAllDone(true);
+            }
+        } catch (error) {
+            console.error("Error fetching words:", error);
+        }
+    };
+
     useEffect(() => {
         const initializeState = () => {
             setWords([]);
@@ -43,39 +76,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             setIsExtraModeCorrect(null); // Added
             setIsAllDone(false);
             setCurrentWord(null);
-        };
-
-        const fetchData = async () => {
-            const apiUrl = isExtraQuiz
-                ? `http://localhost:8080/api/quiz/extra/${deckId}`
-                : `http://localhost:8080/api/quiz/normal/${deckId}`;
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                console.log("Fetched data:", data);
-
-                if (isExtraQuiz) {
-                    setTodayExtraQuestionCount(data.todayExtraQuestionCount);
-                } else {
-                    setTodayNormalQuestionCount(data.todayNormalQuestionCount);
-                }
-
-                const question = isExtraQuiz ? data.extraQuestion : data.randomQuestion;
-                if (question) {
-                    const formattedWord = {
-                        id: question.id,
-                        originalText: question.originalText,
-                        translatedText: question.translatedText,
-                        nuance: question.nuanceText,
-                        imageUrl: question.imageUrl
-                    };
-                    setCurrentWord(formattedWord);
-                } else if (isExtraQuiz ? data.todayExtraQuestionCount === 0 : data.todayNormalQuestionCount === 0) {
-                    setIsAllDone(true);
-                }
-            } catch (error) {
-                console.error("Error fetching words:", error);
-            }
         };
 
         initializeState();
@@ -189,7 +189,20 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                         </div>
                         <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
                     </div>
-                    <div className="flex justify-center mt-4">
+                    <div className="flex flex-col justify-center mt-4 space-y-4">
+                        {isExtraQuiz && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsAllDone(false);
+                                    setIsLoading(true);
+                                    fetchData(); // 修正
+                                }}
+                                className="w-full inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+                            >
+                                Reset
+                            </button>
+                        )}
                         <button
                             type="button"
                             onClick={() => router.push('/decks')}
