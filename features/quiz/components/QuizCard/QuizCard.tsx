@@ -140,11 +140,11 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             <div className="p-4">
                 <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                     <div className="flex-grow">
-                        <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
+                        <div className={`flex justify-between items-center mb-4 pb-1 ${isExtraQuiz ? 'border-b border-blue-700' : 'border-b border-gray-700'}`}>
                             <h2 className="text-2xl font-bold text-left ml-4 truncate">{deckName}</h2>
                             <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
                         </div>
-                        <p className="text-blue-800 text-center mt-4 text-3xl font-bold">All done!</p>
+                        <p className={`text-blue-800 text-center mt-4 text-3xl font-bold ${isExtraQuiz ? 'text-blue-800' : 'text-blue-800'}`}>All done!</p>
                     </div>
                     <div className="flex flex-col justify-center mt-4 space-y-4">
                         {isExtraQuiz && (
@@ -260,7 +260,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         <div className="p-4">
             <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                 <div className="flex-grow">
-                    <div className="flex justify-between items-center mb-4 border-b border-gray-700 pb-1">
+                    <div className={`flex justify-between items-center mb-4 pb-1 ${isExtraQuiz ? 'border-b border-blue-700' : 'border-b border-gray-700'}`}>
                         <h2 className="text-2xl font-bold text-left ml-4 truncate">{deckName}</h2>
                         <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
                     </div>
