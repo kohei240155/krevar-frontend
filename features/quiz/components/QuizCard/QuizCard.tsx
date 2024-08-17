@@ -22,7 +22,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [showTranslation, setShowTranslation] = useState(false);
     const [arrowColor, setArrowColor] = useState("text-gray-800");
     const [isArrowActive, setIsArrowActive] = useState(false);
-    const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+    const [isNormalModeCorrect, setisNormalModeCorrect] = useState<boolean | null>(null);
     const router = useRouter();
     const searchParams = useSearchParams();
     const deckName = searchParams.get('deckName') || 'Deck Name';
@@ -37,7 +37,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             setShowTranslation(false);
             setArrowColor("text-gray-800");
             setIsArrowActive(false);
-            setIsCorrect(null);
+            setisNormalModeCorrect(null);
             setIsAllDone(false);
             setCurrentWord(null);
         };
@@ -92,18 +92,18 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         setShowTranslation(true);
         setArrowColor("text-green-700");
         setIsArrowActive(true);
-        setIsCorrect(true);
+        setisNormalModeCorrect(true);
     };
 
     const handleDontKnowClick = () => {
         setShowTranslation(true);
         setArrowColor("text-red-700");
         setIsArrowActive(true);
-        setIsCorrect(false);
+        setisNormalModeCorrect(false);
     }
 
     const handleNextClick = async () => {
-        if (isCorrect !== null && currentWord !== null) {
+        if (isNormalModeCorrect !== null && currentWord !== null) {
             const apiUrl = isExtraQuiz
                 ? `http://localhost:8080/api/quiz/extra/answer/${currentWord.id}`
                 : `http://localhost:8080/api/quiz/normal/answer/${currentWord.id}`;
@@ -113,7 +113,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ isCorrect })
+                    body: JSON.stringify({ isNormalModeCorrect })
                 });
                 console.log("Answer submitted");
             } catch (error) {
@@ -143,7 +143,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                 setShowTranslation(false);
                 setArrowColor("text-gray-800");
                 setIsArrowActive(false);
-                setIsCorrect(null);
+                setisNormalModeCorrect(null);
             } else if (data.todayQuestionCount === 0) {
                 setIsAllDone(true);
             }
