@@ -12,6 +12,7 @@ const WordForm = () => {
   const [deckId, setDeckId] = useState('1');
   const router = useRouter();
   const wordRef = useRef('');
+  const imageRef = useRef<HTMLElement | null>(null); // 画像の参照を保持するためのref
   const [highlightColor, setHighlightColor] = useState('#ffff00');
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [nuance, setNuance] = useState('');
@@ -46,7 +47,41 @@ const WordForm = () => {
         deckId: deckId,
         nuanceText: nuanceText,
       });
-      console.log("Word created successfully:", response.data);
+
+      if (response.status === 200 && imageRef.current) {
+        // コピペされた画像データを取得
+        const imgElement = imageRef.current.querySelector('img');
+        if (imgElement) {
+          const base64Image = imgElement.src.split(',')[1]; // Base64部分のみを取得
+          const byteString = atob(base64Image);
+          const arrayBuffer = new ArrayBuffer(byteString.length);
+          const intArray = new Uint8Array(arrayBuffer);
+
+          for (let i = 0; i < byteString.length; i++) {
+            intArray[i] = byteString.charCodeAt(i);
+          }
+
+          const blob = new Blob([intArray], { type: 'image/png' });
+          const formData = new FormData();
+          formData.append('image', blob, 'image.png');
+          formData.append('wordId', response.data.id);
+
+          const imageResponse = await axios.post('http://localhost:8080/api/word/upload-image', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+
+          if (imageResponse.status === 200) {
+            console.log("Word and image created successfully.");
+          } else {
+            console.error("Word created, but failed to upload image.");
+          }
+        }
+      } else {
+        console.log("Word created successfully.");
+      }
+
     } catch (error) {
       console.log("Error registering word:", error);
     }
@@ -71,7 +106,7 @@ const WordForm = () => {
     console.log("Image generate button clicked");
     setIsImageGenerated(true);
 
-    // Wordの���景色を保持するためにinnerHTMLを再設定
+    // Wordの背景色を保持するためにinnerHTMLを再設定
     const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
     setWord(wordHtml);
   };
@@ -87,10 +122,9 @@ const WordForm = () => {
             const img = document.createElement("img");
             img.src = e.target?.result as string;
             img.style.maxWidth = "100%";
-            const range = window.getSelection()?.getRangeAt(0);
-            if (range) {
-              range.deleteContents();
-              range.insertNode(img);
+            if (imageRef.current) {
+              imageRef.current.innerHTML = ""; // 以前の内容をクリア
+              imageRef.current.appendChild(img);
             }
           };
           reader.readAsDataURL(blob);
@@ -111,7 +145,6 @@ const WordForm = () => {
             innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
             html={word}
             onChange={(e) => setWord(e.target.value)}
-            onPaste={handlePaste}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
           />
           <div className="relative mt-2 inline-flex items-center">
@@ -185,9 +218,9 @@ const WordForm = () => {
             <div className="mb-5">
               <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
               <ContentEditable
-                innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
-                html={word}
-                onChange={(e) => setWord(e.target.value)}
+                innerRef={imageRef as unknown as React.RefObject<HTMLElement>}
+                html={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
                 onPaste={handlePaste}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
               />
