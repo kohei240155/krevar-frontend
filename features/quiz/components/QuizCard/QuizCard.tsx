@@ -138,7 +138,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     if (isAllDone) {
         return (
             <div className="pl-5 pr-5">
-                <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
+                <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ minHeight: '550px' }}>
                     <div className="flex-grow">
                         <div className={`flex justify-between items-center mb-4 pb-1 ${isExtraQuiz ? 'border-b border-blue-700' : 'border-b border-gray-700'}`}>
                             <h2 className="text-2xl font-bold text-left ml-4 truncate">{deckName}</h2>
@@ -269,7 +269,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
 
     return (
         <div className="pl-5 pr-5">
-            <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
+            <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ minHeight: '550px' }}>
                 <div className="flex-grow">
                     <div className={`flex justify-between items-center mb-4 pb-1 ${isExtraQuiz ? 'border-b border-blue-700' : 'border-b border-gray-700'}`}>
                         <h2 className="text-2xl font-bold text-left ml-4 truncate">{deckName}</h2>
@@ -295,7 +295,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                     )}
                 </div>
 
-                <div className="flex justify-center space-x-4 mt-4">
+                <div className="flex justify-center space-x-4 mt-11">
                     <button
                         onClick={handleDontKnowClick}
                         className="w-40 px-6 py-3 bg-white text-indigo-600 border border-indigo-600 rounded-lg hover:bg-gray-100 transition"
