@@ -61,7 +61,7 @@ const WordForm = () => {
         // コピペされた画像データを取得
         const imgElement = imageRef.current.querySelector('img');
         if (imgElement) {
-          const base64Image = imgElement.src.split(',')[1]; // Base64部��を取得
+          const base64Image = imgElement.src.split(',')[1]; // Base64部��取得
           const byteString = atob(base64Image);
           const arrayBuffer = new ArrayBuffer(byteString.length);
           const intArray = new Uint8Array(arrayBuffer);
@@ -175,6 +175,7 @@ const WordForm = () => {
       // setImageUrl(imageUrl);
 
       setIsImageGenerated(true);
+      setWord(wordHtml); // 装飾を保持するためにwordHtmlをセット
       console.log("Image and word data generated successfully.");
     } catch (error) {
       console.error("Error generating image and word data:", error);
