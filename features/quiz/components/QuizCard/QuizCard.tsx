@@ -3,6 +3,7 @@ import { HiArrowCircleRight } from "react-icons/hi";
 import { HiOutlineSpeakerWave } from "react-icons/hi2";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { GiSpeaker } from "react-icons/gi";
+import Image from 'next/image';
 
 interface Word {
     id: number;
@@ -16,6 +17,12 @@ interface QuizCardProps {
     deckId: string;
     isExtraQuiz?: boolean;
 }
+
+const formatImageUrl = (url: string) => {
+    // フルパスを相対パスに変換
+    const fileName = url.split('/').pop();
+    return `/images/testImages/${fileName}`;
+};
 
 const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [words, setWords] = useState<Word[]>([]);
@@ -288,7 +295,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
                             <p className="text-xl text-left text-gray-700 mb-6 ml-4">{currentWord.nuance}</p>
                             {currentWord.imageUrl && (
                                 <div className="flex justify-center mb-6">
-                                    <img src={currentWord.imageUrl} alt="Word Image" className="max-w-full h-auto" />
+                                    <Image src={formatImageUrl(currentWord.imageUrl)} alt="Word Image" width={500} height={500} className="max-w-full h-auto" />
                                 </div>
                             )}
                         </>
