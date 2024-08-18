@@ -9,6 +9,7 @@ import { FaTrash } from 'react-icons/fa';
 import Modal from 'react-modal';
 import ContentEditable from 'react-contenteditable';
 import { SketchPicker, ColorResult } from 'react-color';
+import Image from 'next/image';
 
 interface WordEditFormProps {
   wordId: string;
@@ -43,7 +44,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
     };
 
     fetchWordData();
-    // ローディングをシミュレートするためのタイムアウト
+    // ��ーディングをシミュレートするためのタイムアウト
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500); // 1秒後にローディングを終了
@@ -163,7 +164,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
-        {/* ニュアンスを入力する欄 */}
+        {/* ニュアンス入力する欄 */}
         <div className="mb-4">
           <label htmlFor="nuance" className="block text-sm font-medium text-gray-700">Nuance:</label>
           <input
@@ -174,16 +175,12 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
-        {/* イメージ画像を貼り付ける欄 */}
+        {/* イメージ画像を表示する欄 */}
         <div className="mb-4">
           <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
-          <input
-            type="text"
-            id="imageUrl"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          />
+          {imageUrl && (
+            <Image src={imageUrl} alt="Word Image" width={500} height={300} className="mt-2 max-w-full h-auto rounded-md shadow-sm" />
+          )}
         </div>
         <div className="flex justify-between mb-2">
           <button
