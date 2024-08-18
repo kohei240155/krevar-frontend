@@ -15,7 +15,6 @@ const WordForm = () => {
   const [deckId, setDeckId] = useState('1');
   const router = useRouter();
   const wordRef = useRef('');
-  const imageRef = useRef<HTMLElement | null>(null); // 画像の参照を保持するためのref
   const [highlightColor, setHighlightColor] = useState('#ffff00');
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [nuance, setNuance] = useState('');
@@ -57,34 +56,22 @@ const WordForm = () => {
         }),
       });
 
-      if (response.ok && imageRef.current) {
-        // コピペされた画像データを取得
-        const imgElement = imageRef.current.querySelector('img');
-        if (imgElement) {
-          const base64Image = imgElement.src.split(',')[1]; // Base64部��取得
-          const byteString = atob(base64Image);
-          const arrayBuffer = new ArrayBuffer(byteString.length);
-          const intArray = new Uint8Array(arrayBuffer);
+      if (response.ok) {
+        const imageResponse = await fetch('http://localhost:8080/api/word/upload-image', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            imagePath: imageUrl, // OpenAI APIで生成された画像のパスを渡す
+            wordId: (await response.json()).id,
+          }),
+        });
 
-          for (let i = 0; i < byteString.length; i++) {
-            intArray[i] = byteString.charCodeAt(i);
-          }
-
-          const blob = new Blob([intArray], { type: 'image/png' });
-          const formData = new FormData();
-          formData.append('image', blob, 'image.png');
-          formData.append('wordId', (await response.json()).id);
-
-          const imageResponse = await fetch('http://localhost:8080/api/word/upload-image', {
-            method: 'POST',
-            body: formData,
-          });
-
-          if (imageResponse.ok) {
-            console.log("Word and image created successfully.");
-          } else {
-            console.error("Word created, but failed to upload image.");
-          }
+        if (imageResponse.ok) {
+          console.log("Word and image created successfully.");
+        } else {
+          console.error("Word created, but failed to upload image.");
         }
       } else {
         console.log("Word created successfully.");
@@ -131,77 +118,54 @@ const WordForm = () => {
       console.log('Highlighted text:', highlightedText); // デバッグ用ログ
       const promptForMeaning = literaryAnalysisPrompt.replacePlaceholders(wordHtml, highlightedText);
 
-      // const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     model: 'gpt-4o-mini',
-      //     messages: [
-      //       { role: 'system', content: 'You are a helpful assistant.' },
-      //       { role: 'user', content: JSON.stringify(promptForMeaning) }
-      //     ],
-      //   }),
-      // });
+      const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: 'You are a helpful assistant.' },
+            { role: 'user', content: JSON.stringify(promptForMeaning) }
+          ],
+        }),
+      });
 
-      // const gptData = await gptResponse.json();
-      // const wordData = JSON.parse(gptData.choices[0].message.content);
+      const gptData = await gptResponse.json();
+      const wordData = JSON.parse(gptData.choices[0].message.content);
 
-      // const promptForImage = imageGenerationPrompt.replacePlaceholders(wordHtml, highlightedText);
+      const promptForImage = imageGenerationPrompt.replacePlaceholders(wordHtml, highlightedText);
 
-      // const dalleResponse = await fetch('https://api.openai.com/v1/images/generations', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     model: 'dall-e-3',
-      //     quality: "standard",
-      //     style: "vivid",
-      //     prompt: JSON.stringify(promptForImage),
-      //     n: 1,
-      //     size: '1024x1024',
-      //   }),
-      // });
+      const dalleResponse = await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'dall-e-3',
+          quality: "standard",
+          style: "vivid",
+          prompt: JSON.stringify(promptForImage),
+          n: 1,
+          size: '1024x1024',
+        }),
+      });
 
-      // const dalleData = await dalleResponse.json();
-      // const imageUrl = dalleData.data[0].url;
+      const dalleData = await dalleResponse.json();
+      const imageUrl = dalleData.data[0].url;
 
-      // setMeaning(wordData.wordMeaning);
-      // setNuance(wordData.wordNuance);
-      // setImageUrl(imageUrl);
+      setMeaning(wordData.wordMeaning);
+      setNuance(wordData.wordNuance);
+      setImageUrl(imageUrl);
 
       setIsImageGenerated(true);
       setWord(wordHtml); // 装飾を保持するためにwordHtmlをセット
       console.log("Image and word data generated successfully.");
     } catch (error) {
       console.error("Error generating image and word data:", error);
-    }
-  };
-
-  const handlePaste = (event: React.ClipboardEvent) => {
-    const items = event.clipboardData.items;
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].type.indexOf("image") !== -1) {
-        const blob = items[i].getAsFile();
-        if (blob) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const img = document.createElement("img");
-            img.src = e.target?.result as string;
-            img.style.maxWidth = "100%";
-            if (imageRef.current) {
-              imageRef.current.innerHTML = ""; // 以前の内容をクリア
-              imageRef.current.appendChild(img);
-            }
-          };
-          reader.readAsDataURL(blob);
-        }
-        event.preventDefault();
-      }
     }
   };
 
