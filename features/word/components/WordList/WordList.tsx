@@ -152,8 +152,8 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   }
 
   return (
-    <div className="p-4">
-      <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md">
+    <div className="pl-5 pr-5">
+      <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4 text-left">{deckName}</h2>
         <ul className="space-y-4">
           {words.map(word => (
