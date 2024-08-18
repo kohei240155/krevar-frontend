@@ -1,9 +1,12 @@
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import ContentEditable from 'react-contenteditable';
 import { SketchPicker, ColorResult } from 'react-color';
+import path from 'path';
+import Image from 'next/image';
+import { imageGenerationPrompt } from '../../../../prompts/promptForImage'; // 拡張子を削除
+import { literaryAnalysisPrompt } from '../../../../prompts/promptForMeaning';
 
 const WordForm = () => {
   const [word, setWord] = useState('');
@@ -23,7 +26,7 @@ const WordForm = () => {
     // ローディングをシミュレートするためのタイムアウト
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500); // 1秒後にローディングを終了
+    }, 500); // 1秒後にローディン終
     return () => clearTimeout(timer);
   }, []);
 
@@ -40,15 +43,21 @@ const WordForm = () => {
     try {
       const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
       const nuanceText = nuance.trim() !== '' ? nuance : '';
-      const response = await axios.post(`http://localhost:8080/api/word/${deckId}`, {
-        originalText: wordHtml,
-        translatedText: meaning,
-        imageUrl: imageUrl,
-        deckId: deckId,
-        nuanceText: nuanceText,
+      const response = await fetch(`http://localhost:8080/api/word/${deckId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          originalText: wordHtml,
+          translatedText: meaning,
+          imageUrl: imageUrl,
+          deckId: deckId,
+          nuanceText: nuanceText,
+        }),
       });
 
-      if (response.status === 200 && imageRef.current) {
+      if (response.ok && imageRef.current) {
         // コピペされた画像データを取得
         const imgElement = imageRef.current.querySelector('img');
         if (imgElement) {
@@ -64,15 +73,14 @@ const WordForm = () => {
           const blob = new Blob([intArray], { type: 'image/png' });
           const formData = new FormData();
           formData.append('image', blob, 'image.png');
-          formData.append('wordId', response.data.id);
+          formData.append('wordId', (await response.json()).id);
 
-          const imageResponse = await axios.post('http://localhost:8080/api/word/upload-image', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
+          const imageResponse = await fetch('http://localhost:8080/api/word/upload-image', {
+            method: 'POST',
+            body: formData,
           });
 
-          if (imageResponse.status === 200) {
+          if (imageResponse.ok) {
             console.log("Word and image created successfully.");
           } else {
             console.error("Word created, but failed to upload image.");
@@ -93,6 +101,7 @@ const WordForm = () => {
       const range = selection.getRangeAt(0);
       const span = document.createElement('span');
       span.style.backgroundColor = highlightColor;
+      span.dataset.highlighted = 'true'; // ハイライトされたことを示すデータ属性を追加
       range.surroundContents(span);
     }
   };
@@ -101,14 +110,61 @@ const WordForm = () => {
     setHighlightColor(color.hex);
   };
 
-  const handleImageGenerate = () => {
-    // 画像生成のロジックをここに追加
-    console.log("Image generate button clicked");
-    setIsImageGenerated(true);
+  const handleImageGenerate = async () => {
+    try {
+      const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
+      const highlightedText = wordHtml.replace(/<span[^>]*>(.*?)<\/span>/g, '$1');
 
-    // Wordの背景色を保持するためにinnerHTMLを再設定
-    const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
-    setWord(wordHtml);
+      const promptForMeaning = literaryAnalysisPrompt.replacePlaceholders(wordHtml, highlightedText);
+
+      const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: 'You are a helpful assistant.' },
+            { role: 'user', content: JSON.stringify(promptForMeaning) }
+          ],
+        }),
+      });
+
+      const gptData = await gptResponse.json();
+      const wordData = JSON.parse(gptData.choices[0].message.content);
+
+      const promptForImage = imageGenerationPrompt.replacePlaceholders(wordHtml, highlightedText);
+
+      const dalleResponse = await fetch('https://api.openai.com/v1/images/generations', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'dall-e-3',
+          quality: "standard",
+          style: "vivid",
+          prompt: JSON.stringify(promptForImage),
+          n: 1,
+          size: '1024x1024',
+        }),
+      });
+
+      const dalleData = await dalleResponse.json();
+      const imageUrl = dalleData.data[0].url;
+
+      setMeaning(wordData.wordMeaning);
+      setNuance(wordData.wordNuance);
+      setImageUrl(imageUrl);
+
+      setIsImageGenerated(true);
+      console.log("Image and word data generated successfully.");
+    } catch (error) {
+      console.error("Error generating image and word data:", error);
+    }
   };
 
   const handlePaste = (event: React.ClipboardEvent) => {
@@ -138,7 +194,7 @@ const WordForm = () => {
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-left">Add Word</h1>
       <form onSubmit={handleSubmit}>
-        {/* 単語を入力する欄 */}
+        {/* 単語を入力る欄 */}
         <div className="mb-4">
           <label htmlFor="word" className="block text-sm font-medium text-gray-700">Word:</label>
           <ContentEditable
@@ -203,7 +259,7 @@ const WordForm = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
-            {/* ニュアンスを入力する欄 */}
+            {/* ニュンスを力する欄 */}
             <div className="mb-4">
               <label htmlFor="nuance" className="block text-sm font-medium text-gray-700">Nuance:</label>
               <input
@@ -217,13 +273,7 @@ const WordForm = () => {
             {/* イメージ画像を貼り付ける欄 */}
             <div className="mb-5">
               <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
-              <ContentEditable
-                innerRef={imageRef as unknown as React.RefObject<HTMLElement>}
-                html={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                onPaste={handlePaste}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
-              />
+              {imageUrl && <Image src={imageUrl} alt="Generated word image" className="mt-1 max-w-full" width={1024} height={1024} />}
             </div>
             <div className="flex justify-between mb-2">
               <button
