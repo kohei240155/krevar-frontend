@@ -178,6 +178,15 @@ const WordForm = () => {
     }
   };
 
+  const handlePaste = (event: React.ClipboardEvent) => {
+    event.preventDefault();
+    const text = event.clipboardData.getData('text/plain');
+    const selection = window.getSelection();
+    if (!selection || !selection.rangeCount) return; // 'selection' が null でないことを確認
+    selection.deleteFromDocument();
+    selection.getRangeAt(0).insertNode(document.createTextNode(text));
+  };
+
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-left">Add Word</h1>
@@ -189,6 +198,7 @@ const WordForm = () => {
             innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
             html={word}
             onChange={(e) => setWord(e.target.value)}
+            onPaste={handlePaste} // ここに貼り付けイベントを追加
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
           />
           <div className="relative mt-2 inline-flex items-center">
@@ -244,7 +254,7 @@ const WordForm = () => {
         </div>
         {isImageGenerated && (
           <>
-            {/* 単語の意味を入力する欄 */}
+            {/* 単語の意味を入力���る欄 */}
             <div className="mb-4">
               <label htmlFor="meaning" className="block text-sm font-medium text-gray-700">Meaning:</label>
               <input
