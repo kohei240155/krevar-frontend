@@ -61,7 +61,7 @@ const WordForm = () => {
         // コピペされた画像データを取得
         const imgElement = imageRef.current.querySelector('img');
         if (imgElement) {
-          const base64Image = imgElement.src.split(',')[1]; // Base64部の��を取得
+          const base64Image = imgElement.src.split(',')[1]; // Base64部��を取得
           const byteString = atob(base64Image);
           const arrayBuffer = new ArrayBuffer(byteString.length);
           const intArray = new Uint8Array(arrayBuffer);
@@ -236,7 +236,7 @@ const WordForm = () => {
               type="button"
               onClick={handleHighlight}
               className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              style={{ height: '30px' }}
+              style={{ height: '30px', width: '70px' }}
             >
               Apply
             </button>
@@ -244,7 +244,7 @@ const WordForm = () => {
               type="button"
               onClick={handleReset}
               className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-red-600 text-sm font-medium rounded-md text-red-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              style={{ height: '30px' }}
+              style={{ height: '30px', width: '70px' }}
             >
               Reset
             </button>
