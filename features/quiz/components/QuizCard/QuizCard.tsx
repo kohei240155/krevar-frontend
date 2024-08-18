@@ -144,7 +144,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
 
     if (isAllDone) {
         return (
-            <div className="pl-5 pr-5">
+            <div className="p-5">
                 <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ minHeight: '550px' }}>
                     <div className="flex-grow">
                         <div className={`flex justify-between items-center mb-4 pb-1 ${isExtraQuiz ? 'border-b border-blue-700' : 'border-b border-gray-700'}`}>
@@ -275,7 +275,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     };
 
     return (
-        <div className="pl-5 pr-5">
+        <div className="p-5">
             <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ minHeight: '550px' }}>
                 <div className="flex-grow">
                     <div className={`flex justify-between items-center mb-4 pb-1 ${isExtraQuiz ? 'border-b border-blue-700' : 'border-b border-gray-700'}`}>
