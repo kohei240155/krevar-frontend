@@ -28,6 +28,15 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
 
+  const handleReset = () => {
+    const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
+    const cleanedWord = wordHtml.replace(/<[^>]+>/g, ''); // HTMLタグを削除
+    setWord(cleanedWord);
+    if (wordRef.current) {
+      (wordRef.current as unknown as HTMLElement).innerHTML = cleanedWord;
+    }
+  };
+
   useEffect(() => {
     const fetchWordData = async () => {
       try {
@@ -44,7 +53,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
     };
 
     fetchWordData();
-    // ��ーディングをシミュレートするためのタイムアウト
+    // ーディングをシミュレートするためのタイムアウト
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500); // 1秒後にローディングを終了
@@ -141,9 +150,17 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
               type="button"
               onClick={handleHighlight}
               className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              style={{ height: '30px' }}
+              style={{ height: '30px', width: '70px' }}
             >
               Apply
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-red-600 text-sm font-medium rounded-md text-red-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              style={{ height: '30px', width: '70px' }}
+            >
+              Reset
             </button>
             {displayColorPicker && (
               <div style={{ position: 'absolute', zIndex: 2, top: '100%', left: 0 }}>
