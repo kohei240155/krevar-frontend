@@ -23,10 +23,10 @@ const WordForm = () => {
   const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
 
   useEffect(() => {
-    // ローディングをシミュレートするためのタイムアウト
+    // ローディングをシミュレートするためのタイムアト
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500); // 1秒後にローディン終
+    }, 500); // 1ィン終
     return () => clearTimeout(timer);
   }, []);
 
@@ -61,7 +61,7 @@ const WordForm = () => {
         // コピペされた画像データを取得
         const imgElement = imageRef.current.querySelector('img');
         if (imgElement) {
-          const base64Image = imgElement.src.split(',')[1]; // Base64部分のみを取得
+          const base64Image = imgElement.src.split(',')[1]; // Base64部の��を取得
           const byteString = atob(base64Image);
           const arrayBuffer = new ArrayBuffer(byteString.length);
           const intArray = new Uint8Array(arrayBuffer);
@@ -102,6 +102,19 @@ const WordForm = () => {
       const span = document.createElement('span');
       span.style.backgroundColor = highlightColor;
       span.dataset.highlighted = 'true'; // ハイライトされたことを示すデータ属性を追加
+
+      // 既存のハイライトを削除
+      const container = range.commonAncestorContainer;
+      const parentElement = container.nodeType === 1 ? container : container.parentElement;
+      const existingHighlights = (parentElement as HTMLElement)?.querySelectorAll('span[data-highlighted="true"]');
+      existingHighlights?.forEach((highlight) => {
+        const parent = highlight.parentNode;
+        while (highlight.firstChild) {
+          parent?.insertBefore(highlight.firstChild, highlight);
+        }
+        parent?.removeChild(highlight);
+      });
+
       range.surroundContents(span);
     }
   };
@@ -113,52 +126,53 @@ const WordForm = () => {
   const handleImageGenerate = async () => {
     try {
       const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
-      const highlightedText = wordHtml.replace(/<span[^>]*>(.*?)<\/span>/g, '$1');
-
+      console.log('Word HTML:', wordHtml); // デバッグ用ログ
+      const highlightedText = (wordHtml.match(/<span[^>]*>(.*?)<\/span>/) || [])[1] || '';
+      console.log('Highlighted text:', highlightedText); // デバッグ用ログ
       const promptForMeaning = literaryAnalysisPrompt.replacePlaceholders(wordHtml, highlightedText);
 
-      const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [
-            { role: 'system', content: 'You are a helpful assistant.' },
-            { role: 'user', content: JSON.stringify(promptForMeaning) }
-          ],
-        }),
-      });
+      // const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     model: 'gpt-4o-mini',
+      //     messages: [
+      //       { role: 'system', content: 'You are a helpful assistant.' },
+      //       { role: 'user', content: JSON.stringify(promptForMeaning) }
+      //     ],
+      //   }),
+      // });
 
-      const gptData = await gptResponse.json();
-      const wordData = JSON.parse(gptData.choices[0].message.content);
+      // const gptData = await gptResponse.json();
+      // const wordData = JSON.parse(gptData.choices[0].message.content);
 
-      const promptForImage = imageGenerationPrompt.replacePlaceholders(wordHtml, highlightedText);
+      // const promptForImage = imageGenerationPrompt.replacePlaceholders(wordHtml, highlightedText);
 
-      const dalleResponse = await fetch('https://api.openai.com/v1/images/generations', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'dall-e-3',
-          quality: "standard",
-          style: "vivid",
-          prompt: JSON.stringify(promptForImage),
-          n: 1,
-          size: '1024x1024',
-        }),
-      });
+      // const dalleResponse = await fetch('https://api.openai.com/v1/images/generations', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     model: 'dall-e-3',
+      //     quality: "standard",
+      //     style: "vivid",
+      //     prompt: JSON.stringify(promptForImage),
+      //     n: 1,
+      //     size: '1024x1024',
+      //   }),
+      // });
 
-      const dalleData = await dalleResponse.json();
-      const imageUrl = dalleData.data[0].url;
+      // const dalleData = await dalleResponse.json();
+      // const imageUrl = dalleData.data[0].url;
 
-      setMeaning(wordData.wordMeaning);
-      setNuance(wordData.wordNuance);
-      setImageUrl(imageUrl);
+      // setMeaning(wordData.wordMeaning);
+      // setNuance(wordData.wordNuance);
+      // setImageUrl(imageUrl);
 
       setIsImageGenerated(true);
       console.log("Image and word data generated successfully.");
@@ -190,6 +204,15 @@ const WordForm = () => {
     }
   };
 
+  const handleReset = () => {
+    const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
+    const cleanedWord = wordHtml.replace(/<[^>]+>/g, ''); // HTMLタグを削除
+    setWord(cleanedWord);
+    if (wordRef.current) {
+      (wordRef.current as unknown as HTMLElement).innerHTML = cleanedWord;
+    }
+  };
+
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-left">Add Word</h1>
@@ -216,6 +239,14 @@ const WordForm = () => {
               style={{ height: '30px' }}
             >
               Apply
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-red-600 text-sm font-medium rounded-md text-red-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              style={{ height: '30px' }}
+            >
+              Reset
             </button>
             {displayColorPicker && (
               <div style={{ position: 'absolute', zIndex: 2, top: '100%', left: 0 }}>
