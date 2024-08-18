@@ -137,8 +137,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
 
     if (isAllDone) {
         return (
-            <div className="p-4">
-                <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
+            <div className="pl-5 pr-5">
+                <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                     <div className="flex-grow">
                         <div className={`flex justify-between items-center mb-4 pb-1 ${isExtraQuiz ? 'border-b border-blue-700' : 'border-b border-gray-700'}`}>
                             <h2 className="text-2xl font-bold text-left ml-4 truncate">{deckName}</h2>
@@ -268,8 +268,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     };
 
     return (
-        <div className="p-4">
-            <div className="max-w-md mx-auto mt-1 p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
+        <div className="pl-5 pr-5">
+            <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between" style={{ height: '550px' }}>
                 <div className="flex-grow">
                     <div className={`flex justify-between items-center mb-4 pb-1 ${isExtraQuiz ? 'border-b border-blue-700' : 'border-b border-gray-700'}`}>
                         <h2 className="text-2xl font-bold text-left ml-4 truncate">{deckName}</h2>
