@@ -250,9 +250,20 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
 
     const handleSpeakClick = () => {
         if (currentWord) {
+            console.log('Current word:', currentWord.originalText); // デバッグ用ログ
+
+            // 利用可能な音声のリストをログに出力
+            const voices = speechSynthesis.getVoices();
+            console.log('Available voices:', voices);
+
             const utterance = new SpeechSynthesisUtterance(currentWord.originalText);
             utterance.lang = 'en-US';
+            utterance.onend = () => console.log('Speech has finished.');
+            utterance.onerror = (event) => console.error('SpeechSynthesisUtterance.onerror', event);
             speechSynthesis.speak(utterance);
+            console.log('Speech synthesis started'); // デバッグ用ログ
+        } else {
+            console.log('No current word available'); // デバッグ用ログ
         }
     };
 
