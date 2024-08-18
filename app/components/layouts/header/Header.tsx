@@ -39,7 +39,7 @@ const Header = ({ session }: { session: Session | null }) => {
   }, [isDropdownOpen, isMenuOpen]);
 
   return (
-    <header className="bg-white border-gray-200 dark:bg-gray-900">
+    <header className="bg-white border-gray-200 dark:bg-gray-900 mb-5">
       <div className="w-full flex flex-wrap items-center justify-between mx-auto p-4 h-16">
         <Link href="/" className="text-4xl font-bold ml-0">
           ▶ IRUKA

@@ -120,7 +120,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md relative">
+    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md relative">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-left">Edit Word</h1>
         <button

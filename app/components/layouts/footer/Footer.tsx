@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 const Footer = () => {
     return (
-        <footer id="footer" className="bg-gray-800 text-white py-2">
+        <footer id="footer" className="bg-gray-800 text-white py-2 mt-5">
             <div className="w-full px-2 flex justify-between items-center">
                 <div className="flex space-x-4">
                     <Link href="/about" legacyBehavior>
