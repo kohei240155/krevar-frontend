@@ -1,6 +1,11 @@
 import Head from 'next/head';
 import Image from 'next/image';
 
+// 記載予定事項
+// How to useの項目を追加し、画面のスクリーンショットを追加
+// 実際に生成された画像を並べる
+// Quiz機能の特徴を紹介
+
 export default function Home() {
   return (
     <>
