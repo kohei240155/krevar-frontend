@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 const LoginPage = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [isCreatingAccount, setIsCreatingAccount] = useState(false);
 
   useEffect(() => {
     // ログイン済みの場合はTOPページにリダイレクト
@@ -39,7 +40,9 @@ const LoginPage = () => {
     <div className="p-5">
       <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
         <div className="text-left">
-          <h2 className="mt-2 text-xl font-medium text-gray-900">Sign in to your account</h2>
+          <h2 className="mt-2 text-xl font-medium text-gray-900">
+            {isCreatingAccount ? "Create an account" : "Sign in to your account"}
+          </h2>
         </div>
         {/* Googleログインボタン */}
         <div className="mt-8 text-center">
@@ -73,36 +76,46 @@ const LoginPage = () => {
             </div>
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                Password *
+                {isCreatingAccount ? "Password (8 or more characters) *" : "Password *"}
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 id="password"
                 type="password"
-                placeholder="Password"
+                placeholder={isCreatingAccount ? "Password (8 or more characters)" : "Password"}
               />
             </div>
             <div className="flex items-center justify-between">
-              <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
-                Forgot password?
-              </a>
+              {!isCreatingAccount && (
+                <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+                  Forgot password?
+                </a>
+              )}
             </div>
             <div className="mt-4">
               <button
                 className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="button"
               >
-                Sign In
+                {isCreatingAccount ? "Create an account" : "Sign In"}
               </button>
             </div>
           </form>
         </div>
         <div className="mt-4 text-center">
           <span className="inline-block align-baseline font-bold text-sm text-gray-900">
-            Not registered?{" "}
-            <a className="text-blue-500 hover:text-blue-800" href="#">
-              Create an account
-            </a>
+            {isCreatingAccount ? (
+              <a className="text-blue-500 hover:text-blue-800" href="#" onClick={() => setIsCreatingAccount(false)}>
+                Sign in to your account
+              </a>
+            ) : (
+              <>
+                Not registered?{" "}
+                <a className="text-blue-500 hover:text-blue-800" href="#" onClick={() => setIsCreatingAccount(true)}>
+                  Create an account
+                </a>
+              </>
+            )}
           </span>
         </div>
       </div>
