@@ -35,25 +35,11 @@ const LoginPage = () => {
     await signOut({ callbackUrl: "/" });
   };
 
-  const handleClose = () => {
-    router.back(); // 前のページに戻る
-  };
-
   return (
     <div className="p-5">
       <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-        <div className="flex justify-between mt-1">
-          <div className="text-left">
-            <h2 className="mt-4 text-xl font-medium text-gray-900">Sign in to your account</h2>
-          </div>
-          <button
-            type="button"
-            className="text-gray-400 hover:text-gray-600 mt-[-30px]"
-            aria-label="Close"
-            onClick={handleClose}
-          >
-            <IoMdClose />
-          </button>
+        <div className="text-left">
+          <h2 className="mt-2 text-xl font-medium text-gray-900">Sign in to your account</h2>
         </div>
         {/* Googleログインボタン */}
         <div className="mt-8 text-center">
@@ -112,9 +98,12 @@ const LoginPage = () => {
           </form>
         </div>
         <div className="mt-4 text-center">
-          <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
-            Not registered? Create an account
-          </a>
+          <span className="inline-block align-baseline font-bold text-sm text-gray-900">
+            Not registered?{" "}
+            <a className="text-blue-500 hover:text-blue-800" href="#">
+              Create an account
+            </a>
+          </span>
         </div>
       </div>
     </div>
