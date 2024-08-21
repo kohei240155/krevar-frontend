@@ -2,13 +2,12 @@
 
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import googleIcon from "../../public/web_light_sq_ctn.svg";
 import { IoMdClose } from "react-icons/io";
-import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const { data: session, status } = useSession();
@@ -18,22 +17,46 @@ const LoginPage = () => {
   useEffect(() => {
     // ログイン済みの場合はTOPページにリダイレクト
     if (status === "authenticated") {
-      redirect("/");
+      router.push("/");
     }
-  }, [session, status]);
+  }, [session, status, router]);
 
   const handleLogin = (provider: string) => async (event: React.MouseEvent) => {
     event.preventDefault();
     const result = await signIn(provider);
 
     // ログインに成功したらTOPページにリダイレクト
-    if (result) {
-      redirect("/");
+    if (result?.ok) {
+      router.push("/");
+    } else {
+      // エラーハンドリング
+      alert(result?.error || "Login failed");
     }
   };
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const form = event.target as HTMLFormElement;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const password = (form.elements.namedItem('password') as HTMLInputElement).value;
+
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (result?.ok) {
+      router.push("/");
+    } else {
+      // エラーハンドリング
+      alert(result?.error || "Invalid credentials");
+    }
   };
 
   return (
@@ -62,7 +85,7 @@ const LoginPage = () => {
         </div>
         {/* メールとパスワードの入力フォーム */}
         <div className="mt-8">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                 Email *
@@ -95,7 +118,7 @@ const LoginPage = () => {
             <div className="mt-4">
               <button
                 className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
+                type="submit"
               >
                 {isCreatingAccount ? "Create an account" : "Sign In"}
               </button>
