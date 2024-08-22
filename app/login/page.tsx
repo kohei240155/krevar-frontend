@@ -59,6 +59,30 @@ const LoginPage = () => {
     }
   };
 
+  const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const form = event.target as HTMLFormElement;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    const password = (form.elements.namedItem('password') as HTMLInputElement).value;
+
+    const response = await fetch("http://localhost:8080/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      alert("Account created successfully. Please log in.");
+      setIsCreatingAccount(false);
+    } else {
+      const errorData = await response.json();
+      alert(errorData.message || "Failed to create account");
+    }
+  };
+
   return (
     <div className="p-5">
       <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -85,7 +109,7 @@ const LoginPage = () => {
         </div>
         {/* メールとパスワードの入力フォーム */}
         <div className="mt-8">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={isCreatingAccount ? handleSignUp : handleSubmit}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                 Email *
