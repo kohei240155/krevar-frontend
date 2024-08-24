@@ -1,7 +1,6 @@
 "use client"
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
-import { useSession } from "next-auth/react";
 
 interface Deck {
     id: number;
@@ -10,7 +9,6 @@ interface Deck {
 }
 
 const DeckList = () => {
-    const { data: session } = useSession();
     const [decks, setDecks] = useState<Deck[]>([]);
     const [showOptions, setShowOptions] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -21,41 +19,10 @@ const DeckList = () => {
 
     const decksPerPage = 10;
 
-    const fetchDecks = (page: number) => {
-        console.log("Fetching decks for page:", page);
-        fetch(`http://localhost:8080/api/decks?page=${page - 1}`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${(session?.user as any)?.accessToken}`, // 修正: 型アサーションを追加
-                "X-CSRF-Token": (session as any)?.csrfToken, // 修正: 型アサーションを追加
-            },
-        })
-            .then(response => response.json())
-            .then(data => {
-                const formattedDecks = data.decks.map((item: any) => ({
-                    id: item.deck.id,
-                    deckName: item.deck.deckName,
-                    totalQuestions: item.totalQuestions,
-                }));
-                setDecks(formattedDecks);
-                setTotalDecks(data.totalDecks);
-            })
-            .catch(error => {
-                console.log("Error fetching decks:", error);
-            });
-    };
-
     const paginate = (pageNumber: number) => {
         setCurrentPage(pageNumber);
-        fetchDecks(pageNumber); // 修正: fetchDecks関数を定義
+        fetchDecks(pageNumber);
     };
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 500);
-        return () => clearTimeout(timer);
-    }, [currentPage, session]);
 
     const truncateDeckName = (name: string) => {
         return name.length > 20 ? name.substring(0, 20) + '...' : name;
@@ -108,6 +75,33 @@ const DeckList = () => {
             </>
         );
     };
+
+    const fetchDecks = (page: number) => {
+        console.log("Fetching decks for page:", page);
+        fetch(`http://localhost:8080/api/decks?page=${page - 1}`)
+            .then(response => response.json())
+            .then(data => {
+                const formattedDecks = data.decks.map((item: any) => ({
+                    id: item.deck.id,
+                    deckName: item.deck.deckName,
+                    totalQuestions: item.totalQuestions,
+                }));
+                setDecks(formattedDecks);
+                setTotalDecks(data.totalDecks);
+            })
+            .catch(error => {
+                console.log("Error fetching decks:", error);
+            });
+    };
+
+    useEffect(() => {
+        fetchDecks(currentPage);
+        // ローディングをシミュレートするためのタイムアウト
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 500); // 1秒後にローディングを終了
+        return () => clearTimeout(timer);
+    }, [currentPage]);
 
     const handleDeckClick = (deckId: number, deckName: string) => {
         router.push(`/quiz/${deckId}?deckName=${encodeURIComponent(deckName)}`);
