@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react';
 
 interface Deck {
     id: number;
@@ -14,8 +14,8 @@ const DeckList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const router = useRouter();
     const optionsRef = useRef<HTMLDivElement>(null);
-    const [totalDecks, setTotalDecks] = useState(0); // totalDecksの状態を追加
-    const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
+    const [totalDecks, setTotalDecks] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     const decksPerPage = 10;
 
@@ -28,8 +28,8 @@ const DeckList = () => {
         return name.length > 20 ? name.substring(0, 20) + '...' : name;
     };
 
-    const totalPages = Math.ceil(totalDecks / decksPerPage); // 修正: decks.length -> totalDecks
-    const pageNumbers: number[] = []; // 型を明示的に指定
+    const totalPages = Math.ceil(totalDecks / decksPerPage);
+    const pageNumbers: number[] = [];
 
     for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
@@ -78,28 +78,35 @@ const DeckList = () => {
 
     const fetchDecks = (page: number) => {
         console.log("Fetching decks for page:", page);
-        fetch(`http://localhost:8080/api/decks?page=${page - 1}`)
-            .then(response => response.json())
-            .then(data => {
-                const formattedDecks = data.decks.map((item: any) => ({
-                    id: item.deck.id,
-                    deckName: item.deck.deckName,
-                    totalQuestions: item.totalQuestions,
-                }));
-                setDecks(formattedDecks);
-                setTotalDecks(data.totalDecks);
-            })
-            .catch(error => {
-                console.log("Error fetching decks:", error);
-            });
+        fetch(`http://localhost:8080/api/decks?page=${page - 1}`, {
+            method: 'GET',
+            credentials: 'include', // クッキーを含める
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch decks');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const formattedDecks = data.decks.map((item: any) => ({
+                id: item.deck.id,
+                deckName: item.deck.deckName,
+                totalQuestions: item.totalQuestions,
+            }));
+            setDecks(formattedDecks);
+            setTotalDecks(data.totalDecks);
+        })
+        .catch(error => {
+            console.log("Error fetching decks:", error);
+        });
     };
 
     useEffect(() => {
         fetchDecks(currentPage);
-        // ローディングをシミュレートするためのタイムアウト
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 500); // 1秒後にローディングを終了
+        }, 500);
         return () => clearTimeout(timer);
     }, [currentPage]);
 
@@ -120,7 +127,7 @@ const DeckList = () => {
         } else if (option === "list") {
             router.push(`/words/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}`);
         } else if (option === "extra-quiz") {
-            router.push(`/quiz/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}&isExtraQuiz=true`); // 修
+            router.push(`/quiz/${deck.id}?deckName=${encodeURIComponent(deck.deckName)}&isExtraQuiz=true`);
         } else {
             router.push(`/${option}`);
         }

@@ -6,7 +6,7 @@ import type { NextAuthOptions } from "next-auth";
 
 export const nextAuthOptions: NextAuthOptions = {
   debug: true, // デバッグモードを有効にする
-  session: { strategy: "database" }, // セッション方式に変更
+  session: { strategy: "database" }, // セッション方式を database に設定
   providers: [
     // TwitterProvider({
     //   clientId: process.env.TWITTER_CLIENT_ID!,
@@ -52,7 +52,7 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   callbacks: {
     session: ({ session, token }) => {
-      console.log("in session", { session, token });
+      // セッションオブジェクトをそのまま使用
       return {
         ...session,
         user: {
