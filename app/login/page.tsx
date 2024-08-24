@@ -45,17 +45,36 @@ const LoginPage = () => {
     const email = (form.elements.namedItem('email') as HTMLInputElement).value;
     const password = (form.elements.namedItem('password') as HTMLInputElement).value;
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    if (isCreatingAccount) {
+      // 新規ユーザー登録
+      const response = await fetch("http://localhost:8080/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (result?.ok) {
-      router.push("/");
+      if (response.ok) {
+        alert("Account created successfully. Please log in.");
+        setIsCreatingAccount(false);
+      } else {
+        alert("Failed to create account");
+      }
     } else {
-      // エラーハンドリング
-      alert(result?.error || "Invalid credentials");
+      // ログイン
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.ok) {
+        router.push("/");
+      } else {
+        // エラーハンドリング
+        alert(result?.error || "Invalid credentials");
+      }
     }
   };
 
