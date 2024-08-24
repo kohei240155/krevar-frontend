@@ -25,9 +25,9 @@ const LoginPage = () => {
     event.preventDefault();
     const result = await signIn(provider);
 
-    // ログインに成功したらTOPページにリダイレクト
+    // ログインに成功したらDeckListページにリダイレクト
     if (result?.ok) {
-      router.push("/");
+      router.push("/decks");
     } else {
       // エラーハンドリング
       alert(result?.error || "Login failed");
@@ -70,9 +70,9 @@ const LoginPage = () => {
       });
 
       if (result?.ok) {
-        router.push("/");
+        router.push("/decks");
       } else {
-        // エラーハンドリング
+        // エ��ーハンドリング
         alert(result?.error || "Invalid credentials");
       }
     }

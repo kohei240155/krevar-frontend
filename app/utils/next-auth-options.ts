@@ -61,5 +61,12 @@ export const nextAuthOptions: NextAuthOptions = {
         },
       };
     },
+    redirect: async ({ url, baseUrl }) => {
+      // ログイン後のリダイレクト先をDeckListページに設定
+      if (url === "/") {
+        return baseUrl + "/decks";
+      }
+      return baseUrl;
+    },
   },
 };
