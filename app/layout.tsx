@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/layouts/header/Header";
 import { getServerSession } from "next-auth";
-import { nextAuthOptions } from "./utils/next-auth-options";
 import NextAuthProvider from "./providers";
 import Footer from "./components/layouts/footer/Footer";
 import { ToastContainer } from "react-toastify";
@@ -21,14 +20,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(nextAuthOptions);
-
   return (
     <html lang="en">
       <body className={inter.className}>
         <NextAuthProvider>
           <div className="flex flex-col min-h-screen">
-            <Header session={session} />
+            <Header/>
             <main className="flex-grow">
               {children}
             </main>

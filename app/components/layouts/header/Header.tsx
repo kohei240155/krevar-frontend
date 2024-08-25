@@ -6,10 +6,12 @@ import Link from "next/link";
 import { type Session } from "next-auth";
 import { useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
-const Header = ({ session }: { session: Session | null }) => {
+const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: "/" });

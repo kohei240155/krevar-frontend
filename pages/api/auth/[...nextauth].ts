@@ -3,8 +3,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
 import type { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth/next";
 
-export const nextAuthOptions: NextAuthOptions = {
+export default NextAuth({
   debug: true, // デバッグモードを有効にする
   session: { strategy: "database" }, // セッション方式を database に設定
   providers: [
@@ -70,4 +71,4 @@ export const nextAuthOptions: NextAuthOptions = {
       return baseUrl;
     },
   },
-};
+});
