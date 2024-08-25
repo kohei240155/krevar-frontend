@@ -33,7 +33,10 @@ const DeckForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/api/decks', { deckName, userId: 1 });
+            const response = await axios.post('http://localhost:8080/api/decks',
+                { deckName, userId: 1 },
+                { withCredentials: true }  // クッキーのセッション情報を付与
+            );
             if (response.status === 200) {
                 toast.success("Deck created successfully!");
                 onDeckCreated();
