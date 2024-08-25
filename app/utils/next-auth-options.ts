@@ -30,6 +30,7 @@ export const nextAuthOptions: NextAuthOptions = {
               "Content-Type": "application/json",
             },
             body: JSON.stringify(credentials),
+            credentials: "include", // セッションIDのCookieを自動的に送信
           });
 
           if (!res.ok) {
