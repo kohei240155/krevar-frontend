@@ -40,7 +40,9 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   useEffect(() => {
     const fetchWordData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/word/${wordId}`);
+        const response = await axios.get(`http://localhost:8080/api/word/${wordId}`,
+          { withCredentials: true } // クッキーを含める
+        );
         const wordData = response.data;
         setWord(wordData.originalText);
         setMeaning(wordData.translatedText);
@@ -92,6 +94,8 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
         imageUrl: imageUrl,
         deckId: deckId,
         nuanceText: nuance,
+      }, {
+        withCredentials: true, // クッキーを含める
       });
       if (response.status === 200) {
         toast.success("Word updated successfully!");
@@ -197,7 +201,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
           <div className="mb-4">
             <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
             {imageUrl && (
-              <Image src={imageUrl} alt="Word Image" width={500} height={300} className="mt-2 max-w-full h-auto rounded-md shadow-sm" />
+              <Image src={`/images/testImages/${imageUrl}`} alt="Word Image" width={500} height={300} className="mt-2 max-w-full h-auto rounded-md shadow-sm" />
             )}
           </div>
           <div className="flex justify-between mb-2">
