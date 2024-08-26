@@ -30,10 +30,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
     const [arrowColor, setArrowColor] = useState("text-gray-800");
     const [isArrowActive, setIsArrowActive] = useState(false);
     const [isNormalModeCorrect, setIsNormalModeCorrect] = useState<boolean | null>(null);
-    const [isExtraModeCorrect, setIsExtraModeCorrect] = useState<boolean | null>(null); // Added
+    const [isExtraModeCorrect, setIsExtraModeCorrect] = useState<boolean | null>(); // Added
     const router = useRouter();
     const searchParams = useSearchParams();
-    const deckName = searchParams.get('deckName') || 'Deck Name';
+    const deckName = searchParams?.get('deckName') || 'Deck Name'; // 修正
     const [todayNormalQuestionCount, setTodayNormalQuestionCount] = useState(0);
     const [todayExtraQuestionCount, setTodayExtraQuestionCount] = useState(0);
     const [currentWord, setCurrentWord] = useState<Word | null>(null);
@@ -46,7 +46,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             ? `http://localhost:8080/api/quiz/extra/${deckId}`
             : `http://localhost:8080/api/quiz/normal/${deckId}`;
         try {
-            const response = await fetch(apiUrl);
+            const response = await fetch(apiUrl, {
+                credentials: 'include', // クッキーを含める
+            });
             const data = await response.json();
             console.log("Fetched data:", data);
 
@@ -81,6 +83,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
         const apiUrl = `http://localhost:8080/api/quiz/extra/${deckId}/reset`;
         try {
             const response = await fetch(apiUrl, {
+                credentials: 'include', // クッキーを含める
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -207,6 +210,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             try {
                 await fetch(apiUrl, {
                     method: 'POST',
+                    credentials: 'include', // クッキーを含める
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -222,7 +226,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz = false }) => {
             ? `http://localhost:8080/api/quiz/extra/${deckId}`
             : `http://localhost:8080/api/quiz/normal/${deckId}`;
         try {
-            const response = await fetch(fetchApiUrl);
+            const response = await fetch(fetchApiUrl, {
+                credentials: 'include', // クッキーを含める
+            });
             const data = await response.json();
             console.log("Fetched data:", data);
 
