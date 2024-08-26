@@ -43,6 +43,7 @@ const WordForm = () => {
       const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
       const nuanceText = nuance.trim() !== '' ? nuance : '';
       const response = await fetch(`http://localhost:8080/api/word/${deckId}`, {
+        credentials: 'include', // クッキーを含める
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,6 +60,7 @@ const WordForm = () => {
       if (response.ok) {
         const imageResponse = await fetch('http://localhost:8080/api/word/upload-image', {
           method: 'POST',
+          credentials: 'include', // クッキーを含める
           headers: {
             'Content-Type': 'application/json',
           },
