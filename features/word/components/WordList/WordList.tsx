@@ -21,7 +21,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
   const router = useRouter();
   const searchParams = useSearchParams();
-  const deckName = searchParams.get('deckName') || '';
+  const deckName = searchParams?.get('deckName') || ''; // 'searchParams' が 'null' でないことを確認
 
   const wordsPerPage = 10;
 
@@ -80,7 +80,9 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
 
   const fetchWords = useCallback((page: number) => {
     setLoading(true);
-    fetch(`http://localhost:8080/api/word/deck/${deckId}?page=${page - 1}`)
+    fetch(`http://localhost:8080/api/word/deck/${deckId}?page=${page - 1}`, {
+      credentials: 'include', // クッキーを含める
+    })
       .then(response => response.json())
       .then(data => {
         setWords(data.words);
