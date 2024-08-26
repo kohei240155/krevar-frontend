@@ -1,21 +1,32 @@
-import TwitterProvider from "next-auth/providers/twitter";
-import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-
+import CredentialsProvider from "next-auth/providers/credentials";
 import type { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 
 export default NextAuth({
-  debug: true, // デバッグモードを有効にする
-  session: { strategy: "database" }, // セッション方式を database に設定
+  debug: true,
+  session: { strategy: "database" },
   providers: [
-    // TwitterProvider({
-    //   clientId: process.env.TWITTER_CLIENT_ID!,
-    //   clientSecret: process.env.TWITTER_CLIENT_SECRET!,
-    // }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      async profile(profile) {
+        // Googleプロフィール情報を元にユーザーをバックエンドで確認または新規作成
+        const res = await fetch("http://localhost:8080/api/auth/google-login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: profile.email,
+            googleId: profile.sub, // GoogleのID
+          }),
+          credentials: "include",
+        });
+
+        const user = await res.json();
+        return user ? user : null;
+      },
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -31,7 +42,7 @@ export default NextAuth({
               "Content-Type": "application/json",
             },
             body: JSON.stringify(credentials),
-            credentials: "include", // セッションIDのCookieを自動的に送信
+            credentials: "include",
           });
 
           if (!res.ok) {
@@ -54,7 +65,6 @@ export default NextAuth({
   ],
   callbacks: {
     session: ({ session, token }) => {
-      // セッションオブジェクトをそのまま使用
       return {
         ...session,
         user: {
@@ -64,7 +74,6 @@ export default NextAuth({
       };
     },
     redirect: async ({ url, baseUrl }) => {
-      // ログイン後のリダイレクト先をDeckListページに設定
       if (url === "/") {
         return baseUrl + "/decks";
       }
