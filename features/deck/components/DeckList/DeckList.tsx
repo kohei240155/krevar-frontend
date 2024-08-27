@@ -25,6 +25,7 @@ const DeckList = () => {
     };
 
     const truncateDeckName = (name: string) => {
+        if (!name) return '';
         return name.length > 20 ? name.substring(0, 20) + '...' : name;
     };
 
