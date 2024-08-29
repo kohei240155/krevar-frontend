@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Decks from "./decks/page";
-import Header from "./components/layouts/header/Header";
+import Header from "../features/routes/layouts/components/Header";
 import HomePage from "./home/page"; // Added
 
 export default function Home() {

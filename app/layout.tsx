@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "./components/layouts/header/Header";
 import { getServerSession } from "next-auth";
 import NextAuthProvider from "./providers";
-import Footer from "./components/layouts/footer/Footer";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { Header, Footer } from "../features/routes/layouts";
 
 const inter = Inter({ subsets: ["latin"] });
 

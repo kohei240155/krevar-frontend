@@ -1,6 +1,6 @@
 "use client";
 import React from 'react'
-import * as Quiz from '../../../features/quiz/components/index';
+import * as Quiz from '../../../features/routes/quiz/index';
 import { useParams, useSearchParams } from 'next/navigation';
 
 const QuizPage = () => {

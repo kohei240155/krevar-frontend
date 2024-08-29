@@ -1,5 +1,5 @@
 import React from 'react'
-import * as Word from "../../../features/word/components/index";
+import * as Word from "../../../features/routes/word/index";
 
 const NewWord = () => {
   return (

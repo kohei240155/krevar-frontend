@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import * as Deck from '../../../../features/deck/components/Index';
+import * as Deck from '../../../../features/routes/deck/Index';
 import { useParams, useSearchParams } from 'next/navigation';
 
 const SettingsPage = () => {
