@@ -1,0 +1,48 @@
+import React from 'react';
+
+interface Deck {
+    id: number;
+    deckName: string;
+    totalQuestions: number;
+}
+
+interface DeckOptionsProps {
+    deck: Deck;
+    onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
+    optionsRef: React.RefObject<HTMLDivElement>;
+}
+
+const DeckOptions: React.FC<DeckOptionsProps> = ({ deck, onOptionItemClick, optionsRef }) => {
+    return (
+        <div ref={optionsRef} className="absolute bottom-full right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-2 mb-2">
+            <ul>
+                <li
+                    onClick={(e) => onOptionItemClick(e, "words/new", deck)}
+                    className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                >
+                    Add Word
+                </li>
+                <li
+                    onClick={(e) => onOptionItemClick(e, "list", deck)}
+                    className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                >
+                    Word List
+                </li>
+                <li
+                    onClick={(e) => onOptionItemClick(e, "settings", deck)}
+                    className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                >
+                    Edit Deck
+                </li>
+                <li
+                    onClick={(e) => onOptionItemClick(e, "extra-quiz", deck)}
+                    className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                >
+                    Extra Quiz
+                </li>
+            </ul>
+        </div>
+    );
+};
+
+export default DeckOptions;
