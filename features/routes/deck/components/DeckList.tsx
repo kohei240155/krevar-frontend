@@ -83,13 +83,13 @@ const DeckList = () => {
     const handleOptionItemClick = (e: React.MouseEvent, option: string, deck: Deck) => {
         e.stopPropagation();
         switch (option) {
-            case 'word/new':
-                router.push(`/word/new?deckId=${deck.id}`);
+            case 'word-add':
+                router.push(`/word/add?deckId=${deck.id}`);
                 break;
-            case 'list':
+            case 'word-list':
                 router.push(`/word/list?deckId=${deck.id}?deckName=${deck.deckName}`);
                 break;
-            case 'settings':
+            case 'deck-settings':
                 router.push(`/deck/edit/${deck.id}`);
                 break;
             case 'extra-quiz':

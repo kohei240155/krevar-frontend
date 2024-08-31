@@ -6,19 +6,19 @@ const DeckOptions: React.FC<DeckOptionsProps> = ({ deck, onOptionItemClick }) =>
         <div className="absolute bottom-full right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-2 mb-2">
             <ul>
                 <li
-                    onClick={(e) => onOptionItemClick(e, "word/add", deck)}
+                    onClick={(e) => onOptionItemClick(e, "word-add", deck)}
                     className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                 >
                     Add Word
                 </li>
                 <li
-                    onClick={(e) => onOptionItemClick(e, "list", deck)}
+                    onClick={(e) => onOptionItemClick(e, "word-list", deck)}
                     className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                 >
                     Word List
                 </li>
                 <li
-                    onClick={(e) => onOptionItemClick(e, "settings", deck)}
+                    onClick={(e) => onOptionItemClick(e, "deck-settings", deck)}
                     className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                 >
                     Edit Deck
