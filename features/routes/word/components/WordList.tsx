@@ -24,7 +24,6 @@ const WordList = () => {
   const totalPages = Math.ceil(totalWords / wordsPerPage);
 
   const fetchWords = useCallback((page: number) => {
-    console.log("★Fetching words for page:", page - 1);
     fetch(`http://localhost:8080/api/word/deck/${deckId}?page=${page - 1}`, {
       method: 'GET',
       credentials: 'include',
@@ -36,7 +35,6 @@ const WordList = () => {
         return response.json();
       })
       .then(data => {
-        console.log("★Data:", data);
         setWords(data.words);
         setTotalWords(data.totalCount);
       })
@@ -46,7 +44,6 @@ const WordList = () => {
   }, [deckId]);
 
   useEffect(() => {
-    console.log("Fetching words for page:", currentPage);
     fetchWords(currentPage);
     const timer = setTimeout(() => {
       setIsLoading(false);
