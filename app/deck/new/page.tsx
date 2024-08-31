@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import * as Deck from "../../../features/routes/deck/Index";
+import * as Deck from "../../../features/routes/deck/components/index";
 import { useRouter } from 'next/navigation';
 
 const NewDeck = () => {
@@ -12,7 +12,7 @@ const NewDeck = () => {
 
   return (
     <div className="p-4">
-      <Deck.NewDeckForm onDeckCreated={handleDeckCreated} />
+      <Deck.DeckCreateForm onDeckCreated={handleDeckCreated} />
     </div>
   )
 }
