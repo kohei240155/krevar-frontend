@@ -2,16 +2,8 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-
-interface Word {
-  id: number;
-  originalText: string;
-  translatedText: string;
-}
-
-interface WordListProps {
-  deckId: string;
-}
+import * as Common from "../../../common/components/index";
+import { WordListProps, Word } from '../types/word';
 
 const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const [words, setWords] = useState<Word[]>([]);
@@ -119,9 +111,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   };
 
   if (isLoading) {
-    return <div className="flex items-center justify-center h-screen">
-      <div className="absolute top-0 mt-20 text-xl">Loading...</div>
-    </div>;
+    return <Common.LoadingIndicator />;
   }
 
   if (loading) {
