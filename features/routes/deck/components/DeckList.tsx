@@ -32,7 +32,7 @@ const DeckList = () => {
 
     const fetchDecks = (page: number) => {
         console.log("Fetching decks for page:", page);
-        fetch(`http://localhost:8080/api/decks?page=${page - 1}`, {
+        fetch(`http://localhost:8080/api/deck?page=${page - 1}`, {
             method: 'GET',
             credentials: 'include',
         })
