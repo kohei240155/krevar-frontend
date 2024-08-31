@@ -4,3 +4,10 @@ export interface EmptyListProps {
     buttonText: string;
     buttonAction: () => void;
 }
+
+export interface DeleteConfirmModalProps {
+    isOpen: boolean;
+    onRequestClose: () => void;
+    onConfirmDelete: () => void;
+    targetWord: string;
+}

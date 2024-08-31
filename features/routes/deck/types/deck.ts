@@ -19,3 +19,9 @@ export interface DeckOptionsProps {
 export interface DeckFormProps {
     onDeckCreated: () => void;
 }
+
+export interface DeckEditFormProps {
+    deckId: string;
+    deckName: string;
+    onDeckUpdated: () => void;
+}
