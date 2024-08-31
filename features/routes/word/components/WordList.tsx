@@ -62,7 +62,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   };
 
   const handleAddWordClick = () => {
-    router.push('/words/new');
+    router.push('/word/add');
   };
 
   if (isLoading) {

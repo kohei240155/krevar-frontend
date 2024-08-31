@@ -1,7 +1,7 @@
 import React from 'react'
 import * as Word from './../../../features/routes/word/components/index';
 
-const NewWord = () => {
+const AddWordPage = () => {
   return (
     <div className="p-4">
       <Word.WordForm />
@@ -9,4 +9,4 @@ const NewWord = () => {
   )
 }
 
-export default NewWord;
+export default AddWordPage;

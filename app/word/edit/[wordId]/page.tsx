@@ -4,7 +4,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import * as Word from './../../../../features/routes/word/components/index';
 
-const WordEditPage = () => {
+const EditWordPage = () => {
   const { wordId } = useParams() as { wordId: string };
 
   return (
@@ -14,4 +14,4 @@ const WordEditPage = () => {
   );
 };
 
-export default WordEditPage;
+export default EditWordPage;
