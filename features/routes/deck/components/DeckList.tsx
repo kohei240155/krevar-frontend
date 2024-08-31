@@ -100,19 +100,17 @@ const DeckList = () => {
         }
     };
 
-    // DeckListコンポーネント内
     return (
         <div className="relative p-5">
             <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
                 <h2 className="text-2xl font-bold mb-4 text-left">Deck List</h2>
                 <ul className="space-y-4">
                     {decks.map(deck => (
-                        // DeckItemコンポーネントをここで使用
                         <DeckItem
                         key={deck.id}
                         deck={deck}
                         showOptions={showOptions}
-                        onQuizClick={handleQuizClick} // 名前を変更
+                        onQuizClick={handleQuizClick}
                         onOptionClick={handleOptionClick}
                         onOptionItemClick={handleOptionItemClick}
                         truncateDeckName={truncateDeckName}
