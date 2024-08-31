@@ -9,12 +9,11 @@ interface Deck {
 interface DeckOptionsProps {
     deck: Deck;
     onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
-    optionsRef: React.RefObject<HTMLDivElement>;
 }
 
-const DeckOptions: React.FC<DeckOptionsProps> = ({ deck, onOptionItemClick, optionsRef }) => {
+const DeckOptions: React.FC<DeckOptionsProps> = ({ deck, onOptionItemClick }) => {
     return (
-        <div ref={optionsRef} className="absolute bottom-full right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-2 mb-2">
+        <div className="absolute bottom-full right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-2 mb-2">
             <ul>
                 <li
                     onClick={(e) => onOptionItemClick(e, "words/new", deck)}

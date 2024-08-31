@@ -12,11 +12,18 @@ const DeckList = () => {
     const [showOptions, setShowOptions] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const router = useRouter();
-    const optionsRef = useRef<HTMLDivElement>(null);
     const [totalDecks, setTotalDecks] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
     const decksPerPage = 10;
+
+    useEffect(() => {
+        fetchDecks(currentPage);
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [currentPage]);
 
     const paginate = (pageNumber: number) => {
         setCurrentPage(pageNumber);
@@ -70,14 +77,6 @@ const DeckList = () => {
         setShowOptions(deckId === showOptions ? null : deckId);
     }
 
-    useEffect(() => {
-        fetchDecks(currentPage);
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 500);
-        return () => clearTimeout(timer);
-    }, [currentPage]);
-
     if (isLoading) {
         return <LoadingIndicator />;
     }
@@ -122,7 +121,6 @@ const DeckList = () => {
                         onOptionClick={handleOptionClick}
                         onOptionItemClick={handleOptionItemClick}
                         truncateDeckName={truncateDeckName}
-                        optionsRef={optionsRef}
                         />
                     ))}
                 </ul>

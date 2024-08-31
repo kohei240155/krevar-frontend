@@ -14,7 +14,6 @@ interface DeckItemProps {
     onOptionClick: (e: React.MouseEvent, deckId: number) => void;
     onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
     truncateDeckName: (name: string) => string;
-    optionsRef: React.RefObject<HTMLDivElement>;
 }
 
 const DeckItem: React.FC<DeckItemProps> = ({
@@ -24,7 +23,6 @@ const DeckItem: React.FC<DeckItemProps> = ({
     onOptionClick,
     onOptionItemClick,
     truncateDeckName,
-    optionsRef,
 }) => {
     return (
         <li
@@ -52,7 +50,6 @@ const DeckItem: React.FC<DeckItemProps> = ({
                 <DeckOptions
                 deck={deck}
                 onOptionItemClick={onOptionItemClick}
-                optionsRef={optionsRef}
                 />
             )}
         </li>
