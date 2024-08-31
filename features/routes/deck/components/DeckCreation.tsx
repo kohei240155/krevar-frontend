@@ -4,11 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
-import { DeckFormProps } from '../types/deck';
 import * as Common from "../../../common/components/index";
 import DeckForm from './DeckForm';
 
-const DeckCreation: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
+const DeckCreation: React.FC = () => {
     const [deckName, setDeckName] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
@@ -35,7 +34,7 @@ const DeckCreation: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
             );
             if (response.status === 200) {
                 toast.success("Deck created successfully!");
-                onDeckCreated();
+                router.push('/deck');
             } else {
                 toast.error("Unexpected response from the server.");
             }

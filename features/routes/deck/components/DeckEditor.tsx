@@ -7,9 +7,9 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as Common from "../../../common/components/index";
 import DeckForm from './DeckForm';
-import { DeckEditFormProps } from '../types/deck';
+import { DeckEditorProps } from '../types/deck';
 
-const DeckEditor: React.FC<DeckEditFormProps> = ({ deckId, deckName: initialDeckName, onDeckUpdated }) => {
+const DeckEditor: React.FC<DeckEditorProps> = ({ deckId, deckName: initialDeckName, onDeckUpdated }) => {
     const [deckName, setDeckName] = useState(initialDeckName);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);

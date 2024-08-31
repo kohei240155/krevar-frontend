@@ -16,12 +16,16 @@ export interface DeckOptionsProps {
     onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
 }
 
-export interface DeckFormProps {
-    onDeckCreated: () => void;
-}
-
-export interface DeckEditFormProps {
+export interface DeckEditorProps {
     deckId: string;
     deckName: string;
     onDeckUpdated: () => void;
+}
+
+export interface DeckFormProps {
+    deckName: string;
+    onDeckNameChange: (newDeckName: string) => void;
+    onSubmit: (event: React.FormEvent) => void;
+    isEditMode: boolean;
+    onDelete?: () => void;
 }

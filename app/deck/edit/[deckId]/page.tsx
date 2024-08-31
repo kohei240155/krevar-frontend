@@ -11,7 +11,7 @@ const SettingsPage = () => {
 
   return (
     <div>
-      <Deck.DeckEditForm deckId={deckId as string} deckName={deckName} onDeckUpdated={() => {}} />
+      <Deck.DeckEditor deckId={deckId as string} deckName={deckName} onDeckUpdated={() => {}} />
     </div>
   )
 }
