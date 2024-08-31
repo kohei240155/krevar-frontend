@@ -1,5 +1,5 @@
 import React from 'react'
-import * as Deck from "../../features/routes/deck/Index";
+import * as Deck from "../../features/routes/deck/components/index";
 
 const Decks = () => {
   return (
