@@ -8,7 +8,7 @@ import { DeckFormProps } from '../types/deck';
 import * as Common from "../../../common/components/index";
 import DeckForm from './DeckForm';
 
-const DeckCreateForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
+const DeckCreation: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
     const [deckName, setDeckName] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
@@ -54,4 +54,4 @@ const DeckCreateForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
     );
 }
 
-export default DeckCreateForm;
+export default DeckCreation;

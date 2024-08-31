@@ -9,7 +9,7 @@ import * as Common from "../../../common/components/index";
 import DeckForm from './DeckForm';
 import { DeckEditFormProps } from '../types/deck';
 
-const DeckEditForm: React.FC<DeckEditFormProps> = ({ deckId, deckName: initialDeckName, onDeckUpdated }) => {
+const DeckEditor: React.FC<DeckEditFormProps> = ({ deckId, deckName: initialDeckName, onDeckUpdated }) => {
     const [deckName, setDeckName] = useState(initialDeckName);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -76,4 +76,4 @@ const DeckEditForm: React.FC<DeckEditFormProps> = ({ deckId, deckName: initialDe
     );
 };
 
-export default DeckEditForm;
+export default DeckEditor;
