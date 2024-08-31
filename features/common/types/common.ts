@@ -3,6 +3,7 @@ export interface EmptyListProps {
     message: string;
     buttonText: string;
     buttonAction: () => void;
+    backButtonAction: () => void;
 }
 
 export interface DeleteConfirmModalProps {

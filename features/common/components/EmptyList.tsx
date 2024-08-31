@@ -1,7 +1,7 @@
 import React from 'react';
 import { EmptyListProps } from '../types/common';
 
-const EmptyList: React.FC<EmptyListProps> = ({ title, message, buttonText, buttonAction }) => {
+const EmptyList: React.FC<EmptyListProps> = ({ title, message, buttonText, buttonAction, backButtonAction }) => {
     return (
         <div className="p-4">
             <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md">
@@ -10,7 +10,7 @@ const EmptyList: React.FC<EmptyListProps> = ({ title, message, buttonText, butto
                 <div className="flex justify-between mt-32">
                     <button
                         className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        onClick={buttonAction}
+                        onClick={backButtonAction} // 修正: backButtonActionを使用
                     >
                         Backward
                     </button>

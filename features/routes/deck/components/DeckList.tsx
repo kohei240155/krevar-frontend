@@ -75,6 +75,7 @@ const DeckList = () => {
                 message="No decks to display."
                 buttonText="Add Deck"
                 buttonAction={() => router.push('/decks/new')}
+                backButtonAction={() => router.push('/deck')}
             />;
     }
 

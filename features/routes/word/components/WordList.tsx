@@ -78,7 +78,8 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
         title={deckName}
         message="No words to display."
         buttonText="Add Word"
-        buttonAction={handleAddWordClick}
+        buttonAction={() => router.push(`/word/new?deckId=${deckId}`)}
+        backButtonAction={() => router.push('/deck')}
       />
     );
   }
