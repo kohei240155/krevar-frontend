@@ -1,5 +1,5 @@
 import DeckList from "./DeckList";
-import DeckCreateForm from "./DeckCreateForm";
-import DeckEditForm from "./DeckEditForm";
+import DeckCreation from "./DeckCreation";
+import DeckEditor from "./DeckEditor";
 
-export { DeckList, DeckCreateForm, DeckEditForm };
+export { DeckList, DeckCreation, DeckEditor };
