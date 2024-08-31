@@ -54,7 +54,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   }, []);
 
   const handleEditClick = (wordId: number) => {
-    router.push(`/words/edit/${wordId}`);
+    router.push(`/word/edit/${wordId}`);
   };
 
   const handleBackClick = () => {

@@ -115,7 +115,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
     try {
       await axios.delete(`http://localhost:8080/api/word/${wordId}`);
       toast.success("Word deleted successfully!");
-      router.push('/words');
+      router.push('/word');
     } catch (error) {
       toast.error("Error deleting word: " + error);
     } finally {
