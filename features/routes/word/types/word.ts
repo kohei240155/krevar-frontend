@@ -7,3 +7,8 @@ export interface Word {
 export interface WordListProps {
     deckId: string;
   }
+
+export interface WordItemProps {
+    word: Word;
+    onEditClick: (wordId: number) => void;
+  }

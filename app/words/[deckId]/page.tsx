@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { useParams } from 'next/navigation'
-import * as Word from '../../../features/routes/word/index'
+import * as Word from './../../../features/routes/word/components/index';
 
 const WordListPage = () => {
   const { deckId } = useParams() as { deckId: string };

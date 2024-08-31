@@ -2,78 +2,33 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import * as Common from "../../../common/components/index";
 import { WordListProps, Word } from '../types/word';
+import WordItem from './WordItem';
+import Pagination from '../../../common/components/Pagination';
+import * as Common from "../../../common/components/index";
 
 const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const [words, setWords] = useState<Word[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalWords, setTotalWords] = useState(0);
-  const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const deckName = searchParams?.get('deckName') || ''; // 'searchParams' が 'null' でないことを確認
+  const deckName = searchParams?.get('deckName') || '';
 
   const wordsPerPage = 10;
+  const totalPages = Math.ceil(totalWords / wordsPerPage);
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     fetchWords(pageNumber);
   };
 
-  const totalPages = Math.ceil(totalWords / wordsPerPage);
-  const pageNumbers: number[] = [];
-
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
-
-  const renderPageNumbers = () => {
-    const maxPageNumbersToShow = 5;
-    const halfMaxPageNumbersToShow = Math.floor(maxPageNumbersToShow / 2);
-    let startPage = Math.max(1, currentPage - halfMaxPageNumbersToShow);
-    let endPage = Math.min(totalPages, currentPage + halfMaxPageNumbersToShow);
-
-    if (currentPage <= halfMaxPageNumbersToShow) {
-      endPage = Math.min(totalPages, maxPageNumbersToShow);
-    } else if (currentPage + halfMaxPageNumbersToShow >= totalPages) {
-      startPage = Math.max(1, totalPages - maxPageNumbersToShow + 1);
-    }
-
-    const pageNumbersToShow = pageNumbers.slice(startPage - 1, endPage);
-
-    return (
-      <>
-        {startPage > 1 && (
-          <>
-            <button onClick={() => paginate(1)} className="px-4 py-2 mx-1 bg-gray-300 text-gray-600 rounded-md transition hover:bg-blue-700">1</button>
-            {startPage > 2 && <span className="px-4 py-2 mx-1">...</span>}
-          </>
-        )}
-        {pageNumbersToShow.map(number => (
-          <button
-            key={number}
-            onClick={() => paginate(number)}
-            className={`px-4 py-2 mx-1 ${currentPage === number ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-600'} rounded-md transition hover:bg-blue-700`}
-          >
-            {number}
-          </button>
-        ))}
-        {endPage < totalPages && (
-          <>
-            {endPage < totalPages - 1 && <span className="px-4 py-2 mx-1">...</span>}
-            <button onClick={() => paginate(totalPages)} className="px-4 py-2 mx-1 bg-gray-300 text-gray-600 rounded-md transition hover:bg-blue-700">{totalPages}</button>
-          </>
-        )}
-      </>
-    );
-  };
-
   const fetchWords = useCallback((page: number) => {
     setLoading(true);
     fetch(`http://localhost:8080/api/word/deck/${deckId}?page=${page - 1}`, {
-      credentials: 'include', // クッキーを含める
+      credentials: 'include',
     })
       .then(response => response.json())
       .then(data => {
@@ -89,12 +44,12 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
 
   useEffect(() => {
     fetchWords(currentPage);
-  }, [deckId, fetchWords, currentPage]); // 'currentPage' を依存配列に追加
+  }, [deckId, fetchWords, currentPage]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500); // 1秒後にローディングを終了
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -149,25 +104,11 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
         <h2 className="text-2xl font-bold mb-4 text-left">{deckName}</h2>
         <ul className="space-y-4">
           {words.map(word => (
-            <li
-              key={word.id}
-              className="flex justify-between items-center p-4 bg-white rounded-lg shadow h-18"
-            >
-              <div className="flex flex-col items-start space-y-2">
-                <span className="text-lg font-medium" dangerouslySetInnerHTML={{ __html: word.originalText }} />
-                <span className="text-gray-600" dangerouslySetInnerHTML={{ __html: word.translatedText }} />
-              </div>
-              <button
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                onClick={() => handleEditClick(word.id)}
-              >
-                Edit
-              </button>
-            </li>
+            <WordItem key={word.id} word={word} onEditClick={handleEditClick} />
           ))}
         </ul>
         <div className="flex justify-center mt-4">
-          {renderPageNumbers()}
+          <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
         </div>
         <button
           className="w-full mt-4 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
