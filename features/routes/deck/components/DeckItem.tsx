@@ -25,7 +25,7 @@ const DeckItem: React.FC<DeckItemProps> = ({
             </div>
             <div className="flex items-center space-x-4 mt-4 md:mt-0 deck-actions">
                 <button
-                    onClick={() => onQuizClick(deck.id, deck.deckName)} // 名前を変更
+                    onClick={() => onQuizClick(deck.id, deck.deckName)}
                     className="px-4 py-2 bg-blue-600 text-white rounded-md transition hover:bg-blue-700"
                 >
                     Quiz
