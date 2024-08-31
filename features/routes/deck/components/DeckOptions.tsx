@@ -1,15 +1,5 @@
 import React from 'react';
-
-interface Deck {
-    id: number;
-    deckName: string;
-    totalQuestions: number;
-}
-
-interface DeckOptionsProps {
-    deck: Deck;
-    onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
-}
+import { DeckOptionsProps } from '../types/deck';
 
 const DeckOptions: React.FC<DeckOptionsProps> = ({ deck, onOptionItemClick }) => {
     return (

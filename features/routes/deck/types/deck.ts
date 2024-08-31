@@ -10,3 +10,8 @@ export interface DeckItemProps {
     onOptionClick: (e: React.MouseEvent, deckId: number) => void;
     onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
 }
+
+export interface DeckOptionsProps {
+    deck: Deck;
+    onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
+}
