@@ -1,29 +1,20 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import DeckOptions from './DeckOptions';
-
-interface Deck {
-    id: number;
-    deckName: string;
-    totalQuestions: number;
-}
-
-interface DeckItemProps {
-    deck: Deck;
-    showOptions: number | null;
-    onQuizClick: (deckId: number, deckName: string) => void;
-    onOptionClick: (e: React.MouseEvent, deckId: number) => void;
-    onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
-    truncateDeckName: (name: string) => string;
-}
+import { DeckItemProps } from '../types/deck';
 
 const DeckItem: React.FC<DeckItemProps> = ({
     deck,
     showOptions,
-    onQuizClick, // 名前を変更
+    onQuizClick,
     onOptionClick,
     onOptionItemClick,
-    truncateDeckName,
 }) => {
+
+    const truncateDeckName = (name: string) => {
+        if (!name) return '';
+        return name.length > 20 ? name.substring(0, 20) + '...' : name;
+    };
+
     return (
         <li
             className="relative flex flex-col md:flex-row justify-between items-center p-4 bg-white rounded-lg shadow space-y-2 md:space-y-0 md:space-x-4 deck-list-item"

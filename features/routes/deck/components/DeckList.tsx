@@ -29,11 +29,6 @@ const DeckList = () => {
         fetchDecks(pageNumber);
     };
 
-    const truncateDeckName = (name: string) => {
-        if (!name) return '';
-        return name.length > 20 ? name.substring(0, 20) + '...' : name;
-    };
-
     const totalPages = Math.ceil(totalDecks / decksPerPage);
 
     const fetchDecks = (page: number) => {
@@ -112,7 +107,6 @@ const DeckList = () => {
                         onQuizClick={handleQuizClick}
                         onOptionClick={handleOptionClick}
                         onOptionItemClick={handleOptionItemClick}
-                        truncateDeckName={truncateDeckName}
                         />
                     ))}
                 </ul>
