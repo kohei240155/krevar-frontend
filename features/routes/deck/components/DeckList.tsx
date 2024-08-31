@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
-import Pagination from './../../../common/components/Pagination';
+import { useEffect, useState } from 'react';
+import * as Common from '../../../common/components/index';
 import { useRouter } from 'next/navigation';
 import DeckItem from './DeckItem';
 import LoadingIndicator from '../../../common/components/LoadingIndicator';
@@ -11,9 +11,9 @@ const DeckList = () => {
     const [decks, setDecks] = useState<Deck[]>([]);
     const [showOptions, setShowOptions] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const router = useRouter();
     const [totalDecks, setTotalDecks] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const router = useRouter();
 
     const decksPerPage = 10;
 
@@ -124,7 +124,7 @@ const DeckList = () => {
                         />
                     ))}
                 </ul>
-                <Pagination
+                <Common.Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
                     paginate={paginate}
