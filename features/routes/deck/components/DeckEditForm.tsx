@@ -9,7 +9,7 @@ import * as Common from "../../../common/components/index";
 import DeckForm from './DeckForm';
 import { DeckEditFormProps } from '../types/deck';
 
-const EditDeckForm: React.FC<DeckEditFormProps> = ({ deckId, deckName: initialDeckName, onDeckUpdated }) => {
+const DeckEditForm: React.FC<DeckEditFormProps> = ({ deckId, deckName: initialDeckName, onDeckUpdated }) => {
     const [deckName, setDeckName] = useState(initialDeckName);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +49,7 @@ const EditDeckForm: React.FC<DeckEditFormProps> = ({ deckId, deckName: initialDe
         try {
             await axios.delete(`http://localhost:8080/api/deck/${deckId}`);
             toast.success("Deck deleted successfully!");
-            router.push('/decks');
+            router.push('/deck');
         } catch (error) {
             toast.error("Error deleting deck: " + error);
         } finally {
@@ -58,25 +58,22 @@ const EditDeckForm: React.FC<DeckEditFormProps> = ({ deckId, deckName: initialDe
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md relative">
-            <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-bold text-left">Edit Deck</h1>
-                <button
-                    onClick={handleDelete}
-                    className="w-10 h-10 flex items-center justify-center rounded-full text-red-600 bg-white border border-red-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
-                >
-                    <FaTrash />
-                </button>
-            </div>
-            <DeckForm deckName={deckName} onDeckNameChange={setDeckName} onSubmit={handleUpdate} />
+        <>
+            <DeckForm
+                deckName={deckName}
+                onDeckNameChange={setDeckName}
+                onSubmit={handleUpdate}
+                isEditMode={true}
+                onDelete={handleDelete}
+            />
             <Common.DeleteConfirmModal
                 isOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
                 onConfirmDelete={confirmDelete}
                 targetWord="deck"
             />
-        </div>
+        </>
     );
 };
 
-export default EditDeckForm;
+export default DeckEditForm;
