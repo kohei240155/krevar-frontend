@@ -3,7 +3,7 @@ import { useSession, signIn } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
-import Decks from "./decks/page";
+import Decks from "./deck/page";
 import HomePage from "./home/page"; // Added
 
 export default function Home() {
