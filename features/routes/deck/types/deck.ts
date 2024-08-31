@@ -15,3 +15,7 @@ export interface DeckOptionsProps {
     deck: Deck;
     onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
 }
+
+export interface DeckFormProps {
+    onDeckCreated: () => void;
+}

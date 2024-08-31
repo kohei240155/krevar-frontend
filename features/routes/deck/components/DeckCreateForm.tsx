@@ -4,21 +4,17 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
-
-interface DeckFormProps {
-    onDeckCreated: () => void;
-}
+import { DeckFormProps } from '../types/deck';
 
 const DeckForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
     const [deckName, setDeckName] = useState('');
-    const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
+    const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
-        // ローディングをシミュレートするためのタイムアウト
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 500); // 1秒後にローディングを終了
+        }, 500);
         return () => clearTimeout(timer);
     }, []);
 
@@ -35,7 +31,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
         try {
             const response = await axios.post('http://localhost:8080/api/decks',
                 { deckName, userId: 1 },
-                { withCredentials: true }  // クッキーのセッション情報を付与
+                { withCredentials: true }
             );
             if (response.status === 200) {
                 toast.success("Deck created successfully!");
