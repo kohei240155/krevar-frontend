@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { WordListProps, Word } from '../types/word';
 import WordItem from './WordItem';
@@ -7,7 +7,6 @@ import * as Common from "../../../common/components/index";
 
 const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const [words, setWords] = useState<Word[]>([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalWords, setTotalWords] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,47 +15,44 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const deckName = searchParams?.get('deckName') || '';
 
   const wordsPerPage = 10;
-  const totalPages = Math.ceil(totalWords / wordsPerPage);
+
+  useEffect(() => {
+    fetchWords(currentPage);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [currentPage]);
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     fetchWords(pageNumber);
   };
 
-  const fetchWords = useCallback((page: number) => {
-    setLoading(true);
+  const totalPages = Math.ceil(totalWords / wordsPerPage);
+
+  const fetchWords = ((page: number) => {
     fetch(`http://localhost:8080/api/word/deck/${deckId}?page=${page - 1}`, {
+      method: 'GET',
       credentials: 'include',
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch words');
+        }
+        return response.json();
+      })
       .then(data => {
         setWords(data.words);
         setTotalWords(data.totalCount);
-        setLoading(false);
       })
       .catch(error => {
         console.log("Error fetching words:", error);
-        setLoading(false);
       });
-  }, [deckId]);
-
-  useEffect(() => {
-    fetchWords(currentPage);
-  }, [deckId, fetchWords, currentPage]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+  });
 
   if (isLoading) {
     return <Common.LoadingIndicator />;
-  }
-
-  if (loading) {
-    return <p className="text-gray-500 text-center mt-4">Loading words...</p>;
   }
 
   if (!words || words.length === 0) {
