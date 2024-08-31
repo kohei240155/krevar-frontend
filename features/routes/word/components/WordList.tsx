@@ -4,7 +4,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { WordListProps, Word } from '../types/word';
 import WordItem from './WordItem';
-import Pagination from '../../../common/components/Pagination';
 import * as Common from "../../../common/components/index";
 
 const WordList: React.FC<WordListProps> = ({ deckId }) => {
@@ -108,7 +107,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
           ))}
         </ul>
         <div className="flex justify-center mt-4">
-          <Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
+          <Common.Pagination currentPage={currentPage} totalPages={totalPages} paginate={paginate} />
         </div>
         <button
           className="w-full mt-4 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
