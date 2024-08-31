@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { WordListProps, Word } from '../types/word';
 import WordItem from './WordItem';
 import * as Common from "../../../common/components/index";
-import EmptyDeckList from '../../../common/components/EmptyList';
 
 const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const [words, setWords] = useState<Word[]>([]);
@@ -75,7 +74,7 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
 
   if (!words || words.length === 0) {
     return (
-      <EmptyDeckList
+      <Common.EmptyList
         title={deckName}
         message="No words to display."
         buttonText="Add Word"
