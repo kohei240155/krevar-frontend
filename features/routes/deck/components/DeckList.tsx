@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import * as Common from '../../../common/components/index';
 import { useRouter } from 'next/navigation';
 import DeckItem from './DeckItem';
-import LoadingIndicator from '../../../common/components/LoadingIndicator';
 import EmptyDeckList from './EmptyDeckList';
 import { Deck } from '../types/deck';
 
@@ -73,7 +72,7 @@ const DeckList = () => {
     }
 
     if (isLoading) {
-        return <LoadingIndicator />;
+        return <Common.LoadingIndicator />;
     }
 
     if (decks.length === 0 && !isLoading) {
