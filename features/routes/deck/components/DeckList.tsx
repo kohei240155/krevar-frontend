@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import * as Common from '../../../common/components/index';
 import { useRouter } from 'next/navigation';
 import DeckItem from './DeckItem';
-import EmptyDeckList from './EmptyDeckList';
 import { Deck } from '../types/deck';
 
 const DeckList = () => {
@@ -71,7 +70,12 @@ const DeckList = () => {
     }
 
     if (decks.length === 0 && !isLoading) {
-        return <EmptyDeckList />;
+        return <Common.EmptyList
+                title="Deck List"
+                message="No decks to display."
+                buttonText="Add Deck"
+                buttonAction={() => router.push('/decks/new')}
+            />;
     }
 
     const handleOptionItemClick = (e: React.MouseEvent, option: string, deck: Deck) => {
