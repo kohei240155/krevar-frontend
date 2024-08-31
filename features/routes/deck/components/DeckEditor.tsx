@@ -9,7 +9,7 @@ import * as Common from "../../../common/components/index";
 import DeckForm from './DeckForm';
 import { DeckEditorProps } from '../types/deck';
 
-const DeckEditor: React.FC<DeckEditorProps> = ({ deckId, deckName: initialDeckName, onDeckUpdated }) => {
+const DeckEditor: React.FC<DeckEditorProps> = ({ deckId, deckName: initialDeckName }) => {
     const [deckName, setDeckName] = useState(initialDeckName);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +32,7 @@ const DeckEditor: React.FC<DeckEditorProps> = ({ deckId, deckName: initialDeckNa
             const response = await axios.put(`http://localhost:8080/api/deck/${deckId}`, { deckName });
             if (response.status === 200) {
                 toast.success("Deck updated successfully!");
-                onDeckUpdated();
+                router.push('/deck');
             } else {
                 toast.error("Unexpected response from the server.");
             }
