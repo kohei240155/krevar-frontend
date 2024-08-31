@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
 import { DeckFormProps } from '../types/deck';
+import * as Common from "../../../common/components/index";
 
 const DeckForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
     const [deckName, setDeckName] = useState('');
@@ -20,9 +21,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ onDeckCreated }) => {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center h-screen">
-                <div className="absolute top-0 mt-20 text-xl">Loading...</div>
-            </div>
+            <Common.LoadingIndicator />
         );
     }
 
