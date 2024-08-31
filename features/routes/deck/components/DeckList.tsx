@@ -5,12 +5,7 @@ import { useRouter } from 'next/navigation';
 import DeckItem from './DeckItem';
 import LoadingIndicator from '../../../common/components/LoadingIndicator';
 import EmptyDeckList from './EmptyDeckList';
-
-interface Deck {
-    id: number;
-    deckName: string;
-    totalQuestions: number;
-}
+import { Deck } from '../types/deck';
 
 const DeckList = () => {
     const [decks, setDecks] = useState<Deck[]>([]);
