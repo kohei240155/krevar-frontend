@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { WordListProps, Word } from '../types/word';
+import { Word } from '../types/word';
 import WordItem from './WordItem';
 import * as Common from "../../../common/components/index";
 
-const WordList: React.FC<WordListProps> = ({ deckId }) => {
+const WordList = () => {
   const [words, setWords] = useState<Word[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalWords, setTotalWords] = useState(0);
@@ -13,16 +13,8 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const deckName = searchParams?.get('deckName') || '';
-
+  const deckId = searchParams?.get('deckId') || '';
   const wordsPerPage = 10;
-
-  useEffect(() => {
-    fetchWords(currentPage);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [currentPage]);
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -31,7 +23,8 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
 
   const totalPages = Math.ceil(totalWords / wordsPerPage);
 
-  const fetchWords = ((page: number) => {
+  const fetchWords = useCallback((page: number) => {
+    console.log("★Fetching words for page:", page - 1);
     fetch(`http://localhost:8080/api/word/deck/${deckId}?page=${page - 1}`, {
       method: 'GET',
       credentials: 'include',
@@ -43,13 +36,23 @@ const WordList: React.FC<WordListProps> = ({ deckId }) => {
         return response.json();
       })
       .then(data => {
+        console.log("★Data:", data);
         setWords(data.words);
         setTotalWords(data.totalCount);
       })
       .catch(error => {
         console.log("Error fetching words:", error);
       });
-  });
+  }, [deckId]);
+
+  useEffect(() => {
+    console.log("Fetching words for page:", currentPage);
+    fetchWords(currentPage);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [currentPage, fetchWords]);
 
   if (isLoading) {
     return <Common.LoadingIndicator />;

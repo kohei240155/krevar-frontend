@@ -87,7 +87,7 @@ const DeckList = () => {
                 router.push(`/word/new?deckId=${deck.id}`);
                 break;
             case 'list':
-                router.push(`/word/list?deckId=${deck.id}`);
+                router.push(`/word/list?deckId=${deck.id}?deckName=${deck.deckName}`);
                 break;
             case 'settings':
                 router.push(`/deck/edit/${deck.id}`);

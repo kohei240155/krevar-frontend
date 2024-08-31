@@ -4,11 +4,10 @@ import { useParams } from 'next/navigation'
 import * as Word from './../../../features/routes/word/components/index';
 
 const WordListPage = () => {
-  const { deckId } = useParams() as { deckId: string };
 
   return (
     <div>
-        <Word.WordList deckId={deckId} />
+        <Word.WordList />
     </div>
   )
 }
