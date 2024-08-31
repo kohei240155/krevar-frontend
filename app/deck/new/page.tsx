@@ -7,7 +7,7 @@ const NewDeck = () => {
   const router = useRouter();
 
   const handleDeckCreated = () => {
-    router.push('/');
+    router.push('/deck');
   }
 
   return (
