@@ -117,7 +117,7 @@ const DeckList = () => {
                 />
             </div>
         </div>
-);
+    );
 }
 
 export default DeckList;
