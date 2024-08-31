@@ -43,6 +43,7 @@ const DeckList = () => {
             return response.json();
         })
         .then(data => {
+            console.log("Data:", data);
             const formattedDecks = data.decks.map((item: any) => ({
                 id: item.deck.id,
                 deckName: item.deck.deckName,
