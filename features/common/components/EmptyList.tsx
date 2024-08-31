@@ -1,7 +1,7 @@
 import React from 'react';
 import { EmptyListProps } from '../types/common';
 
-const EmptyDeckList: React.FC<EmptyListProps> = ({ title, message, buttonText, buttonAction }) => {
+const EmptyList: React.FC<EmptyListProps> = ({ title, message, buttonText, buttonAction }) => {
     return (
         <div className="p-4">
             <div className="max-w-2xl mx-auto mt-1 p-6 bg-white rounded-lg shadow-md">
@@ -26,4 +26,4 @@ const EmptyDeckList: React.FC<EmptyListProps> = ({ title, message, buttonText, b
     );
 };
 
-export default EmptyDeckList;
+export default EmptyList;
