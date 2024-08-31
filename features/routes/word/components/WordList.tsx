@@ -64,7 +64,7 @@ const WordList = () => {
         title={deckName}
         message="No words to display."
         buttonText="Add Word"
-        buttonAction={() => router.push(`/word/new?deckId=${deckId}`)}
+        buttonAction={() => router.push(`/word/add?deckId=${deckId}`)}
         backButtonAction={() => router.push('/deck')}
       />
     );
