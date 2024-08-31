@@ -36,17 +36,12 @@ const DeckList = () => {
     };
 
     const totalPages = Math.ceil(totalDecks / decksPerPage);
-    const pageNumbers: number[] = [];
-
-    for (let i = 1; i <= totalPages; i++) {
-        pageNumbers.push(i);
-    }
 
     const fetchDecks = (page: number) => {
         console.log("Fetching decks for page:", page);
         fetch(`http://localhost:8080/api/decks?page=${page - 1}`, {
             method: 'GET',
-            credentials: 'include', // クッキーを含める
+            credentials: 'include',
         })
         .then(response => {
             if (!response.ok) {
@@ -68,7 +63,7 @@ const DeckList = () => {
         });
     };
 
-    const handleDeckClick = (deckId: number, deckName: string) => {
+    const handleQuizClick = (deckId: number, deckName: string) => {
         router.push(`/quiz/${deckId}?deckName=${encodeURIComponent(deckName)}`);
     };
 
@@ -117,7 +112,7 @@ const DeckList = () => {
                         key={deck.id}
                         deck={deck}
                         showOptions={showOptions}
-                        onDeckClick={handleDeckClick}
+                        onQuizClick={handleQuizClick} // 名前を変更
                         onOptionClick={handleOptionClick}
                         onOptionItemClick={handleOptionItemClick}
                         truncateDeckName={truncateDeckName}
