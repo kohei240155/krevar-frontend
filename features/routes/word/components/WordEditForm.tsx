@@ -15,7 +15,7 @@ interface WordEditFormProps {
   wordId: string;
 }
 
-const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
+const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -43,7 +43,7 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
       try {
         const response = await axios.get(
           `http://localhost:8080/api/word/${wordId}`,
-          { withCredentials: true }, // クッキーを含める
+          { withCredentials: true } // クッキーを含める
         );
         const wordData = response.data;
         setWord(wordData.originalText);
@@ -98,7 +98,7 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
         },
         {
           withCredentials: true, // クッキーを含める
-        },
+        }
       );
       if (response.status === 200) {
         toast.success("Word updated successfully!");
@@ -305,4 +305,4 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   );
 };
 
-export default bk_WordEditForm;
+export default WordEditForm;

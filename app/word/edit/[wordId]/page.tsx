@@ -9,7 +9,7 @@ const EditWordPage = () => {
 
   return (
     <div>
-      <Word.WordEditor wordId={wordId} />
+      <Word.WordEditForm wordId={wordId} />
     </div>
   );
 };
