@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { GiSpeaker } from "react-icons/gi";
 import Image from "next/image";
 import { QuizCardProps, Word } from "../types/quiz";
-import * as Common from "../../../common/components/index";
+import * as Common from "../../../common/index";
 import AllDoneCard from "./AllDoneCard";
 
 const formatImageUrl = (url: string) => {

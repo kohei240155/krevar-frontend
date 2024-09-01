@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
-import * as Common from "../../../common/components/index";
+import * as Common from "../../../common/index";
 import DeckForm from "./DeckForm";
 
 const DeckCreation: React.FC = () => {
@@ -29,7 +29,7 @@ const DeckCreation: React.FC = () => {
       const response = await axios.post(
         "http://localhost:8080/api/deck",
         { deckName, userId: 1 },
-        { withCredentials: true },
+        { withCredentials: true }
       );
       if (response.status === 200) {
         toast.success("Deck created successfully!");

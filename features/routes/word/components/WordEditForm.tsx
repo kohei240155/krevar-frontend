@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaTrash } from "react-icons/fa";
-import * as Common from "./../../../common/components/index";
+import * as Common from "../../../common/index";
 import { ColorResult } from "react-color";
 import WordInput from "./WordInput";
 import MeaningInput from "./MeaningInput";

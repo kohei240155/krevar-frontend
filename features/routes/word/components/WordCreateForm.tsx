@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { ColorResult } from "react-color";
 import { imageGenerationPrompt } from "../../../../prompts/promptForImage";
 import { literaryAnalysisPrompt } from "../../../../prompts/promptForMeaning";
-import * as Common from "./../../../common/components/index";
+import * as Common from "../../../common/index";
 import MeaningInput from "./MeaningInput";
 import NuanceInput from "./NuanceInput";
 import ImageDisplay from "./ImageDisplay";

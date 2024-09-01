@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import * as Common from "../../../common/components/index";
+import * as Common from "../../../common/index";
 import { useRouter } from "next/navigation";
 import DeckItem from "./DeckItem";
 import { Deck } from "../types/deck";

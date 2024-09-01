@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import * as Common from "../../../common/components/index";
+import * as Common from "../../../common/index";
 import DeckForm from "./DeckForm";
 import { DeckEditorProps } from "../types/deck";
 
@@ -34,7 +34,7 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
     try {
       const response = await axios.put(
         `http://localhost:8080/api/deck/${deckId}`,
-        { deckName },
+        { deckName }
       );
       if (response.status === 200) {
         toast.success("Deck updated successfully!");

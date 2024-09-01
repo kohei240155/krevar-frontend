@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Word } from "../types/word";
 import WordItem from "./WordItem";
-import * as Common from "../../../common/components/index";
+import * as Common from "../../../common/index";
 
 const WordList = ({ deckName }: { deckName: string }) => {
   const [words, setWords] = useState<Word[]>([]);
@@ -42,7 +42,7 @@ const WordList = ({ deckName }: { deckName: string }) => {
           console.log("Error fetching words:", error);
         });
     },
-    [deckId],
+    [deckId]
   );
 
   useEffect(() => {
