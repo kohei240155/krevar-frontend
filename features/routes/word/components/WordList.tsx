@@ -5,14 +5,13 @@ import { Word } from '../types/word';
 import WordItem from './WordItem';
 import * as Common from "../../../common/components/index";
 
-const WordList = () => {
+const WordList = ({ deckName }: { deckName: string }) => {
   const [words, setWords] = useState<Word[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalWords, setTotalWords] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const deckName = searchParams?.get('deckName') || '';
   const deckId = searchParams?.get('deckId') || '';
   const wordsPerPage = 10;
 

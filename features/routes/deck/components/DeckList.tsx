@@ -84,10 +84,10 @@ const DeckList = () => {
         e.stopPropagation();
         switch (option) {
             case 'word-add':
-                router.push(`/word/add?deckId=${deck.id}`);
+                router.push(`/word/add?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`);
                 break;
             case 'word-list':
-                router.push(`/word/list?deckId=${deck.id}`);
+                router.push(`/word/list?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`);
                 break;
             case 'deck-settings':
                 router.push(`/deck/edit/${deck.id}`);
