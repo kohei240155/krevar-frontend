@@ -1,16 +1,6 @@
 import Image from "next/image";
 import ContentEditable from "react-contenteditable";
-
-interface WordFormProps {
-    wordRef: React.RefObject<HTMLElement>;
-    word: string;
-    setWord: (value: string) => void;
-    meaning: string;
-    setMeaning: (value: string) => void;
-    nuance: string;
-    setNuance: (value: string) => void;
-    imageUrl: string;
-  }
+import { WordFormProps } from "../types/word";
 
   const WordForm: React.FC<WordFormProps> = ({
     wordRef,

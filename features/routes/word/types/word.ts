@@ -23,3 +23,14 @@ export interface ColorPickerProps {
 export interface WordEditProps {
     wordId: string;
   }
+
+export interface WordFormProps {
+    wordRef: React.RefObject<HTMLElement>;
+    word: string;
+    setWord: (value: string) => void;
+    meaning: string;
+    setMeaning: (value: string) => void;
+    nuance: string;
+    setNuance: (value: string) => void;
+    imageUrl: string;
+  }
