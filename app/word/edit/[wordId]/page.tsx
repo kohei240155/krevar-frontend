@@ -1,4 +1,4 @@
-"use client"; // クライアントコンポーネントとしてマーク
+"use client";
 
 import React from "react";
 import { useParams } from "next/navigation";
@@ -9,7 +9,7 @@ const EditWordPage = () => {
 
   return (
     <div>
-      <Word.WordEditForm wordId={wordId} />
+      <Word.WordEditor wordId={wordId} />
     </div>
   );
 };

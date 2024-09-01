@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -5,8 +6,6 @@ import { toast } from "react-toastify";
 import { FaTrash } from "react-icons/fa";
 import * as Common from "./../../../common/components/index";
 import WordForm from "./WordForm";
-import ColorPicker from "./ColorPicker";
-import { ColorResult } from "react-color";
 import { WordEditProps } from "../types/word";
 
 const WordEditor: React.FC<WordEditProps> = ({ wordId }) => {
@@ -18,8 +17,6 @@ const WordEditor: React.FC<WordEditProps> = ({ wordId }) => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const wordRef = useRef("");
-  const [highlightColor, setHighlightColor] = useState("#ffff00");
-  const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -29,7 +26,7 @@ const WordEditor: React.FC<WordEditProps> = ({ wordId }) => {
           `http://localhost:8080/api/word/${wordId}`,
           {
             withCredentials: true,
-          },
+          }
         );
         const wordData = response.data;
         setWord(wordData.originalText);
@@ -53,30 +50,6 @@ const WordEditor: React.FC<WordEditProps> = ({ wordId }) => {
     return <Common.LoadingIndicator />;
   }
 
-  const handleHighlight = () => {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const span = document.createElement("span");
-      span.style.backgroundColor = highlightColor;
-      range.surroundContents(span);
-    }
-  };
-
-  const handleColorChange = (color: ColorResult) => {
-    setHighlightColor(color.hex);
-  };
-
-  const handleReset = () => {
-    const wordHtml =
-      (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
-    const cleanedWord = wordHtml.replace(/<[^>]+>/g, "");
-    setWord(cleanedWord);
-    if (wordRef.current) {
-      (wordRef.current as unknown as HTMLElement).innerHTML = cleanedWord;
-    }
-  };
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
@@ -93,7 +66,7 @@ const WordEditor: React.FC<WordEditProps> = ({ wordId }) => {
         },
         {
           withCredentials: true,
-        },
+        }
       );
       if (response.status === 200) {
         toast.success("Word updated successfully!");
@@ -142,14 +115,7 @@ const WordEditor: React.FC<WordEditProps> = ({ wordId }) => {
           nuance={nuance}
           setNuance={setNuance}
           imageUrl={imageUrl}
-        />
-        <ColorPicker
-          highlightColor={highlightColor}
-          displayColorPicker={displayColorPicker}
-          onColorChange={handleColorChange}
-          onApplyHighlight={handleHighlight}
-          onReset={handleReset}
-          onTogglePicker={() => setDisplayColorPicker(!displayColorPicker)}
+          handleSubmit={handleSubmit}
         />
         <div className="flex justify-between mb-2">
           <button

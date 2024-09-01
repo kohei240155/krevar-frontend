@@ -33,4 +33,5 @@ export interface WordFormProps {
   nuance: string;
   setNuance: (value: string) => void;
   imageUrl: string;
+  handleSubmit: (event: React.FormEvent) => void; // 追加
 }

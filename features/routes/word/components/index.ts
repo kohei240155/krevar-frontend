@@ -1,5 +1,5 @@
 import WordForm from "./WordCreateForm";
 import WordList from "./WordList";
-import WordEditForm from "./WordEditForm";
+import WordEditor from "./WordEditor";
 
-export { WordForm, WordList, WordEditForm };
+export { WordForm, WordList, WordEditor };
