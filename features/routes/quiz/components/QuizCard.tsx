@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { HiArrowCircleRight } from "react-icons/hi";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { GiSpeaker } from "react-icons/gi";
 import Image from "next/image";
 import { QuizCardProps, Word } from "../types/quiz";
 import * as Common from "../../../common/components/index";
-import AllDoneCard from "./AllDoneCard"; // 追加
+import AllDoneCard from "./AllDoneCard";
 
 const formatImageUrl = (url: string) => {
-  // フルパスを相対パスに変換
   const fileName = url.split("/").pop();
   return `/images/testImages/${fileName}`;
 };
@@ -18,21 +17,14 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   const [showTranslation, setShowTranslation] = useState(false);
   const [arrowColor, setArrowColor] = useState("text-gray-800");
   const [isArrowActive, setIsArrowActive] = useState(false);
-  const [isNormalModeCorrect, setIsNormalModeCorrect] = useState<
-    boolean | null
-  >(null);
-  const [isExtraModeCorrect, setIsExtraModeCorrect] = useState<
-    boolean | null
-  >(); // Added
-  const router = useRouter();
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const searchParams = useSearchParams();
-  const deckName = searchParams?.get("deckName") || "Deck Name"; // 修正
-  const [todayNormalQuestionCount, setTodayNormalQuestionCount] = useState(0);
-  const [todayExtraQuestionCount, setTodayExtraQuestionCount] = useState(0);
+  const deckName = searchParams?.get("deckName") || "Deck Name";
+  const [todayQuestionCount, setTodayQuestionCount] = useState(0);
   const [currentWord, setCurrentWord] = useState<Word | null>(null);
   const [isAllDone, setIsAllDone] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
-  const [isResetting, setIsResetting] = useState(false); // 追加
+  const [isLoading, setIsLoading] = useState(true);
+  const [isResetting, setIsResetting] = useState(false);
 
   const fetchData = useCallback(async () => {
     const apiUrl = isExtraQuiz
@@ -40,16 +32,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       : `http://localhost:8080/api/quiz/normal/${deckId}`;
     try {
       const response = await fetch(apiUrl, {
-        credentials: "include", // クッキーを含める
+        credentials: "include",
       });
       const data = await response.json();
       console.log("Fetched data:", data);
 
-      if (isExtraQuiz) {
-        setTodayExtraQuestionCount(data.todayExtraQuestionCount);
-      } else {
-        setTodayNormalQuestionCount(data.todayNormalQuestionCount);
-      }
+      setTodayQuestionCount(data.todayQuestionCount);
 
       const question = isExtraQuiz ? data.extraQuestion : data.randomQuestion;
       if (question) {
@@ -61,9 +49,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
           imageUrl: question.imageUrl,
         };
         setCurrentWord(formattedWord);
-        setIsAllDone(false); // 新たな問題がある場合はAll Doneを解除
+        setIsAllDone(false);
       } else {
-        setIsAllDone(true); // 問題がない場合はAll Doneを設定
+        setIsAllDone(true);
       }
     } catch (error) {
       console.error("Error fetching words:", error);
@@ -71,12 +59,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   }, [deckId, isExtraQuiz]);
 
   const resetQuiz = useCallback(async () => {
-    setIsLoading(true); // 追加
-    setIsResetting(true); // 追加
+    setIsLoading(true);
+    setIsResetting(true);
     const apiUrl = `http://localhost:8080/api/quiz/extra/${deckId}/reset`;
     try {
       const response = await fetch(apiUrl, {
-        credentials: "include", // クッキーを含める
+        credentials: "include",
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -84,8 +72,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       });
       const data = await response.json();
       console.log("Reset data:", data);
-      setTodayExtraQuestionCount(data.todayExtraQuestionCount);
-      const question = data.extraQuestion;
+      setTodayQuestionCount(data.todayQuestionCount);
+      const question = data.question;
       if (question) {
         const formattedWord = {
           id: question.id,
@@ -95,17 +83,17 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
           imageUrl: question.imageUrl,
         };
         setCurrentWord(formattedWord);
-        setIsAllDone(false); // 新たな問題がある場合はAll Doneを解除
+        setIsAllDone(false);
       } else {
-        setIsAllDone(true); // 問題がない場合はAll Doneを設定
+        setIsAllDone(true);
       }
     } catch (error) {
       console.error("Error resetting quiz:", error);
     } finally {
       setTimeout(() => {
         setIsLoading(false);
-        setIsResetting(false); // 追加
-      }, 500); // 500ミリ秒の遅延を追加
+        setIsResetting(false);
+      }, 500);
     }
   }, [deckId]);
 
@@ -115,20 +103,18 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       setShowTranslation(false);
       setArrowColor("text-gray-800");
       setIsArrowActive(false);
-      setIsNormalModeCorrect(null);
-      setIsExtraModeCorrect(null); // Added
-      setIsAllDone(false); // クイズ開始時にAll Doneを解除
+      setIsCorrect(null);
+      setIsAllDone(false);
       setCurrentWord(null);
     };
 
     initializeState();
     fetchData();
-    // ローディングをシミュレートするためのタイムアウト
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500); // 500ミリ秒後にローディングを終了
+    }, 500);
     return () => clearTimeout(timer);
-  }, [deckId, isExtraQuiz, isResetting, fetchData]); // fetchDataを依存関係に追加
+  }, [deckId, isExtraQuiz, isResetting, fetchData]);
 
   if (isLoading) {
     return <Common.LoadingIndicator />;
@@ -138,9 +124,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
     return (
       <AllDoneCard
         deckName={deckName}
-        isExtraQuiz={!!isExtraQuiz} // 修正
-        todayExtraQuestionCount={todayExtraQuestionCount}
-        todayNormalQuestionCount={todayNormalQuestionCount}
+        isExtraQuiz={!!isExtraQuiz}
+        todayQuestionCount={todayQuestionCount}
         setIsAllDone={setIsAllDone}
         setIsLoading={setIsLoading}
         resetQuiz={resetQuiz}
@@ -152,37 +137,30 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
     setShowTranslation(true);
     setArrowColor("text-green-700");
     setIsArrowActive(true);
-    setIsNormalModeCorrect(true);
-    if (isExtraQuiz) setIsExtraModeCorrect(true); // Added
+    setIsCorrect(true);
   };
 
   const handleDontKnowClick = () => {
     setShowTranslation(true);
     setArrowColor("text-red-700");
     setIsArrowActive(true);
-    setIsNormalModeCorrect(false);
-    if (isExtraQuiz) setIsExtraModeCorrect(false); // Added
+    setIsCorrect(false);
   };
 
   const handleNextClick = async () => {
-    if (
-      (isNormalModeCorrect !== null || isExtraModeCorrect !== null) &&
-      currentWord !== null
-    ) {
+    if (isCorrect !== null && currentWord !== null) {
       const apiUrl = isExtraQuiz
         ? `http://localhost:8080/api/quiz/extra/answer/${currentWord.id}`
         : `http://localhost:8080/api/quiz/normal/answer/${currentWord.id}`;
-      const body = isExtraQuiz
-        ? { isExtraModeCorrect }
-        : { isNormalModeCorrect };
+      const body = { isCorrect };
       try {
         await fetch(apiUrl, {
           method: "POST",
-          credentials: "include", // クッキーを含める
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(body), // 修正
+          body: JSON.stringify(body),
         });
         console.log("Answer submitted");
       } catch (error) {
@@ -195,18 +173,14 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       : `http://localhost:8080/api/quiz/normal/${deckId}`;
     try {
       const response = await fetch(fetchApiUrl, {
-        credentials: "include", // クッキーを含める
+        credentials: "include",
       });
       const data = await response.json();
       console.log("Fetched data:", data);
 
-      if (isExtraQuiz) {
-        setTodayExtraQuestionCount(data.todayExtraQuestionCount);
-      } else {
-        setTodayNormalQuestionCount(data.todayNormalQuestionCount);
-      }
+      setTodayQuestionCount(data.todayQuestionCount);
 
-      const question = isExtraQuiz ? data.extraQuestion : data.randomQuestion;
+      const question = data.question;
       if (question) {
         const formattedWord = {
           id: question.id,
@@ -219,8 +193,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
         setShowTranslation(false);
         setArrowColor("text-gray-800");
         setIsArrowActive(false);
-        setIsNormalModeCorrect(null);
-        setIsExtraModeCorrect(null); // Added
+        setIsCorrect(null);
       } else if (
         isExtraQuiz
           ? data.todayExtraQuestionCount === 0
@@ -235,7 +208,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
 
   const handleSpeakClick = () => {
     if (currentWord) {
-      // 利用可能な音声のリストをログに出力
       const utterance = new SpeechSynthesisUtterance(currentWord.originalText);
       utterance.lang = "en-US";
       utterance.onend = () => console.log("Speech has finished.");
@@ -258,7 +230,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
             <h2 className="text-2xl font-bold text-left ml-4 truncate">
               {deckName}
             </h2>
-            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${isExtraQuiz ? todayExtraQuestionCount : todayNormalQuestionCount}`}</p>
+            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${todayQuestionCount}`}</p>
           </div>
           {currentWord && (
             <p

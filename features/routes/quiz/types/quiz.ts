@@ -14,8 +14,7 @@ export interface QuizCardProps {
 export interface AllDoneCardProps {
   deckName: string;
   isExtraQuiz: boolean;
-  todayExtraQuestionCount: number;
-  todayNormalQuestionCount: number;
+  todayQuestionCount: number;
   setIsAllDone: (value: boolean) => void;
   setIsLoading: (value: boolean) => void;
   resetQuiz: () => Promise<void>;
