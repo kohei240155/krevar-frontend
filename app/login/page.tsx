@@ -27,7 +27,7 @@ const LoginPage = () => {
 
     // ログインに成功したらDeckListページにリダイレクト
     if (result?.ok) {
-      router.push("/decks");
+      router.push("/deck");
     } else {
       // エラーハンドリング
       alert(result?.error || "Login failed");
@@ -71,7 +71,7 @@ const LoginPage = () => {
       });
 
       if (result?.ok) {
-        router.push("/decks");
+        router.push("/deck");
       } else {
         // エ��ーハンドリング
         alert(result?.error || "Invalid credentials");

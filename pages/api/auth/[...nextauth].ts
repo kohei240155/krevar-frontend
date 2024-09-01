@@ -79,7 +79,7 @@ export default NextAuth({
     },
     redirect: async ({ url, baseUrl }) => {
       if (url === "/") {
-        return baseUrl + "/decks";
+        return baseUrl + "/deck";
       }
       return baseUrl;
     },

@@ -58,7 +58,7 @@ const DeckList = () => {
   };
 
   const handleQuizClick = (deckId: number, deckName: string) => {
-    router.push(`/quiz/${deckId}?deckName=${encodeURIComponent(deckName)}`);
+    router.push(`/quiz/normal/${deckId}`);
   };
 
   const handleOptionClick = (e: React.MouseEvent, deckId: number) => {
@@ -76,7 +76,7 @@ const DeckList = () => {
         title="Deck List"
         message="No decks to display."
         buttonText="Add Deck"
-        buttonAction={() => router.push("/decks/new")}
+        buttonAction={() => router.push("/deck/add")}
         backButtonAction={() => router.push("/deck")}
       />
     );
@@ -85,25 +85,25 @@ const DeckList = () => {
   const handleOptionItemClick = (
     e: React.MouseEvent,
     option: string,
-    deck: Deck,
+    deck: Deck
   ) => {
     e.stopPropagation();
     switch (option) {
       case "word-add":
         router.push(
-          `/word/add?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`,
+          `/word/add?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`
         );
         break;
       case "word-list":
         router.push(
-          `/word/list?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`,
+          `/word/list?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`
         );
         break;
       case "deck-settings":
         router.push(`/deck/edit/${deck.id}`);
         break;
       case "extra-quiz":
-        router.push(`/quiz/${deck.id}?extra=true`);
+        router.push(`/quiz/extra/${deck.id}`);
         break;
       default:
         break;
