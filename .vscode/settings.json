@@ -2,5 +2,11 @@
   "cSpell.words": ["Dont", "IRUKA"],
   "files.associations": {
     "*.css": "tailwindcss"
-  }
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "eslint.alwaysShowStatus": true,
 }
