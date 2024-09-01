@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useSession, signIn } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -27,4 +27,4 @@ export default function Home() {
       </main>
     </div>
   );
-};
+}

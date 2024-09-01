@@ -32,7 +32,11 @@ export default NextAuth({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "text", placeholder: "Email" },
-        password: { label: "Password", type: "password", placeholder: "Password" },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Password",
+        },
       },
       async authorize(credentials) {
         try {

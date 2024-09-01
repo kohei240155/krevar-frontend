@@ -42,8 +42,9 @@ const LoginPage = () => {
     event.preventDefault();
 
     const form = event.target as HTMLFormElement;
-    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
-    const password = (form.elements.namedItem('password') as HTMLInputElement).value;
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const password = (form.elements.namedItem("password") as HTMLInputElement)
+      .value;
 
     if (isCreatingAccount) {
       // 新規ユーザー登録
@@ -83,7 +84,9 @@ const LoginPage = () => {
       <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
         <div className="text-left">
           <h2 className="mt-2 text-xl font-medium text-gray-900">
-            {isCreatingAccount ? "Create an account" : "Sign in to your account"}
+            {isCreatingAccount
+              ? "Create an account"
+              : "Sign in to your account"}
           </h2>
         </div>
         {/* Googleログインボタン */}
@@ -93,11 +96,29 @@ const LoginPage = () => {
             type="button"
             className="flex items-center justify-center w-full px-4 py-2 text-gray-600 bg-white border border-blue-300 hover:bg-blue-50 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg"
           >
-            <svg className="w-5 h-5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
-              <path d="M17.64 9.2045c0-.638-.057-1.252-.164-1.84H9v3.481h4.844c-.209 1.125-.82 2.08-1.744 2.72v2.26h2.82c1.65-1.52 2.59-3.76 2.59-6.32z" fill="#4285F4"/>
-              <path d="M9 18c2.43 0 4.47-.81 5.96-2.19l-2.82-2.26c-.79.53-1.79.85-2.89.85-2.22 0-4.1-1.5-4.77-3.51H2.54v2.2C4.03 16.98 6.36 18 9 18z" fill="#34A853"/>
-              <path d="M4.23 10.89c-.18-.53-.28-1.09-.28-1.66s.1-1.13.28-1.66V5.36H2.54C1.92 6.59 1.5 8.02 1.5 9.5s.42 2.91 1.04 4.14l1.69-2.75z" fill="#FBBC05"/>
-              <path d="M9 3.58c1.32 0 2.5.45 3.43 1.34l2.57-2.57C13.47 1.23 11.43 0 9 0 6.36 0 4.03 1.02 2.54 2.8l1.69 2.75C4.9 5.08 6.78 3.58 9 3.58z" fill="#EA4335"/>
+            <svg
+              className="w-5 h-5 mr-2"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 18 19"
+            >
+              <path
+                d="M17.64 9.2045c0-.638-.057-1.252-.164-1.84H9v3.481h4.844c-.209 1.125-.82 2.08-1.744 2.72v2.26h2.82c1.65-1.52 2.59-3.76 2.59-6.32z"
+                fill="#4285F4"
+              />
+              <path
+                d="M9 18c2.43 0 4.47-.81 5.96-2.19l-2.82-2.26c-.79.53-1.79.85-2.89.85-2.22 0-4.1-1.5-4.77-3.51H2.54v2.2C4.03 16.98 6.36 18 9 18z"
+                fill="#34A853"
+              />
+              <path
+                d="M4.23 10.89c-.18-.53-.28-1.09-.28-1.66s.1-1.13.28-1.66V5.36H2.54C1.92 6.59 1.5 8.02 1.5 9.5s.42 2.91 1.04 4.14l1.69-2.75z"
+                fill="#FBBC05"
+              />
+              <path
+                d="M9 3.58c1.32 0 2.5.45 3.43 1.34l2.57-2.57C13.47 1.23 11.43 0 9 0 6.36 0 4.03 1.02 2.54 2.8l1.69 2.75C4.9 5.08 6.78 3.58 9 3.58z"
+                fill="#EA4335"
+              />
             </svg>
             Login with Google
           </button>
@@ -106,7 +127,10 @@ const LoginPage = () => {
         <div className="mt-8">
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="email"
+              >
                 Email *
               </label>
               <input
@@ -117,19 +141,31 @@ const LoginPage = () => {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                {isCreatingAccount ? "Password (8 or more characters) *" : "Password *"}
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="password"
+              >
+                {isCreatingAccount
+                  ? "Password (8 or more characters) *"
+                  : "Password *"}
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 id="password"
                 type="password"
-                placeholder={isCreatingAccount ? "Password (8 or more characters)" : "Password"}
+                placeholder={
+                  isCreatingAccount
+                    ? "Password (8 or more characters)"
+                    : "Password"
+                }
               />
             </div>
             <div className="flex items-center justify-between">
               {!isCreatingAccount && (
-                <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+                <a
+                  className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                  href="#"
+                >
                   Forgot password?
                 </a>
               )}
@@ -147,13 +183,21 @@ const LoginPage = () => {
         <div className="mt-4 text-center">
           <span className="inline-block align-baseline font-bold text-sm text-gray-900">
             {isCreatingAccount ? (
-              <a className="text-blue-500 hover:text-blue-800" href="#" onClick={() => setIsCreatingAccount(false)}>
+              <a
+                className="text-blue-500 hover:text-blue-800"
+                href="#"
+                onClick={() => setIsCreatingAccount(false)}
+              >
                 Sign in to your account
               </a>
             ) : (
               <>
                 Not registered?{" "}
-                <a className="text-blue-500 hover:text-blue-800" href="#" onClick={() => setIsCreatingAccount(true)}>
+                <a
+                  className="text-blue-500 hover:text-blue-800"
+                  href="#"
+                  onClick={() => setIsCreatingAccount(true)}
+                >
                   Create an account
                 </a>
               </>

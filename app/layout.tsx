@@ -4,7 +4,7 @@ import "./globals.css";
 import { getServerSession } from "next-auth";
 import NextAuthProvider from "./providers";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { Header, Footer } from "../features/routes/layouts";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,10 +24,8 @@ export default async function RootLayout({
       <body className={inter.className}>
         <NextAuthProvider>
           <div className="flex flex-col min-h-screen">
-            <Header/>
-            <main className="flex-grow">
-              {children}
-            </main>
+            <Header />
+            <main className="flex-grow">{children}</main>
             <Footer />
             <ToastContainer
               position="top-center"

@@ -1,23 +1,23 @@
-"use client"
-import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import ContentEditable from 'react-contenteditable';
-import { SketchPicker, ColorResult } from 'react-color';
-import path from 'path';
-import Image from 'next/image';
-import { imageGenerationPrompt } from '../../../../prompts/promptForImage'; // 拡張子を削除
-import { literaryAnalysisPrompt } from '../../../../prompts/promptForMeaning';
+"use client";
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import ContentEditable from "react-contenteditable";
+import { SketchPicker, ColorResult } from "react-color";
+import path from "path";
+import Image from "next/image";
+import { imageGenerationPrompt } from "../../../../prompts/promptForImage"; // 拡張子を削除
+import { literaryAnalysisPrompt } from "../../../../prompts/promptForMeaning";
 
 const WordForm = () => {
-  const [word, setWord] = useState('');
-  const [meaning, setMeaning] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [deckId, setDeckId] = useState('1');
+  const [word, setWord] = useState("");
+  const [meaning, setMeaning] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [deckId, setDeckId] = useState("1");
   const router = useRouter();
-  const wordRef = useRef('');
-  const [highlightColor, setHighlightColor] = useState('#ffff00');
+  const wordRef = useRef("");
+  const [highlightColor, setHighlightColor] = useState("#ffff00");
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [nuance, setNuance] = useState('');
+  const [nuance, setNuance] = useState("");
   const [isImageGenerated, setIsImageGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
 
@@ -40,13 +40,14 @@ const WordForm = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
-      const nuanceText = nuance.trim() !== '' ? nuance : '';
+      const wordHtml =
+        (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
+      const nuanceText = nuance.trim() !== "" ? nuance : "";
       const response = await fetch(`http://localhost:8080/api/word/${deckId}`, {
-        credentials: 'include', // クッキーを含める
-        method: 'POST',
+        credentials: "include", // クッキーを含める
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           originalText: wordHtml,
@@ -58,17 +59,20 @@ const WordForm = () => {
       });
 
       if (response.ok) {
-        const imageResponse = await fetch('http://localhost:8080/api/word/upload-image', {
-          method: 'POST',
-          credentials: 'include', // クッキーを含める
-          headers: {
-            'Content-Type': 'application/json',
+        const imageResponse = await fetch(
+          "http://localhost:8080/api/word/upload-image",
+          {
+            method: "POST",
+            credentials: "include", // クッキーを含める
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              imagePath: imageUrl, // OpenAI APIで生成された画像のパスを渡す
+              wordId: (await response.json()).id,
+            }),
           },
-          body: JSON.stringify({
-            imagePath: imageUrl, // OpenAI APIで生成された画像のパスを渡す
-            wordId: (await response.json()).id,
-          }),
-        });
+        );
 
         if (imageResponse.ok) {
           console.log("Word and image created successfully.");
@@ -78,7 +82,6 @@ const WordForm = () => {
       } else {
         console.log("Word created successfully.");
       }
-
     } catch (error) {
       console.log("Error registering word:", error);
     }
@@ -88,14 +91,17 @@ const WordForm = () => {
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
-      const span = document.createElement('span');
+      const span = document.createElement("span");
       span.style.backgroundColor = highlightColor;
-      span.dataset.highlighted = 'true'; // ハイライトされたことを示すデータ属性を追加
+      span.dataset.highlighted = "true"; // ハイライトされたことを示すデータ属性を追加
 
       // 既存のハイライトを削除
       const container = range.commonAncestorContainer;
-      const parentElement = container.nodeType === 1 ? container : container.parentElement;
-      const existingHighlights = (parentElement as HTMLElement)?.querySelectorAll('span[data-highlighted="true"]');
+      const parentElement =
+        container.nodeType === 1 ? container : container.parentElement;
+      const existingHighlights = (
+        parentElement as HTMLElement
+      )?.querySelectorAll('span[data-highlighted="true"]');
       existingHighlights?.forEach((highlight) => {
         const parent = highlight.parentNode;
         while (highlight.firstChild) {
@@ -114,47 +120,61 @@ const WordForm = () => {
 
   const handleImageGenerate = async () => {
     try {
-      const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
-      console.log('Word HTML:', wordHtml); // デバッグ用ログ
-      const highlightedText = (wordHtml.match(/<span[^>]*>(.*?)<\/span>/) || [])[1] || '';
-      console.log('Highlighted text:', highlightedText); // デバッグ用ログ
-      const promptForMeaning = literaryAnalysisPrompt.replacePlaceholders(wordHtml, highlightedText);
+      const wordHtml =
+        (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
+      console.log("Word HTML:", wordHtml); // デバッグ用ログ
+      const highlightedText =
+        (wordHtml.match(/<span[^>]*>(.*?)<\/span>/) || [])[1] || "";
+      console.log("Highlighted text:", highlightedText); // デバッグ用ログ
+      const promptForMeaning = literaryAnalysisPrompt.replacePlaceholders(
+        wordHtml,
+        highlightedText,
+      );
 
-      const gptResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
+      const gptResponse = await fetch(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [
+              { role: "system", content: "You are a helpful assistant." },
+              { role: "user", content: JSON.stringify(promptForMeaning) },
+            ],
+          }),
         },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [
-            { role: 'system', content: 'You are a helpful assistant.' },
-            { role: 'user', content: JSON.stringify(promptForMeaning) }
-          ],
-        }),
-      });
+      );
 
       const gptData = await gptResponse.json();
       const wordData = JSON.parse(gptData.choices[0].message.content);
 
-      const promptForImage = imageGenerationPrompt.replacePlaceholders(wordHtml, highlightedText);
+      const promptForImage = imageGenerationPrompt.replacePlaceholders(
+        wordHtml,
+        highlightedText,
+      );
 
-      const dalleResponse = await fetch('https://api.openai.com/v1/images/generations', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
+      const dalleResponse = await fetch(
+        "https://api.openai.com/v1/images/generations",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "dall-e-3",
+            quality: "standard",
+            style: "vivid",
+            prompt: JSON.stringify(promptForImage),
+            n: 1,
+            size: "1024x1024",
+          }),
         },
-        body: JSON.stringify({
-          model: 'dall-e-3',
-          quality: "standard",
-          style: "vivid",
-          prompt: JSON.stringify(promptForImage),
-          n: 1,
-          size: '1024x1024',
-        }),
-      });
+      );
 
       const dalleData = await dalleResponse.json();
       const imageUrl = dalleData.data[0].url;
@@ -172,8 +192,9 @@ const WordForm = () => {
   };
 
   const handleReset = () => {
-    const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
-    const cleanedWord = wordHtml.replace(/<[^>]+>/g, ''); // HTMLタグを削除
+    const wordHtml =
+      (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
+    const cleanedWord = wordHtml.replace(/<[^>]+>/g, ""); // HTMLタグを削除
     setWord(cleanedWord);
     if (wordRef.current) {
       (wordRef.current as unknown as HTMLElement).innerHTML = cleanedWord;
@@ -182,7 +203,7 @@ const WordForm = () => {
 
   const handlePaste = (event: React.ClipboardEvent) => {
     event.preventDefault();
-    const text = event.clipboardData.getData('text/plain');
+    const text = event.clipboardData.getData("text/plain");
     const selection = window.getSelection();
     if (!selection || !selection.rangeCount) return; // 'selection' が null でないことを確認
     selection.deleteFromDocument();
@@ -195,7 +216,12 @@ const WordForm = () => {
       <form onSubmit={handleSubmit}>
         {/* 単語を入力る欄 */}
         <div className="mb-4">
-          <label htmlFor="word" className="block text-sm font-medium text-gray-700">Word:</label>
+          <label
+            htmlFor="word"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Word:
+          </label>
           <ContentEditable
             innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
             html={word}
@@ -207,13 +233,18 @@ const WordForm = () => {
             <div
               onClick={() => setDisplayColorPicker(!displayColorPicker)}
               className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              style={{ backgroundColor: highlightColor, cursor: 'pointer', width: '30px', height: '30px' }}
+              style={{
+                backgroundColor: highlightColor,
+                cursor: "pointer",
+                width: "30px",
+                height: "30px",
+              }}
             />
             <button
               type="button"
               onClick={handleHighlight}
               className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              style={{ height: '30px', width: '70px' }}
+              style={{ height: "30px", width: "70px" }}
             >
               Apply
             </button>
@@ -221,14 +252,33 @@ const WordForm = () => {
               type="button"
               onClick={handleReset}
               className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-red-600 text-sm font-medium rounded-md text-red-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              style={{ height: '30px', width: '70px' }}
+              style={{ height: "30px", width: "70px" }}
             >
               Reset
             </button>
             {displayColorPicker && (
-              <div style={{ position: 'absolute', zIndex: 2, top: '100%', left: 0 }}>
-                <div style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 }} onClick={() => setDisplayColorPicker(false)} />
-                <SketchPicker color={highlightColor} onChange={handleColorChange} />
+              <div
+                style={{
+                  position: "absolute",
+                  zIndex: 2,
+                  top: "100%",
+                  left: 0,
+                }}
+              >
+                <div
+                  style={{
+                    position: "fixed",
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                  }}
+                  onClick={() => setDisplayColorPicker(false)}
+                />
+                <SketchPicker
+                  color={highlightColor}
+                  onChange={handleColorChange}
+                />
               </div>
             )}
           </div>
@@ -258,7 +308,12 @@ const WordForm = () => {
           <>
             {/* 単語の意味を入力���る欄 */}
             <div className="mb-4">
-              <label htmlFor="meaning" className="block text-sm font-medium text-gray-700">Meaning:</label>
+              <label
+                htmlFor="meaning"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Meaning:
+              </label>
               <input
                 type="text"
                 id="meaning"
@@ -269,7 +324,12 @@ const WordForm = () => {
             </div>
             {/* ニュンスを力する欄 */}
             <div className="mb-4">
-              <label htmlFor="nuance" className="block text-sm font-medium text-gray-700">Nuance:</label>
+              <label
+                htmlFor="nuance"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Nuance:
+              </label>
               <input
                 type="text"
                 id="nuance"
@@ -280,13 +340,26 @@ const WordForm = () => {
             </div>
             {/* イメージ画像を貼り付ける欄 */}
             <div className="mb-5">
-              <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
-              {imageUrl && <Image src={imageUrl} alt="Generated word image" className="mt-1 max-w-full" width={1024} height={1024} />}
+              <label
+                htmlFor="imageUrl"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Image:
+              </label>
+              {imageUrl && (
+                <Image
+                  src={imageUrl}
+                  alt="Generated word image"
+                  className="mt-1 max-w-full"
+                  width={1024}
+                  height={1024}
+                />
+              )}
             </div>
             <div className="flex justify-between mb-2">
               <button
                 type="button"
-                onClick={() => router.push('/decks')}
+                onClick={() => router.push("/decks")}
                 className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Backward
@@ -302,7 +375,7 @@ const WordForm = () => {
         )}
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default WordForm;

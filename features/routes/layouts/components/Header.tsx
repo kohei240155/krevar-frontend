@@ -23,13 +23,24 @@ const Header = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (isDropdownOpen && !event.composedPath().some(el => (el as HTMLElement).classList?.contains('dropdown'))) {
+      if (
+        isDropdownOpen &&
+        !event
+          .composedPath()
+          .some((el) => (el as HTMLElement).classList?.contains("dropdown"))
+      ) {
         setIsDropdownOpen(false);
       }
-      if (isMenuOpen && !event.composedPath().some(el => {
-        const element = el as HTMLElement;
-        return element.id === 'navbar-multi-level' || element.getAttribute?.('aria-controls') === 'navbar-multi-level';
-      })) {
+      if (
+        isMenuOpen &&
+        !event.composedPath().some((el) => {
+          const element = el as HTMLElement;
+          return (
+            element.id === "navbar-multi-level" ||
+            element.getAttribute?.("aria-controls") === "navbar-multi-level"
+          );
+        })
+      ) {
         setIsMenuOpen(false);
       }
     };
@@ -63,31 +74,84 @@ const Header = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <span className="sr-only">Open main menu</span>
-              <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+              <svg
+                className="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 17 14"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 1h15M1 7h15M1 13h15"
+                />
               </svg>
             </button>
-            <div className={`${isMenuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto z-50`} id="navbar-multi-level">
+            <div
+              className={`${isMenuOpen ? "block" : "hidden"} w-full md:block md:w-auto z-50`}
+              id="navbar-multi-level"
+            >
               <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 items-center">
                 <li>
-                  <Link href="/" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" onClick={handleMenuClick}>Deck List</Link>
+                  <Link
+                    href="/"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    onClick={handleMenuClick}
+                  >
+                    Deck List
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/decks/new" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" onClick={handleMenuClick}>Add Deck</Link>
+                  <Link
+                    href="/decks/new"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    onClick={handleMenuClick}
+                  >
+                    Add Deck
+                  </Link>
                 </li>
                 <li>
-                  <Link href="/statistic" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" onClick={handleMenuClick}>Statistic</Link>
+                  <Link
+                    href="/statistic"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    onClick={handleMenuClick}
+                  >
+                    Statistic
+                  </Link>
                 </li>
                 {session && (
                   <>
                     <li className="block md:hidden">
-                      <Link href="/information" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700" onClick={handleMenuClick}>Information</Link>
+                      <Link
+                        href="/information"
+                        className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
+                        onClick={handleMenuClick}
+                      >
+                        Information
+                      </Link>
                     </li>
                     <li className="block md:hidden">
-                      <Link href="/user-settings" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700" onClick={handleMenuClick}>User Settings</Link>
+                      <Link
+                        href="/user-settings"
+                        className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
+                        onClick={handleMenuClick}
+                      >
+                        User Settings
+                      </Link>
                     </li>
                     <li className="block md:hidden">
-                      <button onClick={() => { handleLogout(); handleMenuClick(); }} className="block w-full py-2 px-3 text-left text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700">Logout</button>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          handleMenuClick();
+                        }}
+                        className="block w-full py-2 px-3 text-left text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
+                      >
+                        Logout
+                      </button>
                     </li>
                   </>
                 )}
@@ -109,7 +173,10 @@ const Header = () => {
                           </button>
                         </li>
                         <li className="hover:bg-gray-100 transition-colors duration-300">
-                          <Link href="/information" className="block w-full px-4 py-2 text-left">
+                          <Link
+                            href="/information"
+                            className="block w-full px-4 py-2 text-left"
+                          >
                             Information
                           </Link>
                         </li>

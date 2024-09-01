@@ -1,171 +1,180 @@
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { FaTrash } from 'react-icons/fa';
-import * as Common from './../../../common/components/index';
-import WordForm from './WordForm';
-import ColorPicker from './ColorPicker';
-import { ColorResult } from 'react-color';
-import { WordEditProps } from '../types/word';
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { FaTrash } from "react-icons/fa";
+import * as Common from "./../../../common/components/index";
+import WordForm from "./WordForm";
+import ColorPicker from "./ColorPicker";
+import { ColorResult } from "react-color";
+import { WordEditProps } from "../types/word";
 
 const WordEditor: React.FC<WordEditProps> = ({ wordId }) => {
-    const [word, setWord] = useState('');
-    const [meaning, setMeaning] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
-    const [deckId, setDeckId] = useState('1');
-    const [nuance, setNuance] = useState('');
-    const router = useRouter();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const wordRef = useRef('');
-    const [highlightColor, setHighlightColor] = useState('#ffff00');
-    const [displayColorPicker, setDisplayColorPicker] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+  const [word, setWord] = useState("");
+  const [meaning, setMeaning] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [deckId, setDeckId] = useState("1");
+  const [nuance, setNuance] = useState("");
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const wordRef = useRef("");
+  const [highlightColor, setHighlightColor] = useState("#ffff00");
+  const [displayColorPicker, setDisplayColorPicker] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-      const fetchWordData = async () => {
-        try {
-          const response = await axios.get(`http://localhost:8080/api/word/${wordId}`, {
-            withCredentials: true,
-          });
-          const wordData = response.data;
-          setWord(wordData.originalText);
-          setMeaning(wordData.translatedText);
-          setImageUrl(wordData.imageUrl);
-          setDeckId(wordData.deckId);
-          setNuance(wordData.nuanceText);
-        } catch (error) {
-          console.log("Error fetching word data:", error);
-        }
-      };
-
-      fetchWordData();
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-      return () => clearTimeout(timer);
-    }, [wordId]);
-
-    if (isLoading) {
-      return <Common.LoadingIndicator />;
-    }
-
-    const handleHighlight = () => {
-      const selection = window.getSelection();
-      if (selection && selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
-        const span = document.createElement('span');
-        span.style.backgroundColor = highlightColor;
-        range.surroundContents(span);
-      }
-    };
-
-    const handleColorChange = (color: ColorResult) => {
-      setHighlightColor(color.hex);
-    };
-
-    const handleReset = () => {
-      const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
-      const cleanedWord = wordHtml.replace(/<[^>]+>/g, '');
-      setWord(cleanedWord);
-      if (wordRef.current) {
-        (wordRef.current as unknown as HTMLElement).innerHTML = cleanedWord;
-      }
-    };
-
-    const handleSubmit = async (event: React.FormEvent) => {
-      event.preventDefault();
+  useEffect(() => {
+    const fetchWordData = async () => {
       try {
-        const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
-        const response = await axios.put(`http://localhost:8080/api/word/${wordId}`, {
+        const response = await axios.get(
+          `http://localhost:8080/api/word/${wordId}`,
+          {
+            withCredentials: true,
+          },
+        );
+        const wordData = response.data;
+        setWord(wordData.originalText);
+        setMeaning(wordData.translatedText);
+        setImageUrl(wordData.imageUrl);
+        setDeckId(wordData.deckId);
+        setNuance(wordData.nuanceText);
+      } catch (error) {
+        console.log("Error fetching word data:", error);
+      }
+    };
+
+    fetchWordData();
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [wordId]);
+
+  if (isLoading) {
+    return <Common.LoadingIndicator />;
+  }
+
+  const handleHighlight = () => {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const span = document.createElement("span");
+      span.style.backgroundColor = highlightColor;
+      range.surroundContents(span);
+    }
+  };
+
+  const handleColorChange = (color: ColorResult) => {
+    setHighlightColor(color.hex);
+  };
+
+  const handleReset = () => {
+    const wordHtml =
+      (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
+    const cleanedWord = wordHtml.replace(/<[^>]+>/g, "");
+    setWord(cleanedWord);
+    if (wordRef.current) {
+      (wordRef.current as unknown as HTMLElement).innerHTML = cleanedWord;
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const wordHtml =
+        (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
+      const response = await axios.put(
+        `http://localhost:8080/api/word/${wordId}`,
+        {
           originalText: wordHtml,
           translatedText: meaning,
           imageUrl: imageUrl,
           deckId: deckId,
           nuanceText: nuance,
-        }, {
+        },
+        {
           withCredentials: true,
-        });
-        if (response.status === 200) {
-          toast.success("Word updated successfully!");
-        } else {
-          toast.error("Unexpected response from the server.");
-        }
-      } catch (error) {
-        toast.error("Error updating word: " + error);
+        },
+      );
+      if (response.status === 200) {
+        toast.success("Word updated successfully!");
+      } else {
+        toast.error("Unexpected response from the server.");
       }
-    };
-
-    const handleDelete = async () => {
-      setIsModalOpen(true);
-    };
-
-    const confirmDelete = async () => {
-      try {
-        await axios.delete(`http://localhost:8080/api/word/${wordId}`);
-        toast.success("Word deleted successfully!");
-        router.push('/word');
-      } catch (error) {
-        toast.error("Error deleting word: " + error);
-      } finally {
-        setIsModalOpen(false);
-      }
-    };
-
-    return (
-      <div className="p-5">
-        <div className="max-w-md mx-auto p-5 bg-white rounded-lg shadow-md relative">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-left">Edit Word</h1>
-            <button
-              onClick={handleDelete}
-              className="w-10 h-10 flex items-center justify-center rounded-full text-red-600 bg-white border border-red-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              <FaTrash />
-            </button>
-          </div>
-          <WordForm
-            wordRef={wordRef as unknown as React.RefObject<HTMLElement>}
-            word={word}
-            setWord={setWord}
-            meaning={meaning}
-            setMeaning={setMeaning}
-            nuance={nuance}
-            setNuance={setNuance}
-            imageUrl={imageUrl}
-          />
-          <ColorPicker
-            highlightColor={highlightColor}
-            displayColorPicker={displayColorPicker}
-            onColorChange={handleColorChange}
-            onApplyHighlight={handleHighlight}
-            onReset={handleReset}
-            onTogglePicker={() => setDisplayColorPicker(!displayColorPicker)}
-          />
-          <div className="flex justify-between mb-2">
-            <button
-              type="button"
-              onClick={() => router.back()}
-              className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              backward
-            </button>
-            <button
-              type="submit"
-              className="w-1/2 ml-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Update
-            </button>
-          </div>
-          <Common.DeleteConfirmModal
-            targetWord={word}
-            isOpen={isModalOpen}
-            onRequestClose={() => setIsModalOpen(false)}
-            onConfirmDelete={confirmDelete}
-          />
-        </div>
-      </div>
-    );
+    } catch (error) {
+      toast.error("Error updating word: " + error);
+    }
   };
 
-  export default WordEditor;
+  const handleDelete = async () => {
+    setIsModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/api/word/${wordId}`);
+      toast.success("Word deleted successfully!");
+      router.push("/word");
+    } catch (error) {
+      toast.error("Error deleting word: " + error);
+    } finally {
+      setIsModalOpen(false);
+    }
+  };
+
+  return (
+    <div className="p-5">
+      <div className="max-w-md mx-auto p-5 bg-white rounded-lg shadow-md relative">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-left">Edit Word</h1>
+          <button
+            onClick={handleDelete}
+            className="w-10 h-10 flex items-center justify-center rounded-full text-red-600 bg-white border border-red-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            <FaTrash />
+          </button>
+        </div>
+        <WordForm
+          wordRef={wordRef as unknown as React.RefObject<HTMLElement>}
+          word={word}
+          setWord={setWord}
+          meaning={meaning}
+          setMeaning={setMeaning}
+          nuance={nuance}
+          setNuance={setNuance}
+          imageUrl={imageUrl}
+        />
+        <ColorPicker
+          highlightColor={highlightColor}
+          displayColorPicker={displayColorPicker}
+          onColorChange={handleColorChange}
+          onApplyHighlight={handleHighlight}
+          onReset={handleReset}
+          onTogglePicker={() => setDisplayColorPicker(!displayColorPicker)}
+        />
+        <div className="flex justify-between mb-2">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            backward
+          </button>
+          <button
+            type="submit"
+            className="w-1/2 ml-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Update
+          </button>
+        </div>
+        <Common.DeleteConfirmModal
+          targetWord={word}
+          isOpen={isModalOpen}
+          onRequestClose={() => setIsModalOpen(false)}
+          onConfirmDelete={confirmDelete}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default WordEditor;

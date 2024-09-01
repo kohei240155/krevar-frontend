@@ -1,12 +1,12 @@
 export type Deck = {
-    id: number;
-    deckName: string;
-    totalQuestions: number;
-}
+  id: number;
+  deckName: string;
+  totalQuestions: number;
+};
 
 /**
  *
  */
 export type DeckCreate = {
-    deckName: string;
-}
+  deckName: string;
+};

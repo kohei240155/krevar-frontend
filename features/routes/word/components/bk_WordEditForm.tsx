@@ -1,36 +1,37 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { FaTrash } from 'react-icons/fa';
-import Modal from 'react-modal';
-import ContentEditable from 'react-contenteditable';
-import { SketchPicker, ColorResult } from 'react-color';
-import Image from 'next/image';
-import * as Common from './../../../common/components/index';
+import React, { useEffect, useState, useRef } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaTrash } from "react-icons/fa";
+import Modal from "react-modal";
+import ContentEditable from "react-contenteditable";
+import { SketchPicker, ColorResult } from "react-color";
+import Image from "next/image";
+import * as Common from "./../../../common/components/index";
 interface WordEditFormProps {
   wordId: string;
 }
 
 const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
-  const [word, setWord] = useState('');
-  const [meaning, setMeaning] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [deckId, setDeckId] = useState('1');
-  const [nuance, setNuance] = useState(''); // Added for nuance
+  const [word, setWord] = useState("");
+  const [meaning, setMeaning] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [deckId, setDeckId] = useState("1");
+  const [nuance, setNuance] = useState(""); // Added for nuance
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const wordRef = useRef('');
-  const [highlightColor, setHighlightColor] = useState('#ffff00');
+  const wordRef = useRef("");
+  const [highlightColor, setHighlightColor] = useState("#ffff00");
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
 
   const handleReset = () => {
-    const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
-    const cleanedWord = wordHtml.replace(/<[^>]+>/g, ''); // HTMLタグを削除
+    const wordHtml =
+      (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
+    const cleanedWord = wordHtml.replace(/<[^>]+>/g, ""); // HTMLタグを削除
     setWord(cleanedWord);
     if (wordRef.current) {
       (wordRef.current as unknown as HTMLElement).innerHTML = cleanedWord;
@@ -40,8 +41,9 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   useEffect(() => {
     const fetchWordData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/word/${wordId}`,
-          { withCredentials: true } // クッキーを含める
+        const response = await axios.get(
+          `http://localhost:8080/api/word/${wordId}`,
+          { withCredentials: true }, // クッキーを含める
         );
         const wordData = response.data;
         setWord(wordData.originalText);
@@ -63,16 +65,14 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   }, [wordId]);
 
   if (isLoading) {
-    return (
-      <Common.LoadingIndicator />
-    );
+    return <Common.LoadingIndicator />;
   }
 
   const handleHighlight = () => {
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
-      const span = document.createElement('span');
+      const span = document.createElement("span");
       span.style.backgroundColor = highlightColor;
       range.surroundContents(span);
     }
@@ -85,16 +85,21 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const wordHtml = (wordRef.current as unknown as HTMLElement)?.innerHTML || '';
-      const response = await axios.put(`http://localhost:8080/api/word/${wordId}`, {
-        originalText: wordHtml,
-        translatedText: meaning,
-        imageUrl: imageUrl,
-        deckId: deckId,
-        nuanceText: nuance,
-      }, {
-        withCredentials: true, // クッキーを含める
-      });
+      const wordHtml =
+        (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
+      const response = await axios.put(
+        `http://localhost:8080/api/word/${wordId}`,
+        {
+          originalText: wordHtml,
+          translatedText: meaning,
+          imageUrl: imageUrl,
+          deckId: deckId,
+          nuanceText: nuance,
+        },
+        {
+          withCredentials: true, // クッキーを含める
+        },
+      );
       if (response.status === 200) {
         toast.success("Word updated successfully!");
       } else {
@@ -113,7 +118,7 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
     try {
       await axios.delete(`http://localhost:8080/api/word/${wordId}`);
       toast.success("Word deleted successfully!");
-      router.push('/word');
+      router.push("/word");
     } catch (error) {
       toast.error("Error deleting word: " + error);
     } finally {
@@ -136,7 +141,12 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
         <form onSubmit={handleSubmit}>
           {/* 単語を入力する欄 */}
           <div className="mb-4">
-            <label htmlFor="word" className="block text-sm font-medium text-gray-700">Word:</label>
+            <label
+              htmlFor="word"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Word:
+            </label>
             <ContentEditable
               innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
               html={word}
@@ -147,13 +157,18 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
               <div
                 onClick={() => setDisplayColorPicker(!displayColorPicker)}
                 className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                style={{ backgroundColor: highlightColor, cursor: 'pointer', width: '30px', height: '30px' }}
+                style={{
+                  backgroundColor: highlightColor,
+                  cursor: "pointer",
+                  width: "30px",
+                  height: "30px",
+                }}
               />
               <button
                 type="button"
                 onClick={handleHighlight}
                 className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                style={{ height: '30px', width: '70px' }}
+                style={{ height: "30px", width: "70px" }}
               >
                 Apply
               </button>
@@ -161,21 +176,45 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
                 type="button"
                 onClick={handleReset}
                 className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-red-600 text-sm font-medium rounded-md text-red-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                style={{ height: '30px', width: '70px' }}
+                style={{ height: "30px", width: "70px" }}
               >
                 Reset
               </button>
               {displayColorPicker && (
-                <div style={{ position: 'absolute', zIndex: 2, top: '100%', left: 0 }}>
-                  <div style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 }} onClick={() => setDisplayColorPicker(false)} />
-                  <SketchPicker color={highlightColor} onChange={handleColorChange} />
+                <div
+                  style={{
+                    position: "absolute",
+                    zIndex: 2,
+                    top: "100%",
+                    left: 0,
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "fixed",
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                      left: 0,
+                    }}
+                    onClick={() => setDisplayColorPicker(false)}
+                  />
+                  <SketchPicker
+                    color={highlightColor}
+                    onChange={handleColorChange}
+                  />
                 </div>
               )}
             </div>
           </div>
           {/* 単語の意味を入力する欄 */}
           <div className="mb-4">
-            <label htmlFor="meaning" className="block text-sm font-medium text-gray-700">Meaning:</label>
+            <label
+              htmlFor="meaning"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Meaning:
+            </label>
             <input
               type="text"
               id="meaning"
@@ -186,7 +225,12 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
           </div>
           {/* ニュアンス入力する欄 */}
           <div className="mb-4">
-            <label htmlFor="nuance" className="block text-sm font-medium text-gray-700">Nuance:</label>
+            <label
+              htmlFor="nuance"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Nuance:
+            </label>
             <input
               type="text"
               id="nuance"
@@ -197,9 +241,20 @@ const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
           </div>
           {/* イメージ画像を表示する欄 */}
           <div className="mb-4">
-            <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">Image:</label>
+            <label
+              htmlFor="imageUrl"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Image:
+            </label>
             {imageUrl && (
-              <Image src={`/images/testImages/${imageUrl}`} alt="Word Image" width={500} height={300} className="mt-2 max-w-full h-auto rounded-md shadow-sm" />
+              <Image
+                src={`/images/testImages/${imageUrl}`}
+                alt="Word Image"
+                width={500}
+                height={300}
+                className="mt-2 max-w-full h-auto rounded-md shadow-sm"
+              />
             )}
           </div>
           <div className="flex justify-between mb-2">
