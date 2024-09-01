@@ -1,9 +1,6 @@
 import React from "react";
 import Image from "next/image";
-
-interface ImageDisplayProps {
-  imageUrl: string;
-}
+import { ImageDisplayProps } from "../types/word";
 
 const ImageDisplay: React.FC<ImageDisplayProps> = ({ imageUrl }) => {
   return (

@@ -12,10 +12,7 @@ import MeaningInput from "./MeaningInput";
 import NuanceInput from "./NuanceInput";
 import ImageDisplay from "./ImageDisplay";
 import DeleteConfirmModal from "./../../../common/components/DeleteConfirmModal";
-
-interface WordEditFormProps {
-  wordId: string;
-}
+import { WordEditFormProps } from "../types/word";
 
 const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const [word, setWord] = useState("");

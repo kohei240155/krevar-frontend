@@ -1,18 +1,7 @@
 import React from "react";
 import { ColorResult, SketchPicker } from "react-color";
 import ContentEditable from "react-contenteditable";
-
-interface WordInputProps {
-  wordRef: React.RefObject<HTMLElement>;
-  word: string;
-  setWord: (value: string) => void;
-  highlightColor: string;
-  displayColorPicker: boolean;
-  handleHighlight: () => void;
-  handleReset: () => void;
-  handleColorChange: (color: ColorResult) => void;
-  setDisplayColorPicker: (value: boolean) => void;
-}
+import { WordInputProps } from "../types/word";
 
 const WordInput: React.FC<WordInputProps> = ({
   wordRef,
