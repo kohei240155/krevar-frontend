@@ -1,4 +1,4 @@
-import { ColorResult, SketchPicker } from "react-color";
+import { SketchPicker } from "react-color";
 import { ColorPickerProps } from "../types/word";
 
 const ColorPicker: React.FC<ColorPickerProps> = ({
