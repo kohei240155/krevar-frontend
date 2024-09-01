@@ -11,9 +11,11 @@ import ContentEditable from 'react-contenteditable';
 import { SketchPicker, ColorResult } from 'react-color';
 import Image from 'next/image';
 import * as Common from './../../../common/components/index';
-import { WordEditProps } from '../types/word';
+interface WordEditFormProps {
+  wordId: string;
+}
 
-const WordEditForm: React.FC<WordEditProps> = ({ wordId }) => {
+const bk_WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const [word, setWord] = useState('');
   const [meaning, setMeaning] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -248,4 +250,4 @@ const WordEditForm: React.FC<WordEditProps> = ({ wordId }) => {
   );
 };
 
-export default WordEditForm;
+export default bk_WordEditForm;
