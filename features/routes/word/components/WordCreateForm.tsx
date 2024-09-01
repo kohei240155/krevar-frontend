@@ -5,8 +5,9 @@ import ContentEditable from "react-contenteditable";
 import { SketchPicker, ColorResult } from "react-color";
 import path from "path";
 import Image from "next/image";
-import { imageGenerationPrompt } from "../../../../prompts/promptForImage"; // 拡張子を削除
+import { imageGenerationPrompt } from "../../../../prompts/promptForImage";
 import { literaryAnalysisPrompt } from "../../../../prompts/promptForMeaning";
+import * as Common from "./../../../common/components/index";
 
 const WordForm = () => {
   const [word, setWord] = useState("");
@@ -19,22 +20,17 @@ const WordForm = () => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [nuance, setNuance] = useState("");
   const [isImageGenerated, setIsImageGenerated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // ローディングをシミュレートするためのタイムアト
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500); // 1ィン終
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="absolute top-0 mt-20 text-xl">Loading...</div>
-      </div>
-    );
+    return <Common.LoadingIndicator />;
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -44,7 +40,7 @@ const WordForm = () => {
         (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
       const nuanceText = nuance.trim() !== "" ? nuance : "";
       const response = await fetch(`http://localhost:8080/api/word/${deckId}`, {
-        credentials: "include", // クッキーを含める
+        credentials: "include",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,15 +59,15 @@ const WordForm = () => {
           "http://localhost:8080/api/word/upload-image",
           {
             method: "POST",
-            credentials: "include", // クッキーを含める
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              imagePath: imageUrl, // OpenAI APIで生成された画像のパスを渡す
+              imagePath: imageUrl,
               wordId: (await response.json()).id,
             }),
-          },
+          }
         );
 
         if (imageResponse.ok) {
@@ -93,7 +89,7 @@ const WordForm = () => {
       const range = selection.getRangeAt(0);
       const span = document.createElement("span");
       span.style.backgroundColor = highlightColor;
-      span.dataset.highlighted = "true"; // ハイライトされたことを示すデータ属性を追加
+      span.dataset.highlighted = "true";
 
       // 既存のハイライトを削除
       const container = range.commonAncestorContainer;
@@ -128,7 +124,7 @@ const WordForm = () => {
       console.log("Highlighted text:", highlightedText); // デバッグ用ログ
       const promptForMeaning = literaryAnalysisPrompt.replacePlaceholders(
         wordHtml,
-        highlightedText,
+        highlightedText
       );
 
       const gptResponse = await fetch(
@@ -146,7 +142,7 @@ const WordForm = () => {
               { role: "user", content: JSON.stringify(promptForMeaning) },
             ],
           }),
-        },
+        }
       );
 
       const gptData = await gptResponse.json();
@@ -154,7 +150,7 @@ const WordForm = () => {
 
       const promptForImage = imageGenerationPrompt.replacePlaceholders(
         wordHtml,
-        highlightedText,
+        highlightedText
       );
 
       const dalleResponse = await fetch(
@@ -173,7 +169,7 @@ const WordForm = () => {
             n: 1,
             size: "1024x1024",
           }),
-        },
+        }
       );
 
       const dalleData = await dalleResponse.json();
