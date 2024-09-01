@@ -1,13 +1,14 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import ContentEditable from "react-contenteditable";
-import { SketchPicker, ColorResult } from "react-color";
-import path from "path";
-import Image from "next/image";
+import { ColorResult } from "react-color";
 import { imageGenerationPrompt } from "../../../../prompts/promptForImage";
 import { literaryAnalysisPrompt } from "../../../../prompts/promptForMeaning";
 import * as Common from "./../../../common/components/index";
+import MeaningInput from "./MeaningInput";
+import NuanceInput from "./NuanceInput";
+import ImageDisplay from "./ImageDisplay";
+import WordInput from "./WordInput";
 
 const WordForm = () => {
   const [word, setWord] = useState("");
@@ -15,7 +16,7 @@ const WordForm = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [deckId, setDeckId] = useState("1");
   const router = useRouter();
-  const wordRef = useRef("");
+  const wordRef = useRef<HTMLElement>(null);
   const [highlightColor, setHighlightColor] = useState("#ffff00");
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [nuance, setNuance] = useState("");
@@ -91,7 +92,6 @@ const WordForm = () => {
       span.style.backgroundColor = highlightColor;
       span.dataset.highlighted = "true";
 
-      // 既存のハイライトを削除
       const container = range.commonAncestorContainer;
       const parentElement =
         container.nodeType === 1 ? container : container.parentElement;
@@ -118,10 +118,10 @@ const WordForm = () => {
     try {
       const wordHtml =
         (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
-      console.log("Word HTML:", wordHtml); // デバッグ用ログ
+      console.log("Word HTML:", wordHtml);
       const highlightedText =
         (wordHtml.match(/<span[^>]*>(.*?)<\/span>/) || [])[1] || "";
-      console.log("Highlighted text:", highlightedText); // デバッグ用ログ
+      console.log("Highlighted text:", highlightedText);
       const promptForMeaning = literaryAnalysisPrompt.replacePlaceholders(
         wordHtml,
         highlightedText
@@ -180,7 +180,7 @@ const WordForm = () => {
       setImageUrl(imageUrl);
 
       setIsImageGenerated(true);
-      setWord(wordHtml); // 装飾を保持するためにwordHtmlをセット
+      setWord(wordHtml);
       console.log("Image and word data generated successfully.");
     } catch (error) {
       console.error("Error generating image and word data:", error);
@@ -190,7 +190,7 @@ const WordForm = () => {
   const handleReset = () => {
     const wordHtml =
       (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
-    const cleanedWord = wordHtml.replace(/<[^>]+>/g, ""); // HTMLタグを削除
+    const cleanedWord = wordHtml.replace(/<[^>]+>/g, "");
     setWord(cleanedWord);
     if (wordRef.current) {
       (wordRef.current as unknown as HTMLElement).innerHTML = cleanedWord;
@@ -201,7 +201,7 @@ const WordForm = () => {
     event.preventDefault();
     const text = event.clipboardData.getData("text/plain");
     const selection = window.getSelection();
-    if (!selection || !selection.rangeCount) return; // 'selection' が null でないことを確認
+    if (!selection || !selection.rangeCount) return;
     selection.deleteFromDocument();
     selection.getRangeAt(0).insertNode(document.createTextNode(text));
   };
@@ -210,148 +210,40 @@ const WordForm = () => {
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-left">Add Word</h1>
       <form onSubmit={handleSubmit}>
-        {/* 単語を入力る欄 */}
-        <div className="mb-4">
-          <label
-            htmlFor="word"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Word:
-          </label>
-          <ContentEditable
-            innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
-            html={word}
-            onChange={(e) => setWord(e.target.value)}
-            onPaste={handlePaste} // ここに貼り付けイベントを追加
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
-          />
-          <div className="relative mt-2 inline-flex items-center">
-            <div
-              onClick={() => setDisplayColorPicker(!displayColorPicker)}
-              className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              style={{
-                backgroundColor: highlightColor,
-                cursor: "pointer",
-                width: "30px",
-                height: "30px",
-              }}
-            />
+        <WordInput
+          wordRef={wordRef as React.RefObject<HTMLElement>}
+          word={word}
+          setWord={setWord}
+          highlightColor={highlightColor}
+          displayColorPicker={displayColorPicker}
+          handleHighlight={handleHighlight}
+          handleReset={handleReset}
+          handleColorChange={handleColorChange}
+          setDisplayColorPicker={setDisplayColorPicker}
+        />
+        {!isImageGenerated && (
+          <>
             <button
               type="button"
-              onClick={handleHighlight}
-              className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              style={{ height: "30px", width: "70px" }}
+              onClick={handleImageGenerate}
+              className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 transition duration-300 ease-in-out transform hover:scale-105"
             >
-              Apply
+              Image generate
             </button>
             <button
               type="button"
-              onClick={handleReset}
-              className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-red-600 text-sm font-medium rounded-md text-red-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              style={{ height: "30px", width: "70px" }}
+              onClick={() => router.back()}
+              className="w-full mt-3 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Reset
+              Backward
             </button>
-            {displayColorPicker && (
-              <div
-                style={{
-                  position: "absolute",
-                  zIndex: 2,
-                  top: "100%",
-                  left: 0,
-                }}
-              >
-                <div
-                  style={{
-                    position: "fixed",
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                  }}
-                  onClick={() => setDisplayColorPicker(false)}
-                />
-                <SketchPicker
-                  color={highlightColor}
-                  onChange={handleColorChange}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-        {/* Image generate ボタン */}
-        <div className="mb-4">
-          {!isImageGenerated && (
-            <>
-              <button
-                type="button"
-                onClick={handleImageGenerate}
-                className="w-full inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 transition duration-300 ease-in-out transform hover:scale-105"
-              >
-                Image generate
-              </button>
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="w-full mt-3 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Backward
-              </button>
-            </>
-          )}
-        </div>
+          </>
+        )}
         {isImageGenerated && (
           <>
-            {/* 単語の意味を入力���る欄 */}
-            <div className="mb-4">
-              <label
-                htmlFor="meaning"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Meaning:
-              </label>
-              <input
-                type="text"
-                id="meaning"
-                value={meaning}
-                onChange={(e) => setMeaning(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-            {/* ニュンスを力する欄 */}
-            <div className="mb-4">
-              <label
-                htmlFor="nuance"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Nuance:
-              </label>
-              <input
-                type="text"
-                id="nuance"
-                value={nuance}
-                onChange={(e) => setNuance(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-            {/* イメージ画像を貼り付ける欄 */}
-            <div className="mb-5">
-              <label
-                htmlFor="imageUrl"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Image:
-              </label>
-              {imageUrl && (
-                <Image
-                  src={imageUrl}
-                  alt="Generated word image"
-                  className="mt-1 max-w-full"
-                  width={1024}
-                  height={1024}
-                />
-              )}
-            </div>
+            <MeaningInput meaning={meaning} setMeaning={setMeaning} />
+            <NuanceInput nuance={nuance} setNuance={setNuance} />
+            <ImageDisplay imageUrl={imageUrl} />
             <div className="flex justify-between mb-2">
               <button
                 type="button"

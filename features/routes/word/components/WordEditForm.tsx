@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -7,11 +6,13 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaTrash } from "react-icons/fa";
 import Modal from "react-modal";
-import ContentEditable from "react-contenteditable";
-import Image from "next/image";
 import * as Common from "./../../../common/components/index";
-import ColorPicker from "./ColorPicker"; // ColorPickerをインポート
 import { ColorResult } from "react-color";
+import WordInput from "./WordInput";
+import MeaningInput from "./MeaningInput";
+import NuanceInput from "./NuanceInput";
+import ImageDisplay from "./ImageDisplay";
+
 interface WordEditFormProps {
   wordId: string;
 }
@@ -21,18 +22,18 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   const [meaning, setMeaning] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [deckId, setDeckId] = useState("1");
-  const [nuance, setNuance] = useState(""); // Added for nuance
+  const [nuance, setNuance] = useState("");
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const wordRef = useRef("");
+  const wordRef = useRef<HTMLElement>(null);
   const [highlightColor, setHighlightColor] = useState("#ffff00");
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleReset = () => {
     const wordHtml =
       (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
-    const cleanedWord = wordHtml.replace(/<[^>]+>/g, ""); // HTMLタグを削除
+    const cleanedWord = wordHtml.replace(/<[^>]+>/g, "");
     setWord(cleanedWord);
     if (wordRef.current) {
       (wordRef.current as unknown as HTMLElement).innerHTML = cleanedWord;
@@ -44,24 +45,23 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
       try {
         const response = await axios.get(
           `http://localhost:8080/api/word/${wordId}`,
-          { withCredentials: true } // クッキーを含める
+          { withCredentials: true }
         );
         const wordData = response.data;
         setWord(wordData.originalText);
         setMeaning(wordData.translatedText);
         setImageUrl(wordData.imageUrl);
         setDeckId(wordData.deckId);
-        setNuance(wordData.nuanceText); // Added for nuance
+        setNuance(wordData.nuanceText);
       } catch (error) {
         console.log("Error fetching word data:", error);
       }
     };
 
     fetchWordData();
-    // ーディングをシミュレートするためのタイムアウト
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500); // 1秒後にローディングを終了
+    }, 500);
     return () => clearTimeout(timer);
   }, [wordId]);
 
@@ -98,7 +98,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
           nuanceText: nuance,
         },
         {
-          withCredentials: true, // クッキーを含める
+          withCredentials: true,
         }
       );
       if (response.status === 200) {
@@ -140,79 +140,20 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
           </button>
         </div>
         <form onSubmit={handleSubmit}>
-          {/* 単語を入力する欄 */}
-          <div className="mb-4">
-            <label
-              htmlFor="word"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Word:
-            </label>
-            <ContentEditable
-              innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
-              html={word}
-              onChange={(e) => setWord(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
-            />
-            <ColorPicker
-              highlightColor={highlightColor}
-              displayColorPicker={displayColorPicker}
-              onColorChange={handleColorChange}
-              onApplyHighlight={handleHighlight}
-              onReset={handleReset}
-              onTogglePicker={() => setDisplayColorPicker(!displayColorPicker)}
-            />
-          </div>
-          {/* 単語の意味を入力する欄 */}
-          <div className="mb-4">
-            <label
-              htmlFor="meaning"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Meaning:
-            </label>
-            <input
-              type="text"
-              id="meaning"
-              value={meaning}
-              onChange={(e) => setMeaning(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          {/* ニュアンス入力する欄 */}
-          <div className="mb-4">
-            <label
-              htmlFor="nuance"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Nuance:
-            </label>
-            <input
-              type="text"
-              id="nuance"
-              value={nuance}
-              onChange={(e) => setNuance(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          {/* イメージ画像を表示する欄 */}
-          <div className="mb-4">
-            <label
-              htmlFor="imageUrl"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Image:
-            </label>
-            {imageUrl && (
-              <Image
-                src={`/images/testImages/${imageUrl}`}
-                alt="Word Image"
-                width={500}
-                height={300}
-                className="mt-2 max-w-full h-auto rounded-md shadow-sm"
-              />
-            )}
-          </div>
+          <WordInput
+            wordRef={wordRef}
+            word={word}
+            setWord={setWord}
+            highlightColor={highlightColor}
+            displayColorPicker={displayColorPicker}
+            handleHighlight={handleHighlight}
+            handleReset={handleReset}
+            handleColorChange={handleColorChange}
+            setDisplayColorPicker={setDisplayColorPicker}
+          />
+          <MeaningInput meaning={meaning} setMeaning={setMeaning} />
+          <NuanceInput nuance={nuance} setNuance={setNuance} />
+          <ImageDisplay imageUrl={imageUrl} />
           <div className="flex justify-between mb-2">
             <button
               type="button"
