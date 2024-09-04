@@ -5,9 +5,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
-import googleIcon from "../../public/web_light_sq_ctn.svg";
-import { IoMdClose } from "react-icons/io";
 
 const LoginPage = () => {
   const { data: session, status } = useSession();
