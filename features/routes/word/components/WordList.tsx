@@ -13,6 +13,7 @@ const WordList = ({ deckName }: { deckName: string }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const deckId = searchParams?.get("deckId") || "";
+  const userId = searchParams?.get("userId") || "4";
   const wordsPerPage = 10;
 
   const paginate = (pageNumber: number) => {
@@ -24,10 +25,13 @@ const WordList = ({ deckName }: { deckName: string }) => {
 
   const fetchWords = useCallback(
     (page: number) => {
-      fetch(`http://localhost:8080/api/word/deck/${deckId}?page=${page - 1}`, {
-        method: "GET",
-        credentials: "include",
-      })
+      fetch(
+        `http://localhost:8080/api/word/${userId}/${deckId}?page=${page - 1}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error("Failed to fetch words");
@@ -42,7 +46,7 @@ const WordList = ({ deckName }: { deckName: string }) => {
           console.log("Error fetching words:", error);
         });
     },
-    [deckId]
+    [userId, deckId]
   );
 
   useEffect(() => {
