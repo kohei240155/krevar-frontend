@@ -12,27 +12,27 @@ const DeckList = () => {
   const [totalDecks, setTotalDecks] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-
+  const [userId, setUserId] = useState<number>(4);
   const decksPerPage = 10;
 
   useEffect(() => {
-    fetchDecks(currentPage);
+    fetchDecks(currentPage, userId);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [currentPage]);
+  }, [currentPage, userId]);
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    fetchDecks(pageNumber);
+    fetchDecks(pageNumber, userId);
   };
 
   const totalPages = Math.ceil(totalDecks / decksPerPage);
 
-  const fetchDecks = (page: number) => {
+  const fetchDecks = (page: number, userId: number) => {
     console.log("Fetching decks for page:", page);
-    fetch(`http://localhost:8080/api/deck?page=${page - 1}`, {
+    fetch(`http://localhost:8080/api/deck/${userId}?page=${page - 1}`, {
       method: "GET",
       credentials: "include",
     })
