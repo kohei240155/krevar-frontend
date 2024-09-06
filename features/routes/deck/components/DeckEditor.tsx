@@ -1,8 +1,6 @@
 "use client";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Common from "../../../common/index";
@@ -32,11 +30,15 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
   const handleUpdate = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await axios.put(
-        `http://localhost:8080/api/deck/${deckId}`,
-        { deckName }
-      );
-      if (response.status === 200) {
+      const response = await fetch(`http://localhost:8080/api/deck/${deckId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ userId: 1, deckName }),
+      });
+      if (response.ok) {
         toast.success("Deck updated successfully!");
         router.push("/deck");
       } else {
@@ -53,9 +55,16 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/deck/${deckId}`);
-      toast.success("Deck deleted successfully!");
-      router.push("/deck");
+      const response = await fetch(`http://localhost:8080/api/deck/${deckId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (response.ok) {
+        toast.success("Deck deleted successfully!");
+        router.push("/deck");
+      } else {
+        toast.error("Unexpected response from the server.");
+      }
     } catch (error) {
       toast.error("Error deleting deck: " + error);
     } finally {
