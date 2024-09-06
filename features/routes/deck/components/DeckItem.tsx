@@ -8,6 +8,7 @@ const DeckItem: React.FC<DeckItemProps> = ({
   onQuizClick,
   onOptionClick,
   onOptionItemClick,
+  progress,
 }) => {
   const truncateDeckName = (name: string) => {
     if (!name) return "";
@@ -20,9 +21,7 @@ const DeckItem: React.FC<DeckItemProps> = ({
         <span className="text-xl font-medium">
           {truncateDeckName(deck.deckName)}
         </span>
-        <span className="text-lg text-gray-600">
-          Left: {deck.totalQuestions}
-        </span>
+        <span className="text-lg text-gray-600">Left: {progress}</span>
       </div>
       <div className="flex items-center space-x-4 mt-4 md:mt-0 deck-actions">
         <button

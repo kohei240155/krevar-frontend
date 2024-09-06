@@ -44,13 +44,13 @@ const DeckList = () => {
       })
       .then((data) => {
         console.log("Data:", data);
-        const formattedDecks = data.decks.map((item: any) => ({
-          id: item.deck.id,
-          deckName: item.deck.deckName,
-          totalQuestions: item.totalQuestions,
+        const formattedDecks = data.deckInfo.map((item: any) => ({
+          id: item.id,
+          deckName: item.deckName,
+          progress: item.progress,
         }));
         setDecks(formattedDecks);
-        setTotalDecks(data.totalDecks);
+        setTotalDecks(data.deckInfo.length);
       })
       .catch((error) => {
         console.log("Error fetching decks:", error);
@@ -123,6 +123,7 @@ const DeckList = () => {
               onQuizClick={handleQuizClick}
               onOptionClick={handleOptionClick}
               onOptionItemClick={handleOptionItemClick}
+              progress={deck.progress}
             />
           ))}
         </ul>

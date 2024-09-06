@@ -2,6 +2,7 @@ export interface Deck {
   id: number;
   deckName: string;
   totalQuestions: number;
+  progress: number;
 }
 export interface DeckItemProps {
   deck: Deck;
@@ -9,6 +10,7 @@ export interface DeckItemProps {
   onQuizClick: (deckId: number, deckName: string) => void;
   onOptionClick: (e: React.MouseEvent, deckId: number) => void;
   onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
+  progress: number;
 }
 
 export interface DeckOptionsProps {
