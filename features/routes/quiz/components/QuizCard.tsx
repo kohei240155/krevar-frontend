@@ -3,7 +3,7 @@ import { HiArrowCircleRight } from "react-icons/hi";
 import { useSearchParams } from "next/navigation";
 import { GiSpeaker } from "react-icons/gi";
 import Image from "next/image";
-import { QuizCardProps, Word } from "../types/quiz";
+import { QuizCardProps, QuizData } from "../types/quiz";
 import * as Common from "../../../common/index";
 import AllDoneCard from "./AllDoneCard";
 
@@ -13,15 +13,14 @@ const formatImageUrl = (url: string) => {
 };
 
 const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
-  const [words, setWords] = useState<Word[]>([]);
   const [showTranslation, setShowTranslation] = useState(false);
   const [arrowColor, setArrowColor] = useState("text-gray-800");
   const [isArrowActive, setIsArrowActive] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const searchParams = useSearchParams();
   const deckName = searchParams?.get("deckName") || "Deck Name";
-  const [todayQuestionCount, setTodayQuestionCount] = useState(0);
-  const [currentWord, setCurrentWord] = useState<Word | null>(null);
+  const [leftQuizCount, setLeftQuizCount] = useState(0);
+  const [currentWord, setCurrentWord] = useState<QuizData | null>(null);
   const [isAllDone, setIsAllDone] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isResetting, setIsResetting] = useState(false);
@@ -36,24 +35,11 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
         credentials: "include",
       });
       const data = await response.json();
-      console.log("Fetched data:", data);
+      setLeftQuizCount(data.leftQuizCount);
 
-      setTodayQuestionCount(data.todayQuestionCount);
-
-      const question = isExtraQuiz ? data.extraQuestion : data.randomQuestion;
-      if (question) {
-        const formattedWord = {
-          id: question.id,
-          originalText: question.originalText,
-          translatedText: question.translatedText,
-          nuance: question.nuanceText,
-          imageUrl: question.imageUrl,
-        };
-        setCurrentWord(formattedWord);
-        setIsAllDone(false);
-      } else {
-        setIsAllDone(true);
-      }
+      setCurrentWord(data);
+      console.log("Current word:", data);
+      setIsAllDone(false);
     } catch (error) {
       console.error("Error fetching words:", error);
     }
@@ -73,17 +59,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       });
       const data = await response.json();
       console.log("Reset data:", data);
-      setTodayQuestionCount(data.todayQuestionCount);
+      setLeftQuizCount(data.leftQuizCount);
       const question = data.question;
       if (question) {
-        const formattedWord = {
-          id: question.id,
-          originalText: question.originalText,
-          translatedText: question.translatedText,
-          nuance: question.nuanceText,
-          imageUrl: question.imageUrl,
-        };
-        setCurrentWord(formattedWord);
+        setCurrentWord(data);
         setIsAllDone(false);
       } else {
         setIsAllDone(true);
@@ -96,20 +75,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
         setIsResetting(false);
       }, 500);
     }
-  }, [deckId]);
+  }, [deckId, isExtraQuiz, userId]); // userId added to dependency array
 
   useEffect(() => {
-    const initializeState = () => {
-      setWords([]);
-      setShowTranslation(false);
-      setArrowColor("text-gray-800");
-      setIsArrowActive(false);
-      setIsCorrect(null);
-      setIsAllDone(false);
-      setCurrentWord(null);
-    };
-
-    initializeState();
     fetchData();
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -126,7 +94,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       <AllDoneCard
         deckName={deckName}
         isExtraQuiz={!!isExtraQuiz}
-        todayQuestionCount={todayQuestionCount}
+        leftQuizCount={leftQuizCount}
         setIsAllDone={setIsAllDone}
         setIsLoading={setIsLoading}
         resetQuiz={resetQuiz}
@@ -179,18 +147,11 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       const data = await response.json();
       console.log("Fetched data:", data);
 
-      setTodayQuestionCount(data.todayQuestionCount);
+      setLeftQuizCount(data.leftQuizCount);
 
       const question = data.question;
       if (question) {
-        const formattedWord = {
-          id: question.id,
-          originalText: question.originalText,
-          translatedText: question.translatedText,
-          nuance: question.nuanceText,
-          imageUrl: question.imageUrl,
-        };
-        setCurrentWord(formattedWord);
+        setCurrentWord(data);
         setShowTranslation(false);
         setArrowColor("text-gray-800");
         setIsArrowActive(false);
@@ -231,7 +192,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
             <h2 className="text-2xl font-bold text-left ml-4 truncate">
               {deckName}
             </h2>
-            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${todayQuestionCount}`}</p>
+            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${leftQuizCount}`}</p>
           </div>
           {currentWord && (
             <p

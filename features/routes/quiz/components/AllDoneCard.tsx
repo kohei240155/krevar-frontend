@@ -5,7 +5,7 @@ import { AllDoneCardProps } from "../types/quiz";
 const AllDoneCard: React.FC<AllDoneCardProps> = ({
   deckName,
   isExtraQuiz,
-  todayQuestionCount,
+  leftQuizCount,
   setIsAllDone,
   setIsLoading,
   resetQuiz,
@@ -25,7 +25,7 @@ const AllDoneCard: React.FC<AllDoneCardProps> = ({
             <h2 className="text-2xl font-bold text-left ml-4 truncate">
               {deckName}
             </h2>
-            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${todayQuestionCount}`}</p>
+            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${leftQuizCount}`}</p>
           </div>
           <p
             className={`text-blue-800 text-center mt-4 text-3xl font-bold ${isExtraQuiz ? "text-blue-800" : "text-blue-800"}`}

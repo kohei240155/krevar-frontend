@@ -1,9 +1,10 @@
-export interface Word {
+export interface QuizData {
   id: number;
   originalText: string;
   translatedText: string;
   nuance: string;
   imageUrl: string;
+  leftQuizCount: number;
 }
 
 export interface QuizCardProps {
@@ -14,7 +15,7 @@ export interface QuizCardProps {
 export interface AllDoneCardProps {
   deckName: string;
   isExtraQuiz: boolean;
-  todayQuestionCount: number;
+  leftQuizCount: number;
   setIsAllDone: (value: boolean) => void;
   setIsLoading: (value: boolean) => void;
   resetQuiz: () => Promise<void>;
