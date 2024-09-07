@@ -44,7 +44,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   const resetQuiz = useCallback(async () => {
     setIsLoading(true);
     setIsResetting(true);
-    const apiUrl = `http://localhost:8080/api/quiz/extra/${deckId}/reset`;
+    const apiUrl = `http://localhost:8080/api/extra-quiz/${deckId}/reset`;
     try {
       const response = await fetch(apiUrl, {
         credentials: "include",
@@ -114,8 +114,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   const handleNextClick = async () => {
     if (isCorrect !== null && quizData !== null) {
       const apiUrl = isExtraQuiz
-        ? `http://localhost:8080/api/user/${userId}/extra-quiz/answer/${quizData?.id}`
-        : `http://localhost:8080/api/user/${userId}/normal-quiz/answer/${quizData?.id}`;
+        ? `http://localhost:8080/api/user/extra-quiz`
+        : `http://localhost:8080/api/user/normal-quiz`;
       const body = { isCorrect };
       try {
         await fetch(apiUrl, {
@@ -133,8 +133,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
     }
 
     const fetchApiUrl = isExtraQuiz
-      ? `http://localhost:8080/api/quiz/extra/${deckId}`
-      : `http://localhost:8080/api/quiz/normal/${deckId}`;
+      ? `http://localhost:8080/api/extra-quiz/${deckId}`
+      : `http://localhost:8080/api/normal-quiz/${deckId}`;
     try {
       const response = await fetch(fetchApiUrl, {
         credentials: "include",
