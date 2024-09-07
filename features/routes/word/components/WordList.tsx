@@ -39,8 +39,8 @@ const WordList = ({ deckName }: { deckName: string }) => {
           return response.json();
         })
         .then((data) => {
-          setWords(data.words);
-          setTotalWords(data.totalCount);
+          setWords(data.wordInfo);
+          setTotalWords(data.wordInfo.length);
         })
         .catch((error) => {
           console.log("Error fetching words:", error);
@@ -61,7 +61,7 @@ const WordList = ({ deckName }: { deckName: string }) => {
     return <Common.LoadingIndicator />;
   }
 
-  if (!words || words.length === 0) {
+  if (!Array.isArray(words) || totalWords === 0) {
     return (
       <Common.EmptyList
         title={deckName}
