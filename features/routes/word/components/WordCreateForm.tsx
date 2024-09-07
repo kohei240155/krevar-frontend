@@ -40,13 +40,14 @@ const WordForm = () => {
       const wordHtml =
         (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
       const nuanceText = nuance.trim() !== "" ? nuance : "";
-      const response = await fetch(`http://localhost:8080/api/word/${deckId}`, {
+      const response = await fetch(`http://localhost:8080/api/word`, {
         credentials: "include",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          userId: "4",
           originalText: wordHtml,
           translatedText: meaning,
           imageUrl: imageUrl,
@@ -54,33 +55,8 @@ const WordForm = () => {
           nuanceText: nuanceText,
         }),
       });
-
-      if (response.ok) {
-        const imageResponse = await fetch(
-          "http://localhost:8080/api/word/upload-image",
-          {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              imagePath: imageUrl,
-              wordId: (await response.json()).id,
-            }),
-          }
-        );
-
-        if (imageResponse.ok) {
-          console.log("Word and image created successfully.");
-        } else {
-          console.error("Word created, but failed to upload image.");
-        }
-      } else {
-        console.log("Word created successfully.");
-      }
     } catch (error) {
-      console.log("Error registering word:", error);
+      console.error("Error submitting word:", error);
     }
   };
 
