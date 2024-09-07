@@ -32,10 +32,13 @@ const DeckList = () => {
 
   const fetchDecks = (page: number, userId: number) => {
     console.log("Fetching decks for page:", page);
-    fetch(`http://localhost:8080/api/deck/${userId}?page=${page - 1}`, {
-      method: "GET",
-      credentials: "include",
-    })
+    fetch(
+      `http://localhost:8080/api//user/${userId}/deck/?page=${page - 1}&size=10`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch decks");

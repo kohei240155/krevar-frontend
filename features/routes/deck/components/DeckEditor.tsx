@@ -15,6 +15,7 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const userId = useState("4")[0];
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -55,10 +56,13 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
 
   const confirmDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/deck/${deckId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/user/${userId}/deck/${deckId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
       if (response.ok) {
         toast.success("Deck deleted successfully!");
         router.push("/deck");

@@ -43,7 +43,7 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
     const fetchWordData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/word/${userId}/${wordId}`,
+          `http://localhost:8080/api/user/${userId}/word/${wordId}`,
           {
             credentials: "include",
           }
