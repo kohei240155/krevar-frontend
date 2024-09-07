@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaTrash } from "react-icons/fa";
@@ -14,18 +13,21 @@ import ImageDisplay from "./ImageDisplay";
 import DeleteConfirmModal from "./../../../common/components/DeleteConfirmModal";
 import { WordEditFormProps } from "../types/word";
 
-const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
+const WordEditForm: React.FC<WordEditFormProps> = () => {
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [deckId, setDeckId] = useState("1");
   const [nuance, setNuance] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const wordId = searchParams?.get("wordId") || "";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const wordRef = useRef<HTMLElement>(null);
   const [highlightColor, setHighlightColor] = useState("#ffff00");
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const userId = useState("4")[0];
 
   const handleReset = () => {
     const wordHtml =
@@ -40,11 +42,13 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
   useEffect(() => {
     const fetchWordData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/word/${wordId}`,
-          { withCredentials: true }
+        const response = await fetch(
+          `http://localhost:8080/api/word/${userId}/${wordId}`,
+          {
+            credentials: "include",
+          }
         );
-        const wordData = response.data;
+        const wordData = await response.json();
         setWord(wordData.originalText);
         setMeaning(wordData.translatedText);
         setImageUrl(wordData.imageUrl);
@@ -60,7 +64,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [wordId]);
+  }, [wordId, userId]);
 
   if (isLoading) {
     return <Common.LoadingIndicator />;
@@ -85,20 +89,24 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
     try {
       const wordHtml =
         (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
-      const response = await axios.put(
-        `http://localhost:8080/api/word/${wordId}`,
+      const response = await fetch(
+        `http://localhost:8080/api/word/${userId}/${deckId}`,
         {
-          originalText: wordHtml,
-          translatedText: meaning,
-          imageUrl: imageUrl,
-          deckId: deckId,
-          nuanceText: nuance,
-        },
-        {
-          withCredentials: true,
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            originalText: wordHtml,
+            translatedText: meaning,
+            imageUrl: imageUrl,
+            deckId: deckId,
+            nuanceText: nuance,
+          }),
         }
       );
-      if (response.status === 200) {
+      if (response.ok) {
         toast.success("Word updated successfully!");
       } else {
         toast.error("Unexpected response from the server.");
@@ -114,9 +122,16 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ wordId }) => {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/word/${wordId}`);
-      toast.success("Word deleted successfully!");
-      router.push("/word");
+      const response = await fetch(`http://localhost:8080/api/word/${wordId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (response.ok) {
+        toast.success("Word deleted successfully!");
+        router.push("/word");
+      } else {
+        toast.error("Error deleting word.");
+      }
     } catch (error) {
       toast.error("Error deleting word: " + error);
     } finally {

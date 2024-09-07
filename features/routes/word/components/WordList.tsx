@@ -26,7 +26,7 @@ const WordList = ({ deckName }: { deckName: string }) => {
   const fetchWords = useCallback(
     (page: number) => {
       fetch(
-        `http://localhost:8080/api/word/${userId}/${deckId}?page=${page - 1}`,
+        `http://localhost:8080/api/word/list/${userId}/${deckId}?page=${page - 1}`,
         {
           method: "GET",
           credentials: "include",
@@ -82,7 +82,9 @@ const WordList = ({ deckName }: { deckName: string }) => {
             <WordItem
               key={word.id}
               word={word}
-              onEditClick={() => router.push(`/word/edit/${word.id}`)}
+              onEditClick={() =>
+                router.push(`/word/edit/${word.id}?wordId=${word.id}`)
+              }
             />
           ))}
         </ul>
