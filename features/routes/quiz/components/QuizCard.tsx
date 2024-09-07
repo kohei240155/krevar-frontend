@@ -70,7 +70,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
         setIsResetting(false);
       }, 500);
     }
-  }, [deckId, isExtraQuiz, userId]); // userId added to dependency array
+  }, [deckId, isExtraQuiz, userId]);
 
   useEffect(() => {
     fetchData();
@@ -114,12 +114,17 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   const handleNextClick = async () => {
     if (isCorrect !== null && quizData !== null) {
       const apiUrl = isExtraQuiz
-        ? `http://localhost:8080/api/user/extra-quiz`
-        : `http://localhost:8080/api/user/normal-quiz`;
-      const body = { isCorrect };
+        ? `http://localhost:8080/api/extra-quiz`
+        : `http://localhost:8080/api/normal-quiz`;
+      const body = {
+        userId: parseInt(userId, 10),
+        deckId: parseInt(deckId, 10),
+        wordId: quizData?.id,
+        isCorrect,
+      };
       try {
         await fetch(apiUrl, {
-          method: "POST",
+          method: "PUT",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
@@ -133,27 +138,16 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
     }
 
     const fetchApiUrl = isExtraQuiz
-      ? `http://localhost:8080/api/extra-quiz/${deckId}`
-      : `http://localhost:8080/api/normal-quiz/${deckId}`;
+      ? `http://localhost:8080/api/user/${userId}/extra-quiz/deck/${deckId}`
+      : `http://localhost:8080/api/user/${userId}/normal-quiz/deck/${deckId}`;
     try {
       const response = await fetch(fetchApiUrl, {
         credentials: "include",
       });
       const data = await response.json();
-      console.log("Fetched data:", data);
+      setQuizData(data);
 
-      const question = data.question;
-      if (question) {
-        setQuizData(data);
-        setShowTranslation(false);
-        setArrowColor("text-gray-800");
-        setIsArrowActive(false);
-        setIsCorrect(null);
-      } else if (
-        isExtraQuiz
-          ? data.todayExtraQuestionCount === 0
-          : data.todayNormalQuestionCount === 0
-      ) {
+      if (data.leftQuizCount === 0) {
         setIsAllDone(true);
       }
     } catch (error) {
