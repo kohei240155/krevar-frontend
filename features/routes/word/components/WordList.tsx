@@ -26,7 +26,7 @@ const WordList = ({ deckName }: { deckName: string }) => {
   const fetchWords = useCallback(
     (page: number) => {
       fetch(
-        `http://localhost:8080/api/user/${userId}/deck/${deckId}/?page=${page - 1}&size=${wordsPerPage}`,
+        `http://localhost:8080/api/user/${userId}/deck/${deckId}?page=${page - 1}&size=${wordsPerPage}`,
         {
           method: "GET",
           credentials: "include",

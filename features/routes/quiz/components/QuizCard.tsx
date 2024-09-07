@@ -25,11 +25,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   const [isAllDone, setIsAllDone] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isResetting, setIsResetting] = useState(false);
+  const userId = searchParams?.get("userId") || "4";
 
   const fetchData = useCallback(async () => {
     const apiUrl = isExtraQuiz
-      ? `http://localhost:8080/api/quiz/extra/${deckId}`
-      : `http://localhost:8080/api/quiz/normal/${deckId}`;
+      ? `http://localhost:8080/api/user/${userId}/extra-quiz/deck/${deckId}`
+      : `http://localhost:8080/api/user/${userId}/normal-quiz/deck/${deckId}`;
     try {
       const response = await fetch(apiUrl, {
         credentials: "include",
@@ -150,8 +151,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   const handleNextClick = async () => {
     if (isCorrect !== null && currentWord !== null) {
       const apiUrl = isExtraQuiz
-        ? `http://localhost:8080/api/quiz/extra/answer/${currentWord.id}`
-        : `http://localhost:8080/api/quiz/normal/answer/${currentWord.id}`;
+        ? `http://localhost:8080/api/user/${userId}/extra-quiz/answer/${currentWord.id}`
+        : `http://localhost:8080/api/user/${userId}/normal-quiz/answer/${currentWord.id}`;
       const body = { isCorrect };
       try {
         await fetch(apiUrl, {
