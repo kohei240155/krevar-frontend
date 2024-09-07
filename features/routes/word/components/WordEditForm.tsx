@@ -122,13 +122,16 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
 
   const confirmDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/word/${wordId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/word/${userId}/${wordId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
       if (response.ok) {
         toast.success("Word deleted successfully!");
-        router.push("/word");
+        router.back();
       } else {
         toast.error("Error deleting word.");
       }
