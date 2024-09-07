@@ -1,5 +1,5 @@
 import React from "react";
-import { ColorResult, SketchPicker } from "react-color";
+import { SketchPicker } from "react-color";
 import ContentEditable from "react-contenteditable";
 import { WordInputProps } from "../types/word";
 
