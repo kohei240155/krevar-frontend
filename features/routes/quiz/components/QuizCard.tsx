@@ -19,8 +19,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const searchParams = useSearchParams();
   const deckName = searchParams?.get("deckName") || "Deck Name";
-  const [leftQuizCount, setLeftQuizCount] = useState(0);
-  const [currentWord, setCurrentWord] = useState<QuizData | null>(null);
+  const [quizData, setQuizData] = useState<QuizData | undefined>(undefined);
   const [isAllDone, setIsAllDone] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isResetting, setIsResetting] = useState(false);
@@ -35,10 +34,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
         credentials: "include",
       });
       const data = await response.json();
-      setLeftQuizCount(data.leftQuizCount);
-
-      setCurrentWord(data);
-      console.log("Current word:", data);
+      setQuizData(data);
       setIsAllDone(false);
     } catch (error) {
       console.error("Error fetching words:", error);
@@ -59,10 +55,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       });
       const data = await response.json();
       console.log("Reset data:", data);
-      setLeftQuizCount(data.leftQuizCount);
       const question = data.question;
       if (question) {
-        setCurrentWord(data);
+        setQuizData(data);
         setIsAllDone(false);
       } else {
         setIsAllDone(true);
@@ -94,7 +89,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       <AllDoneCard
         deckName={deckName}
         isExtraQuiz={!!isExtraQuiz}
-        leftQuizCount={leftQuizCount}
+        quizData={quizData}
         setIsAllDone={setIsAllDone}
         setIsLoading={setIsLoading}
         resetQuiz={resetQuiz}
@@ -117,10 +112,10 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   };
 
   const handleNextClick = async () => {
-    if (isCorrect !== null && currentWord !== null) {
+    if (isCorrect !== null && quizData !== null) {
       const apiUrl = isExtraQuiz
-        ? `http://localhost:8080/api/user/${userId}/extra-quiz/answer/${currentWord.id}`
-        : `http://localhost:8080/api/user/${userId}/normal-quiz/answer/${currentWord.id}`;
+        ? `http://localhost:8080/api/user/${userId}/extra-quiz/answer/${quizData?.id}`
+        : `http://localhost:8080/api/user/${userId}/normal-quiz/answer/${quizData?.id}`;
       const body = { isCorrect };
       try {
         await fetch(apiUrl, {
@@ -147,11 +142,9 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       const data = await response.json();
       console.log("Fetched data:", data);
 
-      setLeftQuizCount(data.leftQuizCount);
-
       const question = data.question;
       if (question) {
-        setCurrentWord(data);
+        setQuizData(data);
         setShowTranslation(false);
         setArrowColor("text-gray-800");
         setIsArrowActive(false);
@@ -169,8 +162,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   };
 
   const handleSpeakClick = () => {
-    if (currentWord) {
-      const utterance = new SpeechSynthesisUtterance(currentWord.originalText);
+    if (quizData) {
+      const utterance = new SpeechSynthesisUtterance(quizData.originalText);
       utterance.lang = "en-US";
       utterance.onend = () => console.log("Speech has finished.");
       utterance.onerror = (event) =>
@@ -192,31 +185,31 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
             <h2 className="text-2xl font-bold text-left ml-4 truncate">
               {deckName}
             </h2>
-            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${leftQuizCount}`}</p>
+            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${quizData?.leftQuizCount}`}</p>
           </div>
-          {currentWord && (
+          {quizData && (
             <p
               className="text-2xl font-bold mb-6 text-left ml-4"
-              dangerouslySetInnerHTML={{ __html: currentWord.originalText }}
+              dangerouslySetInnerHTML={{ __html: quizData.originalText }}
             ></p>
           )}
 
-          {showTranslation && currentWord && (
+          {showTranslation && quizData && (
             <p
               className="text-xl text-left text-blue-700 font-semibold mb-6 ml-4"
-              dangerouslySetInnerHTML={{ __html: currentWord.translatedText }}
+              dangerouslySetInnerHTML={{ __html: quizData.translatedText }}
             ></p>
           )}
 
-          {showTranslation && currentWord && (
+          {showTranslation && quizData && (
             <>
               <p className="text-xl text-left text-gray-700 mb-6 ml-4">
-                {currentWord.nuance}
+                {quizData.nuance}
               </p>
-              {currentWord.imageUrl && (
+              {quizData.imageUrl && (
                 <div className="flex justify-center mb-6">
                   <Image
-                    src={formatImageUrl(currentWord.imageUrl)}
+                    src={formatImageUrl(quizData.imageUrl)}
                     alt="Word Image"
                     width={500}
                     height={500}

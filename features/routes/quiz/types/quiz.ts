@@ -13,9 +13,10 @@ export interface QuizCardProps {
 }
 
 export interface AllDoneCardProps {
+  quizData: QuizData | undefined;
   deckName: string;
   isExtraQuiz: boolean;
-  leftQuizCount: number;
+  // leftQuizCount: number;
   setIsAllDone: (value: boolean) => void;
   setIsLoading: (value: boolean) => void;
   resetQuiz: () => Promise<void>;
