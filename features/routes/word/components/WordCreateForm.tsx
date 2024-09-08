@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ColorResult } from "react-color";
 import { imageGenerationPrompt } from "../../../../prompts/promptForImage";
 import { literaryAnalysisPrompt } from "../../../../prompts/promptForMeaning";
@@ -12,6 +12,7 @@ import WordInput from "./WordInput";
 import { createWord } from "../utils/api";
 
 const WordForm = () => {
+  const searchParams = useSearchParams();
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -23,6 +24,7 @@ const WordForm = () => {
   const [nuance, setNuance] = useState("");
   const [isImageGenerated, setIsImageGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const deckName = searchParams?.get("deckName") || "Deck Name";
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -179,7 +181,8 @@ const WordForm = () => {
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-6 text-left">Add Word</h1>
+      <h1 className="text-2xl font-bold mb-3 text-left">Add Word</h1>
+      <p className="text-base mb-3 text-left">{deckName}</p>
       <form onSubmit={handleSubmit}>
         <WordInput
           wordRef={wordRef as React.RefObject<HTMLElement>}
