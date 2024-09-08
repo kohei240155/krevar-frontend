@@ -3,7 +3,6 @@
 import { IoPerson } from "react-icons/io5";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Link from "next/link";
-import { type Session } from "next-auth";
 import { useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
@@ -54,7 +53,7 @@ const Header = () => {
   return (
     <header className="bg-white border-gray-200 dark:bg-gray-900">
       <div className="w-full flex flex-wrap items-center justify-between mx-auto p-4 h-16">
-        <Link href="/" className="text-4xl font-bold ml-0 text-gray-900">
+        <Link href="/deck" className="text-4xl font-bold ml-0 text-gray-900">
           ▶ IRUKA
         </Link>
         {!session ? (
