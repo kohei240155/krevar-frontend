@@ -37,7 +37,7 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ userId: 1, deckName }),
+        body: JSON.stringify({ userId: 4, deckName }),
       });
       if (response.ok) {
         toast.success("Deck updated successfully!");
