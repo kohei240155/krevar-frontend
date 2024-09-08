@@ -82,7 +82,13 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       setQuizState((prev) => ({
         ...prev,
         quizData: data,
+        isLoading: false,
+        isArrowActive: false,
+        arrowColor: "text-gray-800",
         isAllDone: data.leftQuizCount === 0,
+        showTranslation: false,
+        isCorrect: null as boolean | null,
+        isResetting: false,
       }));
     }
   }, [quizState, deckId, isExtraQuiz, userId]);
