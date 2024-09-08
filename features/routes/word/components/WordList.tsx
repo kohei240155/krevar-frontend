@@ -62,7 +62,7 @@ const WordList = ({ deckName }: { deckName: string }) => {
   }
 
   return (
-    <div className="p-5" style={{ backgroundColor: "#f3f2ff" }}>
+    <div className="p-5">
       <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4 text-left">{deckName}</h2>
         <ul className="space-y-4">

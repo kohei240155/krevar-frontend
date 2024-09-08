@@ -3,7 +3,7 @@ import { WordItemProps } from "../types/word";
 const WordItem: React.FC<WordItemProps> = ({ word, onEditClick }) => (
   <li
     key={word.id}
-    className="flex justify-between items-center p-4 bg-white rounded-lg shadow h-18"
+    className="flex justify-between items-center p-4 bg-white rounded-lg shadow-md h-18"
   >
     <div className="flex flex-col items-start space-y-2">
       <span
