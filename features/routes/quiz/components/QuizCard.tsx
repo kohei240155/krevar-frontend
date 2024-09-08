@@ -34,21 +34,21 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
       ...prev,
       quizData: data,
       isLoading: false,
-      isAllDone: false,
+      isAllDone: data.leftQuizCount === 0,
     }));
   }, [deckId, isExtraQuiz, userId]);
 
   const resetQuiz = useCallback(async () => {
     setQuizState((prev) => ({ ...prev, isLoading: true, isResetting: true }));
-    const data = await resetQuizApi(deckId);
+    const data = await resetQuizApi(userId, deckId);
     setQuizState((prev) => ({
       ...prev,
-      quizData: data.question ? data : undefined,
-      isAllDone: !data.question,
+      quizData: data,
       isLoading: false,
       isResetting: false,
     }));
-  }, [deckId]);
+    fetchData();
+  }, [deckId, userId, fetchData]);
 
   useEffect(() => {
     fetchData();

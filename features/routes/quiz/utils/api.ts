@@ -49,15 +49,12 @@ export const submitAnswer = async (
   }
 };
 
-export const resetQuizApi = async (deckId: string) => {
-  const apiUrl = `http://localhost:8080/api/extra-quiz/${deckId}/reset`;
+export const resetQuizApi = async (userId: string, deckId: string) => {
+  const apiUrl = `http://localhost:8080/api/user/${userId}/extra-quiz/reset/deck/${deckId}`;
   try {
     const response = await fetch(apiUrl, {
       credentials: "include",
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
     });
     const data = await response.json();
     return data;
