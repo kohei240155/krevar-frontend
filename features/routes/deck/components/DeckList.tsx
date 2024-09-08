@@ -4,6 +4,7 @@ import * as Common from "../../../common/index";
 import { useRouter } from "next/navigation";
 import DeckItem from "./DeckItem";
 import { Deck } from "../types/deck";
+import { fetchDecks } from "../utils/api";
 
 const DeckList = () => {
   const [decks, setDecks] = useState<Deck[]>([]);
@@ -15,8 +16,23 @@ const DeckList = () => {
   const [userId, setUserId] = useState<number>(4);
   const decksPerPage = 10;
 
+  const fetchDecksData = async (page: number, userId: number) => {
+    const data = await fetchDecks(userId, page - 1, decksPerPage);
+    if (data) {
+      const formattedDecks = data.deckInfo.map((item: any) => ({
+        id: item.id,
+        deckName: item.deckName,
+        progress: item.progress,
+      }));
+      setDecks(formattedDecks);
+      setTotalDecks(data.deckInfo.length);
+    } else {
+      console.log("Error fetching decks");
+    }
+  };
+
   useEffect(() => {
-    fetchDecks(currentPage, userId);
+    fetchDecksData(currentPage, userId);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -25,40 +41,10 @@ const DeckList = () => {
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    fetchDecks(pageNumber, userId);
+    fetchDecksData(pageNumber, userId);
   };
 
   const totalPages = Math.ceil(totalDecks / decksPerPage);
-
-  const fetchDecks = (page: number, userId: number) => {
-    console.log("Fetching decks for page:", page);
-    fetch(
-      `http://localhost:8080/api/user/${userId}/deck?page=${page - 1}&size=10`,
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch decks");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Data:", data);
-        const formattedDecks = data.deckInfo.map((item: any) => ({
-          id: item.id,
-          deckName: item.deckName,
-          progress: item.progress,
-        }));
-        setDecks(formattedDecks);
-        setTotalDecks(data.deckInfo.length);
-      })
-      .catch((error) => {
-        console.log("Error fetching decks:", error);
-      });
-  };
 
   const handleQuizClick = (deckId: number, deckName: string) => {
     router.push(`/quiz/normal/${deckId}`);

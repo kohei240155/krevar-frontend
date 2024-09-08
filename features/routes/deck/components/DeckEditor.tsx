@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import * as Common from "../../../common/index";
 import DeckForm from "./DeckForm";
 import { DeckEditorProps } from "../types/deck";
+import { updateDeck, deleteDeck } from "../utils/api";
 
 const DeckEditor: React.FC<DeckEditorProps> = ({
   deckId,
@@ -30,23 +31,12 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
 
   const handleUpdate = async (event: React.FormEvent) => {
     event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:8080/api/deck/${deckId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ userId: 4, deckName }),
-      });
-      if (response.ok) {
-        toast.success("Deck updated successfully!");
-        router.push("/deck");
-      } else {
-        toast.error("Unexpected response from the server.");
-      }
-    } catch (error) {
-      toast.error("Error updating deck: " + error);
+    const success = await updateDeck(deckId, deckName, 4);
+    if (success) {
+      toast.success("Deck updated successfully!");
+      router.push("/deck");
+    } else {
+      toast.error("Unexpected response from the server.");
     }
   };
 
@@ -55,25 +45,14 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
   };
 
   const confirmDelete = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/user/${userId}/deck/${deckId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
-      if (response.ok) {
-        toast.success("Deck deleted successfully!");
-        router.push("/deck");
-      } else {
-        toast.error("Unexpected response from the server.");
-      }
-    } catch (error) {
-      toast.error("Error deleting deck: " + error);
-    } finally {
-      setIsModalOpen(false);
+    const success = await deleteDeck(deckId, 4);
+    if (success) {
+      toast.success("Deck deleted successfully!");
+      router.push("/deck");
+    } else {
+      toast.error("Unexpected response from the server.");
     }
+    setIsModalOpen(false);
   };
 
   return (

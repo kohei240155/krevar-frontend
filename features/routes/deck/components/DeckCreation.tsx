@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
 import * as Common from "../../../common/index";
 import DeckForm from "./DeckForm";
+import { createDeck } from "../utils/api";
 
 const DeckCreation: React.FC = () => {
   const [deckName, setDeckName] = useState("");
@@ -25,20 +26,12 @@ const DeckCreation: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/deck",
-        { deckName, userId: 1 },
-        { withCredentials: true }
-      );
-      if (response.status === 200) {
-        toast.success("Deck created successfully!");
-        router.push("/deck");
-      } else {
-        toast.error("Unexpected response from the server.");
-      }
-    } catch (error) {
-      toast.error("Error registering deck: " + error);
+    const success = await createDeck(deckName, 1);
+    if (success) {
+      toast.success("Deck created successfully!");
+      router.push("/deck");
+    } else {
+      toast.error("Unexpected response from the server.");
     }
   };
 
