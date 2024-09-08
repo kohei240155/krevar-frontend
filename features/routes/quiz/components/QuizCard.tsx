@@ -6,6 +6,7 @@ import Image from "next/image";
 import { QuizCardProps, QuizData } from "../types/quiz";
 import * as Common from "../../../common/index";
 import AllDoneCard from "./AllDoneCard";
+import { fetchQuizData, submitAnswer, resetQuizApi } from "../utils/api";
 
 const formatImageUrl = (url: string) => {
   const fileName = url.split("/").pop();
@@ -13,158 +14,107 @@ const formatImageUrl = (url: string) => {
 };
 
 const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
-  const [showTranslation, setShowTranslation] = useState(false);
-  const [arrowColor, setArrowColor] = useState("text-gray-800");
-  const [isArrowActive, setIsArrowActive] = useState(false);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const searchParams = useSearchParams();
   const deckName = searchParams?.get("deckName") || "Deck Name";
-  const [quizData, setQuizData] = useState<QuizData | undefined>(undefined);
-  const [isAllDone, setIsAllDone] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isResetting, setIsResetting] = useState(false);
   const userId = searchParams?.get("userId") || "4";
+  const [quizState, setQuizState] = useState({
+    showTranslation: false,
+    arrowColor: "text-gray-800",
+    isArrowActive: false,
+    isCorrect: null as boolean | null,
+    isAllDone: false,
+    isLoading: true,
+    isResetting: false,
+    quizData: undefined as QuizData | undefined,
+  });
 
   const fetchData = useCallback(async () => {
-    const apiUrl = isExtraQuiz
-      ? `http://localhost:8080/api/user/${userId}/extra-quiz/deck/${deckId}`
-      : `http://localhost:8080/api/user/${userId}/normal-quiz/deck/${deckId}`;
-    try {
-      const response = await fetch(apiUrl, {
-        credentials: "include",
-      });
-      const data = await response.json();
-      setQuizData(data);
-      setIsAllDone(false);
-    } catch (error) {
-      console.error("Error fetching words:", error);
-    }
-  }, [deckId, isExtraQuiz]);
+    const data = await fetchQuizData(deckId, userId, !!isExtraQuiz);
+    setQuizState((prev) => ({
+      ...prev,
+      quizData: data,
+      isLoading: false,
+      isAllDone: false,
+    }));
+  }, [deckId, isExtraQuiz, userId]);
 
   const resetQuiz = useCallback(async () => {
-    setIsLoading(true);
-    setIsResetting(true);
-    const apiUrl = `http://localhost:8080/api/extra-quiz/${deckId}/reset`;
-    try {
-      const response = await fetch(apiUrl, {
-        credentials: "include",
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      console.log("Reset data:", data);
-      const question = data.question;
-      if (question) {
-        setQuizData(data);
-        setIsAllDone(false);
-      } else {
-        setIsAllDone(true);
-      }
-    } catch (error) {
-      console.error("Error resetting quiz:", error);
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-        setIsResetting(false);
-      }, 500);
-    }
-  }, [deckId, isExtraQuiz, userId]);
+    setQuizState((prev) => ({ ...prev, isLoading: true, isResetting: true }));
+    const data = await resetQuizApi(deckId);
+    setQuizState((prev) => ({
+      ...prev,
+      quizData: data.question ? data : undefined,
+      isAllDone: !data.question,
+      isLoading: false,
+      isResetting: false,
+    }));
+  }, [deckId]);
 
   useEffect(() => {
     fetchData();
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [deckId, isExtraQuiz, isResetting, fetchData]);
+  }, [fetchData]);
 
-  if (isLoading) {
+  const handleKnowClick = useCallback(() => {
+    setQuizState((prev) => ({
+      ...prev,
+      showTranslation: true,
+      arrowColor: "text-green-700",
+      isArrowActive: true,
+      isCorrect: true,
+    }));
+  }, []);
+
+  const handleDontKnowClick = useCallback(() => {
+    setQuizState((prev) => ({
+      ...prev,
+      showTranslation: true,
+      arrowColor: "text-red-700",
+      isArrowActive: true,
+      isCorrect: false,
+    }));
+  }, []);
+
+  const handleNextClick = useCallback(async () => {
+    const { isCorrect, quizData } = quizState;
+    if (isCorrect !== null && quizData) {
+      await submitAnswer(userId, deckId, quizData.id, isCorrect, !!isExtraQuiz);
+      const data = await fetchQuizData(deckId, userId, !!isExtraQuiz);
+      setQuizState((prev) => ({
+        ...prev,
+        quizData: data,
+        isAllDone: data.leftQuizCount === 0,
+      }));
+    }
+  }, [quizState, deckId, isExtraQuiz, userId]);
+
+  const handleSpeakClick = useCallback(() => {
+    const utterance = new SpeechSynthesisUtterance(
+      quizState.quizData?.originalText
+    );
+    utterance.lang = "en-US";
+    speechSynthesis.speak(utterance);
+  }, [quizState.quizData]);
+
+  if (quizState.isLoading) {
     return <Common.LoadingIndicator />;
   }
 
-  if (isAllDone) {
+  if (quizState.isAllDone) {
     return (
       <AllDoneCard
         deckName={deckName}
         isExtraQuiz={!!isExtraQuiz}
-        quizData={quizData}
-        setIsAllDone={setIsAllDone}
-        setIsLoading={setIsLoading}
+        quizData={quizState.quizData}
+        setIsAllDone={(val) =>
+          setQuizState((prev) => ({ ...prev, isAllDone: val }))
+        }
+        setIsLoading={(val) =>
+          setQuizState((prev) => ({ ...prev, isLoading: val }))
+        }
         resetQuiz={resetQuiz}
       />
     );
   }
-
-  const handleKnowClick = () => {
-    setShowTranslation(true);
-    setArrowColor("text-green-700");
-    setIsArrowActive(true);
-    setIsCorrect(true);
-  };
-
-  const handleDontKnowClick = () => {
-    setShowTranslation(true);
-    setArrowColor("text-red-700");
-    setIsArrowActive(true);
-    setIsCorrect(false);
-  };
-
-  const handleNextClick = async () => {
-    if (isCorrect !== null && quizData !== null) {
-      const apiUrl = isExtraQuiz
-        ? `http://localhost:8080/api/extra-quiz`
-        : `http://localhost:8080/api/normal-quiz`;
-      const body = {
-        userId: parseInt(userId, 10),
-        deckId: parseInt(deckId, 10),
-        wordId: quizData?.id,
-        isCorrect,
-      };
-      try {
-        await fetch(apiUrl, {
-          method: "PUT",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        });
-        console.log("Answer submitted");
-      } catch (error) {
-        console.error("Error submitting answer:", error);
-      }
-    }
-
-    const fetchApiUrl = isExtraQuiz
-      ? `http://localhost:8080/api/user/${userId}/extra-quiz/deck/${deckId}`
-      : `http://localhost:8080/api/user/${userId}/normal-quiz/deck/${deckId}`;
-    try {
-      const response = await fetch(fetchApiUrl, {
-        credentials: "include",
-      });
-      const data = await response.json();
-      setQuizData(data);
-
-      if (data.leftQuizCount === 0) {
-        setIsAllDone(true);
-      }
-    } catch (error) {
-      console.error("Error fetching words:", error);
-    }
-  };
-
-  const handleSpeakClick = () => {
-    if (quizData) {
-      const utterance = new SpeechSynthesisUtterance(quizData.originalText);
-      utterance.lang = "en-US";
-      utterance.onend = () => console.log("Speech has finished.");
-      utterance.onerror = (event) =>
-        console.error("SpeechSynthesisUtterance.onerror", event);
-      speechSynthesis.speak(utterance);
-    }
-  };
 
   return (
     <div className="p-5">
@@ -179,31 +129,35 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
             <h2 className="text-2xl font-bold text-left ml-4 truncate">
               {deckName}
             </h2>
-            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${quizData?.leftQuizCount}`}</p>
+            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${quizState.quizData?.leftQuizCount}`}</p>
           </div>
-          {quizData && (
+          {quizState.quizData && ( // 修正: quizData を quizState.quizData に変更
             <p
               className="text-2xl font-bold mb-6 text-left ml-4"
-              dangerouslySetInnerHTML={{ __html: quizData.originalText }}
+              dangerouslySetInnerHTML={{
+                __html: quizState.quizData?.originalText || "",
+              }}
             ></p>
           )}
 
-          {showTranslation && quizData && (
+          {quizState.showTranslation && quizState.quizData && (
             <p
               className="text-xl text-left text-blue-700 font-semibold mb-6 ml-4"
-              dangerouslySetInnerHTML={{ __html: quizData.translatedText }}
+              dangerouslySetInnerHTML={{
+                __html: quizState.quizData?.translatedText,
+              }}
             ></p>
           )}
 
-          {showTranslation && quizData && (
+          {quizState.showTranslation && quizState.quizData && (
             <>
               <p className="text-xl text-left text-gray-700 mb-6 ml-4">
-                {quizData.nuance}
+                {quizState.quizData.nuance}
               </p>
-              {quizData.imageUrl && (
+              {quizState.quizData.imageUrl && (
                 <div className="flex justify-center mb-6">
                   <Image
-                    src={formatImageUrl(quizData.imageUrl)}
+                    src={formatImageUrl(quizState.quizData.imageUrl)}
                     alt="Word Image"
                     width={500}
                     height={500}
@@ -234,8 +188,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
               className="absolute -top-16 right-14 text-5xl cursor-pointer text-gray-800"
             />
             <HiArrowCircleRight
-              onClick={isArrowActive ? handleNextClick : undefined}
-              className={`absolute -top-16 right-0 text-5xl cursor-pointer ${arrowColor} ${isArrowActive ? "" : "opacity-50 cursor-not-allowed"}`}
+              onClick={quizState.isArrowActive ? handleNextClick : undefined}
+              className={`absolute -top-16 right-0 text-5xl cursor-pointer ${quizState.arrowColor} ${quizState.isArrowActive ? "" : "opacity-50 cursor-not-allowed"}`}
             />
           </div>
         </div>
