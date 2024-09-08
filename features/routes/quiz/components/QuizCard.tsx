@@ -126,7 +126,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
     <div className="p-5">
       <div
         className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between"
-        style={{ minHeight: "550px" }}
+        style={{ minHeight: "700px" }}
       >
         <div className="flex-grow">
           <div
@@ -137,7 +137,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
             </h2>
             <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${quizState.quizData?.leftQuizCount}`}</p>
           </div>
-          {quizState.quizData && ( // 修正: quizData を quizState.quizData に変更
+          {quizState.quizData && (
             <p
               className="text-2xl font-bold mb-6 text-left ml-4"
               dangerouslySetInnerHTML={{
