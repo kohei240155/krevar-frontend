@@ -12,6 +12,7 @@ import NuanceInput from "./NuanceInput";
 import ImageDisplay from "./ImageDisplay";
 import DeleteConfirmModal from "./../../../common/components/DeleteConfirmModal";
 import { WordEditFormProps } from "../types/word";
+import { fetchWordData, updateWord, deleteWord } from "../utils/api";
 
 const WordEditForm: React.FC<WordEditFormProps> = () => {
   const [word, setWord] = useState("");
@@ -40,15 +41,9 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
   };
 
   useEffect(() => {
-    const fetchWordData = async () => {
+    const fetchWord = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8080/api/user/${userId}/word/${wordId}`,
-          {
-            credentials: "include",
-          }
-        );
-        const wordData = await response.json();
+        const wordData = await fetchWordData(userId, wordId);
         setWord(wordData.originalText);
         setMeaning(wordData.translatedText);
         setImageUrl(wordData.imageUrl);
@@ -59,7 +54,7 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
       }
     };
 
-    fetchWordData();
+    fetchWord();
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -89,28 +84,16 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
     try {
       const wordHtml =
         (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
-      const response = await fetch(
-        `http://localhost:8080/api/word/${userId}/${deckId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            originalText: wordHtml,
-            translatedText: meaning,
-            imageUrl: imageUrl,
-            deckId: deckId,
-            nuanceText: nuance,
-          }),
-        }
-      );
-      if (response.ok) {
-        toast.success("Word updated successfully!");
-      } else {
-        toast.error("Unexpected response from the server.");
-      }
+      const wordData = {
+        wordId: wordId,
+        userId: userId,
+        originalText: wordHtml,
+        translatedText: meaning,
+        nuanceText: nuance,
+        deckId: deckId,
+      };
+      await updateWord(wordData);
+      toast.success("Word updated successfully!");
     } catch (error) {
       toast.error("Error updating word: " + error);
     }
@@ -122,19 +105,9 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
 
   const confirmDelete = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/word/${userId}/${wordId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
-      if (response.ok) {
-        toast.success("Word deleted successfully!");
-        router.back();
-      } else {
-        toast.error("Error deleting word.");
-      }
+      await deleteWord(userId, wordId);
+      toast.success("Word deleted successfully!");
+      router.back();
     } catch (error) {
       toast.error("Error deleting word: " + error);
     } finally {

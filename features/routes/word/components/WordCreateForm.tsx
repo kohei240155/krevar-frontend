@@ -9,6 +9,7 @@ import MeaningInput from "./MeaningInput";
 import NuanceInput from "./NuanceInput";
 import ImageDisplay from "./ImageDisplay";
 import WordInput from "./WordInput";
+import { createWord } from "../utils/api";
 
 const WordForm = () => {
   const [word, setWord] = useState("");
@@ -40,21 +41,15 @@ const WordForm = () => {
       const wordHtml =
         (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
       const nuanceText = nuance.trim() !== "" ? nuance : "";
-      const response = await fetch(`http://localhost:8080/api/word`, {
-        credentials: "include",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: "4",
-          originalText: wordHtml,
-          translatedText: meaning,
-          imageUrl: imageUrl,
-          deckId: deckId,
-          nuanceText: nuanceText,
-        }),
-      });
+      const wordData = {
+        userId: "4",
+        originalText: wordHtml,
+        translatedText: meaning,
+        imageUrl: imageUrl,
+        deckId: deckId,
+        nuanceText: nuanceText,
+      };
+      await createWord(wordData);
     } catch (error) {
       console.error("Error submitting word:", error);
     }

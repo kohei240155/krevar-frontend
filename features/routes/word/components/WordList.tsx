@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Word } from "../types/word";
 import WordItem from "./WordItem";
 import * as Common from "../../../common/index";
+import { fetchWords } from "../utils/api";
 
 const WordList = ({ deckName }: { deckName: string }) => {
   const [words, setWords] = useState<Word[]>([]);
@@ -18,44 +19,31 @@ const WordList = ({ deckName }: { deckName: string }) => {
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    fetchWords(pageNumber);
+    fetchWordsData(pageNumber);
   };
 
   const totalPages = Math.ceil(totalWords / wordsPerPage);
 
-  const fetchWords = useCallback(
-    (page: number) => {
-      fetch(
-        `http://localhost:8080/api/user/${userId}/deck/${deckId}?page=${page - 1}&size=${wordsPerPage}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch words");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setWords(data.wordInfo);
-          setTotalWords(data.wordInfo.length);
-        })
-        .catch((error) => {
-          console.log("Error fetching words:", error);
-        });
+  const fetchWordsData = useCallback(
+    async (page: number) => {
+      try {
+        const data = await fetchWords(userId, deckId, page, wordsPerPage);
+        setWords(data.wordInfo);
+        setTotalWords(data.wordInfo.length);
+      } catch (error) {
+        console.log("Error fetching words:", error);
+      }
     },
     [userId, deckId]
   );
 
   useEffect(() => {
-    fetchWords(currentPage);
+    fetchWordsData(currentPage);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [currentPage, fetchWords]);
+  }, [currentPage, fetchWordsData]);
 
   if (isLoading) {
     return <Common.LoadingIndicator />;

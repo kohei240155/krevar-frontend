@@ -1,0 +1,60 @@
+export const fetchWordData = async (userId: string, wordId: string) => {
+  const response = await fetch(
+    `http://localhost:8080/api/user/${userId}/word/${wordId}`,
+    {
+      credentials: "include",
+    }
+  );
+  return response.json();
+};
+
+export const createWord = async (wordData: any) => {
+  const response = await fetch(`http://localhost:8080/api/word`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(wordData),
+  });
+  return response.json();
+};
+
+export const updateWord = async (wordData: any) => {
+  const response = await fetch(`http://localhost:8080/api/word`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(wordData),
+  });
+  return response.json();
+};
+
+export const deleteWord = async (userId: string, wordId: string) => {
+  const response = await fetch(
+    `http://localhost:8080/api/word/${userId}/${wordId}`,
+    {
+      method: "DELETE",
+      credentials: "include",
+    }
+  );
+  return response.json();
+};
+
+export const fetchWords = async (
+  userId: string,
+  deckId: string,
+  page: number,
+  size: number
+) => {
+  const response = await fetch(
+    `http://localhost:8080/api/user/${userId}/deck/${deckId}?page=${page - 1}&size=${size}`,
+    {
+      method: "GET",
+      credentials: "include",
+    }
+  );
+  return response.json();
+};
