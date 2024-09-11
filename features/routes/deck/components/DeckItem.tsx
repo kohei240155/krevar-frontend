@@ -39,10 +39,12 @@ const DeckItem: React.FC<DeckItemProps> = ({
         >
           &#8230;
         </button>
+        {showOptions === deck.id && (
+          <div className="absolute top-full right-0" style={{ top: "35px" }}>
+            <DeckOptions deck={deck} onOptionItemClick={onOptionItemClick} />
+          </div>
+        )}
       </div>
-      {showOptions === deck.id && (
-        <DeckOptions deck={deck} onOptionItemClick={onOptionItemClick} />
-      )}
     </li>
   );
 };
