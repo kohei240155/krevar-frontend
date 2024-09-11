@@ -3,7 +3,7 @@ import 'dotenv/config';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ["lh3.googleusercontent.com", "oaidalleapiprodscus.blob.core.windows.net", "localhost", "example.com"],
+        domains: ["lh3.googleusercontent.com", "oaidalleapiprodscus.blob.core.windows.net", "localhost", "example.com", "tailwindui.com"],
     },
     experimental: {
         middleware: true,
