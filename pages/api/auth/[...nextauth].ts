@@ -11,7 +11,6 @@ export default NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       async profile(profile) {
-        // Googleプロフィール情報を元にユーザーをバックエンドで確認または新規作成
         const res = await fetch("http://localhost:8080/api/auth/google-login", {
           method: "POST",
           headers: {
@@ -19,7 +18,7 @@ export default NextAuth({
           },
           body: JSON.stringify({
             email: profile.email,
-            googleId: profile.sub, // GoogleのID
+            googleId: profile.sub,
           }),
           credentials: "include",
         });

@@ -14,7 +14,7 @@ const LoginPage = () => {
   useEffect(() => {
     // ログイン済みの場合はTOPページにリダイレクト
     if (status === "authenticated") {
-      router.push("/");
+      router.push("/deck");
     }
   }, [session, status, router]);
 
@@ -23,12 +23,12 @@ const LoginPage = () => {
     const result = await signIn(provider);
 
     // ログインに成功したらDeckListページにリダイレクト
-    if (result?.ok) {
-      router.push("/deck");
-    } else {
-      // エラーハンドリング
-      alert(result?.error || "Login failed");
-    }
+    // if (result?.ok) {
+    //   router.push("/deck");
+    // } else {
+    //   // エラーハンドリング
+    //   alert(result?.error || "Login failed");
+    // }
   };
 
   const handleLogout = async () => {
@@ -70,7 +70,7 @@ const LoginPage = () => {
       if (result?.ok) {
         router.push("/deck");
       } else {
-        // エ��ーハンドリング
+        // エラーハンドリング
         alert(result?.error || "Invalid credentials");
       }
     }

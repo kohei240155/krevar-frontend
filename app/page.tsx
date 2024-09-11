@@ -12,7 +12,7 @@ export default function Home() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/deck");
+      // router.push("/deck");
     }
   }, [status, router]);
 
