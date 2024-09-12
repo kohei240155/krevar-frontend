@@ -47,6 +47,7 @@ const DeckList = () => {
   const totalPages = Math.ceil(totalDecks / decksPerPage);
 
   const handleQuizClick = (deckId: number, deckName: string) => {
+    setIsLoading(true);
     router.push(`/quiz/normal/${deckId}`);
   };
 
@@ -77,6 +78,7 @@ const DeckList = () => {
     deck: Deck
   ) => {
     e.stopPropagation();
+    setIsLoading(true); // ローディング状態を設定
     switch (option) {
       case "word-add":
         router.push(
@@ -95,6 +97,7 @@ const DeckList = () => {
         router.push(`/quiz/extra/${deck.id}`);
         break;
       default:
+        setIsLoading(false); // 無効なオプションの場合、ローディングを解除
         break;
     }
   };

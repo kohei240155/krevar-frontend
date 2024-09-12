@@ -30,6 +30,7 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
   }
 
   const handleUpdate = async (event: React.FormEvent) => {
+    setIsLoading(true);
     event.preventDefault();
     const success = await updateDeck(deckId, deckName, 4);
     if (success) {
