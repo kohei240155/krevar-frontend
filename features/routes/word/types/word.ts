@@ -4,9 +4,9 @@ export interface Word {
   id: number;
   originalText: string;
   translatedText: string;
-  nuanceText: string; // 追加
-  imageUrl: string; // 追加
-  deckId: number; // 追加
+  nuanceText: string;
+  imageUrl: string;
+  deckId: number;
 }
 
 export interface WordItemProps {
