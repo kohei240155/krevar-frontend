@@ -13,7 +13,7 @@ const DeckList = () => {
   const [totalDecks, setTotalDecks] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const [userId, setUserId] = useState<number>(8);
+  const [userId, setUserId] = useState<number>(10);
   const decksPerPage = 10;
 
   const fetchDecksData = async (page: number, userId: number) => {
