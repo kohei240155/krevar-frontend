@@ -1,4 +1,11 @@
+import { setCookie } from "cookies-next";
+
 export const fetchWordData = async (userId: string, wordId: string) => {
+  const storedValue = window.localStorage.getItem("JWT");
+  setCookie("JWT", storedValue, {
+    maxAge: 3600,
+    path: "/",
+  });
   const response = await fetch(
     `http://localhost:8080/api/user/${userId}/word/${wordId}`,
     {
@@ -9,6 +16,11 @@ export const fetchWordData = async (userId: string, wordId: string) => {
 };
 
 export const createWord = async (wordData: any) => {
+  const storedValue = window.localStorage.getItem("JWT");
+  setCookie("JWT", storedValue, {
+    maxAge: 3600,
+    path: "/",
+  });
   const response = await fetch(`http://localhost:8080/api/word`, {
     credentials: "include",
     method: "POST",
@@ -21,6 +33,11 @@ export const createWord = async (wordData: any) => {
 };
 
 export const updateWord = async (wordData: any) => {
+  const storedValue = window.localStorage.getItem("JWT");
+  setCookie("JWT", storedValue, {
+    maxAge: 3600,
+    path: "/",
+  });
   const response = await fetch(`http://localhost:8080/api/word`, {
     method: "PUT",
     headers: {
@@ -33,6 +50,11 @@ export const updateWord = async (wordData: any) => {
 };
 
 export const deleteWord = async (userId: string, wordId: string) => {
+  const storedValue = window.localStorage.getItem("JWT");
+  setCookie("JWT", storedValue, {
+    maxAge: 3600,
+    path: "/",
+  });
   const response = await fetch(
     `http://localhost:8080/api/word/${userId}/${wordId}`,
     {
@@ -49,6 +71,11 @@ export const fetchWords = async (
   page: number,
   size: number
 ) => {
+  const storedValue = window.localStorage.getItem("JWT");
+  setCookie("JWT", storedValue, {
+    maxAge: 3600,
+    path: "/",
+  });
   const response = await fetch(
     `http://localhost:8080/api/user/${userId}/deck/${deckId}?page=${page - 1}&size=${size}`,
     {

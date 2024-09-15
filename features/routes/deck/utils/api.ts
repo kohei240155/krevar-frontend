@@ -1,9 +1,16 @@
+import { setCookie } from "cookies-next";
+
 export const fetchDecks = async (
   userId: number,
   page: number,
   size: number
 ) => {
   const apiUrl = `http://localhost:8080/api/user/${userId}/deck?page=${page}&size=${size}`;
+  const storedValue = window.localStorage.getItem("JWT");
+  setCookie("JWT", storedValue, {
+    maxAge: 3600,
+    path: "/",
+  });
   try {
     const response = await fetch(apiUrl, {
       method: "GET",
@@ -24,6 +31,11 @@ export const updateDeck = async (
 ) => {
   const apiUrl = `http://localhost:8080/api/deck/${deckId}`;
   try {
+    const storedValue = window.localStorage.getItem("JWT");
+    setCookie("JWT", storedValue, {
+      maxAge: 3600,
+      path: "/",
+    });
     const response = await fetch(apiUrl, {
       method: "PUT",
       headers: {
@@ -40,8 +52,13 @@ export const updateDeck = async (
 };
 
 export const deleteDeck = async (deckId: string, userId: number) => {
-  const apiUrl = `http://localhost:8080/api/user/${userId}/deck/${deckId}`;
+  const apiUrl = `http://localhost:8080/api/deck/${deckId}`;
   try {
+    const storedValue = window.localStorage.getItem("JWT");
+    setCookie("JWT", storedValue, {
+      maxAge: 3600,
+      path: "/",
+    });
     const response = await fetch(apiUrl, {
       method: "DELETE",
       credentials: "include",
@@ -56,6 +73,11 @@ export const deleteDeck = async (deckId: string, userId: number) => {
 export const createDeck = async (deckName: string, userId: number) => {
   const apiUrl = `http://localhost:8080/api/deck`;
   try {
+    const storedValue = window.localStorage.getItem("JWT");
+    setCookie("JWT", storedValue, {
+      maxAge: 3600,
+      path: "/",
+    });
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
