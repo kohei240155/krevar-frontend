@@ -13,7 +13,22 @@ const Header = () => {
   const { data: session } = useSession();
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "/" });
+    try {
+      // NextAuth の signOut でフロントエンドのセッション無効化
+      await signOut({ callbackUrl: "/" });
+
+      // バックエンド側のセッション無効化APIを呼び出す
+      const response = await fetch("http://localhost:8080/api/auth/logout", {
+        method: "POST",
+        credentials: "include", // クッキーを含める
+      });
+
+      if (!response.ok) {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
 
   const handleMenuClick = () => {

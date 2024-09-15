@@ -8,13 +8,6 @@ import HomePage from "./home/page"; // Added
 
 export default function Home() {
   const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.push("/deck");
-    }
-  }, [status, router]);
 
   return (
     <div className={styles.container}>
