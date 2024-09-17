@@ -69,7 +69,7 @@ const Header = () => {
     <header className="bg-white border-gray-200 dark:bg-gray-900">
       <div className="w-full flex flex-wrap items-center justify-between mx-auto p-4 h-16">
         <Link href="/deck" className="text-4xl font-bold ml-0 text-gray-900">
-          ▶ IRUKA
+          ▶ KREVAR
         </Link>
         {!session ? (
           <Link href="/login">

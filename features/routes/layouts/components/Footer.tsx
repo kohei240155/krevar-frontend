@@ -28,7 +28,7 @@ const Footer = () => {
           </Link>
         </div>
         <div>
-          <span className="text-gray-900 text-xs">© 2024 IRUKA</span>
+          <span className="text-gray-900 text-xs">© 2024 KREVAR</span>
         </div>
       </div>
     </footer>

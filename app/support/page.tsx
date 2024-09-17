@@ -16,10 +16,10 @@ const ContactPage = () => {
         <p className="mb-4 text-sm text-gray-600">
           Email:{" "}
           <a
-            href="mailto:iruka.com@gmail.com"
+            href="mailto:krevar.com@gmail.com"
             className="text-blue-500 hover:underline"
           >
-            iruka.com@gmail.com
+            krevar.com@gmail.com
           </a>
         </p>
       </div>

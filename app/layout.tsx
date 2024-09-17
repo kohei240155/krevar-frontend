@@ -9,7 +9,7 @@ import { Header, Footer } from "../features/routes/layouts";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "IRUKA - Vocabulary Memorization App",
+  title: "KREVAR - Vocabulary Memorization App",
   description: "An app to help you memorize vocabulary using images.",
 };
 

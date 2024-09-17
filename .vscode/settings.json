@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["Dont", "IRUKA"],
+  "cSpell.words": ["Dont", "KREVAR"],
   "files.associations": {
     "*.css": "tailwindcss"
   },
@@ -8,5 +8,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
-  "eslint.alwaysShowStatus": true,
+  "eslint.alwaysShowStatus": true
 }

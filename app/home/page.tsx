@@ -13,7 +13,7 @@ export default function Home() {
         <title>▶IRUKA - 単語暗記アプリ</title>
         <meta
           name="description"
-          content="英語学習者向けの単語暗記アプリ「▶IRUKA」。エビングハウスの忘却曲線に基づいて、効果的に単語を暗記しよう。"
+          content="英語学習者向けの単語暗記アプリ「▶ KREVAR」。エビングハウスの忘却曲線に基づいて、効果的に単語を暗記しよう。"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

@@ -119,7 +119,7 @@ const PrivacyPolicy = () => {
         <p className="mb-4 text-sm text-gray-600">
           本ポリシーに関するお問い合わせは，下記の窓口までお願いいたします。
           <br />
-          Email：iruka.com@gmail.com
+          Email：krevar.com@gmail.com
         </p>
         <h2 className="text-lg font-semibold mt-6 mb-4 text-gray-700">
           Cookieについて
