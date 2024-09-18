@@ -16,9 +16,16 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const userId = useState("4")[0];
+
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
 
   useEffect(() => {
+    setUserId(getUserId());
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -32,7 +39,7 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
   const handleUpdate = async (event: React.FormEvent) => {
     setIsLoading(true);
     event.preventDefault();
-    const success = await updateDeck(deckId, deckName, 4);
+    const success = await updateDeck(deckId, deckName, userId);
     if (success) {
       toast.success("Deck updated successfully!");
       router.push("/deck");

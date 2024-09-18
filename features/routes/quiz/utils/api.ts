@@ -1,8 +1,8 @@
 import { setCookie } from "cookies-next";
 
 export const fetchQuizData = async (
-  deckId: string,
-  userId: string,
+  deckId: number,
+  userId: number,
   isExtraQuiz: boolean
 ) => {
   const storedValue = window.localStorage.getItem("JWT");
@@ -26,8 +26,8 @@ export const fetchQuizData = async (
 };
 
 export const submitAnswer = async (
-  userId: string,
-  deckId: string,
+  userId: number,
+  deckId: number,
   wordId: number,
   isCorrect: boolean,
   isExtraQuiz: boolean
@@ -41,8 +41,8 @@ export const submitAnswer = async (
     ? `http://localhost:8080/api/extra-quiz`
     : `http://localhost:8080/api/normal-quiz`;
   const body = {
-    userId: parseInt(userId, 10),
-    deckId: parseInt(deckId, 10),
+    userId,
+    deckId,
     wordId,
     isCorrect,
   };
@@ -61,7 +61,7 @@ export const submitAnswer = async (
   }
 };
 
-export const resetQuizApi = async (userId: string, deckId: string) => {
+export const resetQuizApi = async (userId: number, deckId: number) => {
   const apiUrl = `http://localhost:8080/api/user/${userId}/extra-quiz/reset/deck/${deckId}`;
   try {
     const storedValue = window.localStorage.getItem("JWT");

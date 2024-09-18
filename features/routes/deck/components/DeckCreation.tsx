@@ -13,7 +13,15 @@ const DeckCreation: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
+
   useEffect(() => {
+    setUserId(getUserId());
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -26,7 +34,7 @@ const DeckCreation: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const success = await createDeck(deckName, 1);
+    const success = await createDeck(deckName, userId);
     if (success) {
       toast.success("Deck created successfully!");
       router.push("/deck");

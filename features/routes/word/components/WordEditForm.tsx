@@ -22,13 +22,19 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
   const [nuance, setNuance] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const wordId = searchParams?.get("wordId") || "";
+  const wordId = parseInt(searchParams?.get("wordId") || "0", 10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const wordRef = useRef<HTMLElement>(null);
   const [highlightColor, setHighlightColor] = useState("#ffff00");
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const userId = useState("4")[0];
+
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
 
   const handleReset = () => {
     const wordHtml =
@@ -41,6 +47,7 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
   };
 
   useEffect(() => {
+    setUserId(getUserId());
     const fetchWord = async () => {
       try {
         const wordData = await fetchWordData(userId, wordId);

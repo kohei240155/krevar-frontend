@@ -13,8 +13,7 @@ const WordList = ({ deckName }: { deckName: string }) => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const deckId = searchParams?.get("deckId") || "";
-  const userId = searchParams?.get("userId") || "4";
+  const deckId = parseInt(searchParams?.get("deckId") || "0", 10);
   const wordsPerPage = 10;
 
   const paginate = (pageNumber: number) => {
@@ -23,6 +22,13 @@ const WordList = ({ deckName }: { deckName: string }) => {
   };
 
   const totalPages = Math.ceil(totalWords / wordsPerPage);
+
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
 
   const fetchWordsData = useCallback(
     async (page: number) => {
@@ -38,12 +44,13 @@ const WordList = ({ deckName }: { deckName: string }) => {
   );
 
   useEffect(() => {
+    setUserId(getUserId());
     fetchWordsData(currentPage);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [currentPage, fetchWordsData]);
+  }, [currentPage, fetchWordsData, userId]);
 
   if (isLoading) {
     return <Common.LoadingIndicator />;

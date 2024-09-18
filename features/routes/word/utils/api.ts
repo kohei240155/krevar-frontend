@@ -1,6 +1,6 @@
 import { setCookie } from "cookies-next";
 
-export const fetchWordData = async (userId: string, wordId: string) => {
+export const fetchWordData = async (userId: number, wordId: number) => {
   const storedValue = window.localStorage.getItem("JWT");
   setCookie("JWT", storedValue, {
     maxAge: 3600,
@@ -49,7 +49,7 @@ export const updateWord = async (wordData: any) => {
   return response.json();
 };
 
-export const deleteWord = async (userId: string, wordId: string) => {
+export const deleteWord = async (userId: number, wordId: number) => {
   const storedValue = window.localStorage.getItem("JWT");
   setCookie("JWT", storedValue, {
     maxAge: 3600,
@@ -66,8 +66,8 @@ export const deleteWord = async (userId: string, wordId: string) => {
 };
 
 export const fetchWords = async (
-  userId: string,
-  deckId: string,
+  userId: number,
+  deckId: number,
   page: number,
   size: number
 ) => {

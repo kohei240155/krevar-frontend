@@ -13,7 +13,6 @@ const DeckList = () => {
   const [totalDecks, setTotalDecks] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const [userId, setUserId] = useState<number>(10);
   const decksPerPage = 10;
 
   const fetchDecksData = async (page: number, userId: number) => {
@@ -31,8 +30,16 @@ const DeckList = () => {
     }
   };
 
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
+
   useEffect(() => {
-    fetchDecksData(currentPage, userId);
+    setUserId(getUserId());
+    fetchDecksData(currentPage, userId || 0);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -41,7 +48,7 @@ const DeckList = () => {
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    fetchDecksData(pageNumber, userId);
+    fetchDecksData(pageNumber, userId || 0);
   };
 
   const totalPages = Math.ceil(totalDecks / decksPerPage);

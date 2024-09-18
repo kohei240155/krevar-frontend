@@ -26,7 +26,15 @@ const WordForm = () => {
   const [isLoading, setIsLoading] = useState(true);
   const deckName = searchParams?.get("deckName") || "Deck Name";
 
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
+
   useEffect(() => {
+    setUserId(getUserId());
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -44,7 +52,7 @@ const WordForm = () => {
         (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
       const nuanceText = nuance.trim() !== "" ? nuance : "";
       const wordData = {
-        userId: "4",
+        userId: userId,
         originalText: wordHtml,
         translatedText: meaning,
         imageUrl: imageUrl,

@@ -8,7 +8,7 @@ export interface QuizData {
 }
 
 export interface QuizCardProps {
-  deckId: string;
+  deckId: number;
   isExtraQuiz?: boolean;
 }
 
