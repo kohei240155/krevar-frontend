@@ -173,8 +173,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
                   <Image
                     src={formatImageUrl(quizState.quizData.imageUrl)}
                     alt="Word Image"
-                    width={500}
-                    height={500}
+                    width={300}
+                    height={300}
                     className="max-w-full h-auto"
                   />
                 </div>
