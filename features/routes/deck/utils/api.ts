@@ -25,7 +25,7 @@ export const fetchDecks = async (
 };
 
 export const updateDeck = async (
-  deckId: string,
+  deckId: number,
   deckName: string,
   userId: number
 ) => {
@@ -51,7 +51,7 @@ export const updateDeck = async (
   }
 };
 
-export const deleteDeck = async (deckId: string, userId: number) => {
+export const deleteDeck = async (deckId: number) => {
   const apiUrl = `http://localhost:8080/api/deck/${deckId}`;
   try {
     const storedValue = window.localStorage.getItem("JWT");

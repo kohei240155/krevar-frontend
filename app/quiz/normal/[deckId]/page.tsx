@@ -9,7 +9,7 @@ const QuizPage = () => {
 
   return (
     <div>
-      <Quiz.QuizCard deckId={deckId} isExtraQuiz={isExtraQuiz} />
+      <Quiz.QuizCard deckId={parseInt(deckId, 10)} isExtraQuiz={isExtraQuiz} />
     </div>
   );
 };

@@ -19,7 +19,7 @@ export interface DeckOptionsProps {
 }
 
 export interface DeckEditorProps {
-  deckId: string;
+  deckId: number;
   deckName: string;
 }
 

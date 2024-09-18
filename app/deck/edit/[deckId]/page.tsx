@@ -5,13 +5,13 @@ import { useParams, useSearchParams } from "next/navigation";
 
 const SettingsPage = () => {
   const params = useParams();
-  const deckId = params?.deckId as string | undefined;
+  const deckId = params?.deckId as number | undefined;
   const searchParams = useSearchParams();
   const deckName = searchParams?.get("deckName") || "";
 
   return (
     <div>
-      <Deck.DeckEditor deckId={deckId as string} deckName={deckName} />
+      <Deck.DeckEditor deckId={deckId as number} deckName={deckName} />
     </div>
   );
 };
