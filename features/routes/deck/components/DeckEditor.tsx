@@ -53,7 +53,7 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
   };
 
   const confirmDelete = async () => {
-    const success = await deleteDeck(deckId, 4);
+    const success = await deleteDeck(deckId);
     if (success) {
       toast.success("Deck deleted successfully!");
       router.push("/deck");

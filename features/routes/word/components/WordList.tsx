@@ -78,7 +78,9 @@ const WordList = ({ deckName }: { deckName: string }) => {
               key={word.id}
               word={word}
               onEditClick={() =>
-                router.push(`/word/edit/${word.id}?wordId=${word.id}`)
+                router.push(
+                  `/word/edit/${word.id}?wordId=${word.id}&deckId=${deckId}`
+                )
               }
             />
           ))}

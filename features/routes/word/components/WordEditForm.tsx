@@ -18,11 +18,11 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [deckId, setDeckId] = useState("1");
   const [nuance, setNuance] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
   const wordId = parseInt(searchParams?.get("wordId") || "0", 10);
+  const deckId = parseInt(searchParams?.get("deckId") || "0", 10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const wordRef = useRef<HTMLElement>(null);
   const [highlightColor, setHighlightColor] = useState("#ffff00");
@@ -54,7 +54,6 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
         setWord(wordData.originalText);
         setMeaning(wordData.translatedText);
         setImageUrl(wordData.imageUrl);
-        setDeckId(wordData.deckId);
         setNuance(wordData.nuanceText);
       } catch (error) {
         console.log("Error fetching word data:", error);

@@ -16,7 +16,6 @@ const WordForm = () => {
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [deckId, setDeckId] = useState("1");
   const router = useRouter();
   const wordRef = useRef<HTMLElement>(null);
   const [highlightColor, setHighlightColor] = useState("#ffff00");
@@ -25,6 +24,7 @@ const WordForm = () => {
   const [isImageGenerated, setIsImageGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const deckName = searchParams?.get("deckName") || "Deck Name";
+  const deckId = searchParams?.get("deckId") || "0";
 
   const getUserId = () => {
     const storedUserId = localStorage.getItem("userId");
