@@ -67,4 +67,5 @@ export interface WordInputProps {
   handleReset: () => void;
   handleColorChange: (color: ColorResult) => void;
   setDisplayColorPicker: (value: boolean) => void;
+  disabled: boolean;
 }
