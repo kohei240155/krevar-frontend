@@ -19,7 +19,7 @@ const DeckOptions: React.FC<DeckOptionsProps> = ({
   return (
     <nav
       aria-label="Sidebar"
-      className="absolute bottom-full w-48 right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-2 mb-2"
+      className="absolute bottom-full w-48 right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-2 mb-2 z-50"
     >
       <ul role="list" className="-mx-2 space-y-1">
         {navigation.map((item) => (
