@@ -1,11 +1,31 @@
 import React from "react";
 import { DeckOptionsProps } from "../types/deck";
+import { MdOutlineLibraryAdd } from "react-icons/md";
+import { IoList } from "react-icons/io5";
+import { FaRegEdit } from "react-icons/fa";
+import { MdOutlineQuiz } from "react-icons/md";
 
 const navigation = [
-  { name: "Add Word", action: "word-add" },
-  { name: "Word List", action: "word-list" },
-  { name: "Edit Deck", action: "deck-settings" },
-  { name: "Extra Quiz", action: "extra-quiz" },
+  {
+    name: "Add Word",
+    action: "word-add",
+    icon: <MdOutlineLibraryAdd className="text-xl" />,
+  },
+  {
+    name: "Word List",
+    action: "word-list",
+    icon: <IoList className="text-xl" />,
+  },
+  {
+    name: "Edit Deck",
+    action: "deck-settings",
+    icon: <FaRegEdit className="text-xl" />,
+  },
+  {
+    name: "Extra Quiz",
+    action: "extra-quiz",
+    icon: <MdOutlineQuiz className="text-xl" />,
+  },
 ];
 
 function classNames(...classes: string[]) {
@@ -31,7 +51,10 @@ const DeckOptions: React.FC<DeckOptionsProps> = ({
                 "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 cursor-pointer"
               )}
             >
-              {item.name}
+              <span className="flex items-center">
+                {item.icon}
+                <span className="ml-2">{item.name}</span>
+              </span>
             </a>
           </li>
         ))}
