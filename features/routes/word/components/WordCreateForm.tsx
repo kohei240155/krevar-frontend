@@ -23,6 +23,7 @@ const WordForm = () => {
   const [nuance, setNuance] = useState("");
   const [isImageGenerated, setIsImageGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingGpt, setIsLoadingGpt] = useState(false);
   const deckName = searchParams?.get("deckName") || "Deck Name";
   const deckId = searchParams?.get("deckId") || "0";
 
@@ -96,6 +97,7 @@ const WordForm = () => {
   };
 
   const handleImageGenerate = async () => {
+    setIsLoadingGpt(true);
     try {
       const wordHtml =
         (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
@@ -165,6 +167,8 @@ const WordForm = () => {
       console.log("Image and word data generated successfully.");
     } catch (error) {
       console.error("Error generating image and word data:", error);
+    } finally {
+      setIsLoadingGpt(false);
     }
   };
 
@@ -209,7 +213,9 @@ const WordForm = () => {
               type="button"
               onClick={handleImageGenerate}
               className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={isLoadingGpt}
             >
+              {isLoadingGpt && <Common.ButtonLoadingIndicator />}
               Image generate
             </button>
             <button
