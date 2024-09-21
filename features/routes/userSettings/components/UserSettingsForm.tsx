@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { UserSettingsFormProps } from "../types/userSettings";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import * as Common from "../../../common/index";
 import { fetchUserSettings, fetchLanguageList } from "../utils/api";
 import {
@@ -12,73 +11,71 @@ import {
 } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
+interface Language {
+  id: number;
+  languageName: string;
+}
+
 const UserSettingsForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  const [defaultNativeLanguageId, setDefaultNativeLanguageId] = useState(0);
-  const [defaultLearningLanguageId, setDefaultLearningLanguageId] = useState(0);
-  const [subscriptionStatus, setSubscriptionStatus] = useState("");
+  const [nativeLanguageId, setNativeLanguageId] = useState(0);
+  const [learningLanguageId, setLearningLanguageId] = useState(0);
+  const [subscriptionStatus, setSubscriptionStatus] = useState(0);
   const [highlightColor, setHighlightColor] = useState("#000000");
-  const [languageList, setLanguageList] = useState([]);
-  const [selectedNativeLanguage, setSelectedNativeLanguage] = useState<{
-    languageId: number;
-    languageName: string;
-  } | null>(null);
-  const [selectedLearningLanguage, setSelectedLearningLanguage] = useState<{
-    languageId: number;
-    languageName: string;
-  } | null>(null);
 
-  const fetchLanguageListData = async () => {
-    const data = await fetchLanguageList();
-    if (data) {
-      setLanguageList(data);
-    }
-  };
+  const [languageList, setLanguageList] = useState<Language[]>([]);
 
-  const fetchUserSettingsData = async (userId: number) => {
+  const [userName, setUserName] = useState("");
+
+  const fetchUserSettingsData = useCallback(async (userId: number) => {
     const data = await fetchUserSettings(userId);
     if (data) {
-      setDefaultNativeLanguageId(data.nativeLanguageId);
-      setDefaultLearningLanguageId(data.learningLanguageId);
-      setSubscriptionStatus(data.subscriptionStatus);
+      // バックエンドから取得したデータをステートに格納
+      setUserName(data.name);
+      setNativeLanguageId(data.defaultNativeLanguageId);
+      setLearningLanguageId(data.defaultLearningLanguageId);
+      setSubscriptionStatus(data.subscriptionStatusId);
       setHighlightColor(data.highlightColor);
-      setSelectedNativeLanguage(
-        data.languageList?.find(
-          (lang: { languageId: number }) =>
-            lang.languageId === data.nativeLanguageId
-        ) || null
-      );
-      setSelectedLearningLanguage(
-        data.languageList?.find(
-          (lang: { languageId: number }) =>
-            lang.languageId === data.learningLanguageId
-        ) || null
-      );
     } else {
       console.log("Error fetching user settings");
     }
-  };
+  }, []);
+
+  const fetchLanguageListData = useCallback(async () => {
+    const data = await fetchLanguageList();
+    if (data) {
+      const formattedData = data.map(
+        (language: { languageId: number; languageName: string }) => ({
+          id: language.languageId,
+          languageName: language.languageName,
+        })
+      );
+      setLanguageList(formattedData);
+    }
+  }, []);
 
   const getUserId = () => {
-    if (typeof window !== "undefined") {
-      const storedUserId = localStorage.getItem("userId");
-      return storedUserId ? parseInt(storedUserId, 10) : 0;
-    }
-    return 0;
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
   };
 
   const [userId, setUserId] = useState(getUserId());
 
+  const getLanguageName = (id: number) => {
+    const language = languageList.find((language) => language.id === id);
+    return language ? language.languageName : "";
+  };
+
   useEffect(() => {
     setUserId(getUserId());
-    fetchUserSettingsData(userId);
     fetchLanguageListData();
+    fetchUserSettingsData(userId);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [userId]); // userIdを依存配列に追加
+  }, [fetchUserSettingsData, fetchLanguageListData, userId]);
 
   if (isLoading) {
     return <Common.LoadingIndicator />;
@@ -90,20 +87,24 @@ const UserSettingsForm = () => {
       <form>
         <div className="mb-5">
           <label className="block text-sm font-medium text-gray-700">
+            User Name:
+          </label>
+          <input
+            type="text"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div className="mb-5">
+          <label className="block text-sm font-medium text-gray-700">
             Native Language:
           </label>
-          <Listbox
-            value={selectedNativeLanguage}
-            onChange={(value) => {
-              setSelectedNativeLanguage(value);
-            }}
-          >
+          <Listbox value={nativeLanguageId} onChange={setNativeLanguageId}>
             <div className="relative mt-2">
               <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <span className="block truncate">
-                  {selectedNativeLanguage
-                    ? selectedNativeLanguage.languageName
-                    : "Select a language"}
+                  {getLanguageName(nativeLanguageId)}
                 </span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon
@@ -113,22 +114,20 @@ const UserSettingsForm = () => {
                 </span>
               </ListboxButton>
               <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {languageList.map(
-                  (language: { languageId: number; languageName: string }) => (
-                    <ListboxOption
-                      key={language.languageId}
-                      value={language}
-                      className="group relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
-                    >
-                      <span className="block truncate font-normal group-data-[selected]:font-semibold">
-                        {language.languageName}
-                      </span>
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
-                        <CheckIcon aria-hidden="true" className="h-5 w-5" />
-                      </span>
-                    </ListboxOption>
-                  )
-                )}
+                {languageList.map((language) => (
+                  <ListboxOption
+                    key={language.id}
+                    value={language.id}
+                    className="group relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
+                  >
+                    <span className="block truncate font-normal group-data-[selected]:font-semibold">
+                      {language.languageName}
+                    </span>
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
+                      <CheckIcon aria-hidden="true" className="h-5 w-5" />
+                    </span>
+                  </ListboxOption>
+                ))}
               </ListboxOptions>
             </div>
           </Listbox>
@@ -137,18 +136,11 @@ const UserSettingsForm = () => {
           <label className="block text-sm font-medium text-gray-700">
             Learning Language:
           </label>
-          <Listbox
-            value={selectedLearningLanguage}
-            onChange={(value) => {
-              setSelectedLearningLanguage(value);
-            }}
-          >
+          <Listbox value={learningLanguageId} onChange={setLearningLanguageId}>
             <div className="relative mt-2">
               <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 <span className="block truncate">
-                  {selectedLearningLanguage
-                    ? selectedLearningLanguage.languageName
-                    : "Select a language"}
+                  {getLanguageName(learningLanguageId)}
                 </span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon
@@ -158,22 +150,20 @@ const UserSettingsForm = () => {
                 </span>
               </ListboxButton>
               <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {languageList.map(
-                  (language: { languageId: number; languageName: string }) => (
-                    <ListboxOption
-                      key={language.languageId}
-                      value={language}
-                      className="group relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
-                    >
-                      <span className="block truncate font-normal group-data-[selected]:font-semibold">
-                        {language.languageName}
-                      </span>
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
-                        <CheckIcon aria-hidden="true" className="h-5 w-5" />
-                      </span>
-                    </ListboxOption>
-                  )
-                )}
+                {languageList.map((language) => (
+                  <ListboxOption
+                    key={language.id}
+                    value={language.id}
+                    className="group relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
+                  >
+                    <span className="block truncate font-normal group-data-[selected]:font-semibold">
+                      {language.languageName}
+                    </span>
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
+                      <CheckIcon aria-hidden="true" className="h-5 w-5" />
+                    </span>
+                  </ListboxOption>
+                ))}
               </ListboxOptions>
             </div>
           </Listbox>
@@ -201,12 +191,16 @@ const UserSettingsForm = () => {
           </button>
         </div>
         <div className="mb-5">
-          <label
-            htmlFor="highlightColor"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Highlight Color:
-          </label>
+          <div
+            onClick={() => setDisplayColorPicker(!displayColorPicker)}
+            className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            style={{
+              backgroundColor: highlightColor,
+              cursor: "pointer",
+              width: "30px",
+              height: "30px",
+            }}
+          />
           <input
             type="color"
             id="highlightColor"
