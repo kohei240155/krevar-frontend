@@ -19,7 +19,7 @@ const LoginPage = () => {
             {
               email: session.user?.email,
               name: session.user?.name,
-              googleId: session.user?.email, // 'id'を'email'に変更
+              googleId: session.user?.id,
             },
             {
               headers: { "Content-Type": "application/json" },
