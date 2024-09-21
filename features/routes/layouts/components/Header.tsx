@@ -6,6 +6,12 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { IoList } from "react-icons/io5";
+import { MdOutlineLibraryAdd } from "react-icons/md";
+import { BsGraphUpArrow } from "react-icons/bs";
+import { IoInformationCircleOutline } from "react-icons/io5";
+import { IoSettingsOutline } from "react-icons/io5";
+import { IoLogOutOutline } from "react-icons/io5";
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -115,6 +121,7 @@ const Header = () => {
                     className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     onClick={handleMenuClick}
                   >
+                    <IoList className="inline-block mr-2" />
                     Deck List
                   </Link>
                 </li>
@@ -124,6 +131,7 @@ const Header = () => {
                     className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     onClick={handleMenuClick}
                   >
+                    <MdOutlineLibraryAdd className="inline-block mr-2" />
                     Add Deck
                   </Link>
                 </li>
@@ -133,6 +141,7 @@ const Header = () => {
                     className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     onClick={handleMenuClick}
                   >
+                    <BsGraphUpArrow className="inline-block mr-2" />
                     Statistic
                   </Link>
                 </li>
@@ -144,6 +153,7 @@ const Header = () => {
                         className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
                         onClick={handleMenuClick}
                       >
+                        <IoInformationCircleOutline className="inline-block mr-2" />
                         Information
                       </Link>
                     </li>
@@ -153,6 +163,7 @@ const Header = () => {
                         className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
                         onClick={handleMenuClick}
                       >
+                        <IoSettingsOutline className="inline-block mr-2" />
                         User Settings
                       </Link>
                     </li>
@@ -164,6 +175,7 @@ const Header = () => {
                         }}
                         className="block w-full py-2 px-3 text-left text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
                       >
+                        <IoLogOutOutline className="inline-block mr-2" />
                         Logout
                       </button>
                     </li>
