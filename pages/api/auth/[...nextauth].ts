@@ -22,7 +22,6 @@ export default NextAuth({
   ],
   callbacks: {
     async session({ session, token }) {
-      // セッションにトークンの情報を追加
       if (session.user) {
         console.log("token", token);
         session.user.id = token.sub as string;

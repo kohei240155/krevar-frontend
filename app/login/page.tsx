@@ -30,7 +30,7 @@ const LoginPage = () => {
           if (response.status === 200) {
             const jwtToken = response.data.token; // JWTをレスポンスから取得
             localStorage.setItem("JWT", jwtToken); // ローカルストレージに保存
-            localStorage.setItem("userId", response.data.id); // ローカルストレージに保存
+            localStorage.setItem("userId", response.data.userId); // ローカルストレージに保存
             console.log("ローカルストレージにJWTを保存しました。");
             router.push("/deck");
           } else {
