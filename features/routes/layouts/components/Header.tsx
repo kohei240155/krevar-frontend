@@ -121,7 +121,7 @@ const Header = () => {
                     className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     onClick={handleMenuClick}
                   >
-                    <IoList className="inline-block mr-2" />
+                    <IoList className="inline-block mr-2 md:" />
                     Deck List
                   </Link>
                 </li>
@@ -131,7 +131,7 @@ const Header = () => {
                     className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     onClick={handleMenuClick}
                   >
-                    <MdOutlineLibraryAdd className="inline-block mr-2" />
+                    <MdOutlineLibraryAdd className="inline-block mr-2 md:hidden" />
                     Add Deck
                   </Link>
                 </li>
@@ -191,6 +191,26 @@ const Header = () => {
                     {isDropdownOpen && (
                       <ul className="absolute right-0 mt-40 w-48 bg-white shadow-lg dropdown">
                         <li className="hover:bg-gray-100 transition-colors duration-300">
+                          <Link
+                            href="/information"
+                            className="block w-full px-4 py-2 text-left"
+                            onClick={handleMenuClick}
+                          >
+                            <IoInformationCircleOutline className="inline-block mr-2" />
+                            Information
+                          </Link>
+                        </li>
+                        <li className="hover:bg-gray-100 transition-colors duration-300">
+                          <Link
+                            href="/user-settings"
+                            className="block w-full px-4 py-2 text-left"
+                            onClick={handleMenuClick}
+                          >
+                            <IoSettingsOutline className="inline-block mr-2" />
+                            User Settings
+                          </Link>
+                        </li>
+                        <li className="hover:bg-gray-100 transition-colors duration-300">
                           <button
                             onClick={handleLogout}
                             className="block w-full px-4 py-2 text-left"
@@ -198,15 +218,6 @@ const Header = () => {
                             <IoLogOutOutline className="inline-block mr-2" />
                             Logout
                           </button>
-                        </li>
-                        <li className="hover:bg-gray-100 transition-colors duration-300">
-                          <Link
-                            href="/information"
-                            className="block w-full px-4 py-2 text-left"
-                          >
-                            <IoInformationCircleOutline className="inline-block mr-2" />
-                            Information
-                          </Link>
                         </li>
                       </ul>
                     )}
