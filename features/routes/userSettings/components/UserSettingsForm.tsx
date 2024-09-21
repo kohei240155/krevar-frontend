@@ -208,16 +208,21 @@ const UserSettingsForm = () => {
             >
               Highlight Color:
             </label>
-            <div
-              onClick={() => setDisplayColorPicker(!displayColorPicker)}
-              className="inline-flex items-center justify-center mt-2 px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              style={{
-                backgroundColor: highlightColor,
-                cursor: "pointer",
-                width: "30px",
-                height: "30px",
-              }}
-            />
+            <div className="flex items-center mt-2">
+              <div
+                onClick={() => setDisplayColorPicker(!displayColorPicker)}
+                className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                style={{
+                  backgroundColor: highlightColor,
+                  cursor: "pointer",
+                  width: "30px",
+                  height: "30px",
+                }}
+              />
+              <span className="ml-2 text-sm text-gray-700">
+                {highlightColor}
+              </span>
+            </div>
           </div>
           <div className="flex justify-between mb-2">
             <button
