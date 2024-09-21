@@ -10,6 +10,8 @@ import {
   ListboxOptions,
 } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { SketchPicker } from "react-color";
+import { ColorResult } from "react-color";
 
 interface Language {
   id: number;
@@ -23,6 +25,7 @@ const UserSettingsForm = () => {
   const [learningLanguageId, setLearningLanguageId] = useState(0);
   const [subscriptionStatus, setSubscriptionStatus] = useState(0);
   const [highlightColor, setHighlightColor] = useState("#000000");
+  const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
   const [languageList, setLanguageList] = useState<Language[]>([]);
 
@@ -67,6 +70,10 @@ const UserSettingsForm = () => {
     return language ? language.languageName : "";
   };
 
+  const handleColorChange = (color: ColorResult) => {
+    setHighlightColor(color.hex);
+  };
+
   useEffect(() => {
     setUserId(getUserId());
     fetchLanguageListData();
@@ -85,7 +92,7 @@ const UserSettingsForm = () => {
     <div className="relative p-5">
       <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md relative">
         <h1 className="text-2xl font-bold text-left mb-6">User Settings</h1>
-        <form>
+        <div>
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700">
               User Name:
@@ -195,9 +202,15 @@ const UserSettingsForm = () => {
             </button>
           </div>
           <div className="mb-5">
+            <label
+              htmlFor="highlightColor"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Highlight Color:
+            </label>
             <div
               onClick={() => setDisplayColorPicker(!displayColorPicker)}
-              className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="inline-flex items-center justify-center mt-2 px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               style={{
                 backgroundColor: highlightColor,
                 cursor: "pointer",
@@ -205,18 +218,11 @@ const UserSettingsForm = () => {
                 height: "30px",
               }}
             />
-            <input
-              type="color"
-              id="highlightColor"
-              value={highlightColor}
-              onChange={(e) => setHighlightColor(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
-            />
           </div>
           <div className="flex justify-between mb-2">
             <button
               type="button"
-              onClick={() => router.push("/settings")}
+              onClick={() => router.push("/decks")}
               className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Backward
@@ -228,7 +234,32 @@ const UserSettingsForm = () => {
               Save
             </button>
           </div>
-        </form>
+          {displayColorPicker && (
+            <div
+              style={{
+                position: "absolute",
+                zIndex: 2,
+                top: "100%",
+                left: 0,
+              }}
+            >
+              <div
+                style={{
+                  position: "fixed",
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                }}
+                onClick={() => setDisplayColorPicker(false)}
+              />
+              <SketchPicker
+                color={highlightColor}
+                onChange={handleColorChange}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
