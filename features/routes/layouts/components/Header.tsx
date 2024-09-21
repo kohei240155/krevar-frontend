@@ -195,6 +195,7 @@ const Header = () => {
                             onClick={handleLogout}
                             className="block w-full px-4 py-2 text-left"
                           >
+                            <IoLogOutOutline className="inline-block mr-2" />
                             Logout
                           </button>
                         </li>
@@ -203,6 +204,7 @@ const Header = () => {
                             href="/information"
                             className="block w-full px-4 py-2 text-left"
                           >
+                            <IoInformationCircleOutline className="inline-block mr-2" />
                             Information
                           </Link>
                         </li>
