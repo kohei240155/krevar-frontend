@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>▶IRUKA - 単語暗記アプリ</title>
+        <title>▶KREVAR - 単語暗記アプリ</title>
         <meta
           name="description"
           content="英語学習者向けの単語暗記アプリ「▶ KREVAR」。エビングハウスの忘却曲線に基づいて、効果的に単語を暗記しよう。"
@@ -100,7 +100,7 @@ export default function Home() {
                 </span>
               </h2>
               <p className="max-w-xl text-blue-700">
-                IRUKAは、ChatGPTを活用して英単語を効率的に覚えることができるアプリです。ユーザーが覚えたい単語を選択すると、その単語に関連した覚えやすいイメージが生成されます。また、エビングハウスの忘却曲線に基づいた復習機能により、最適なタイミングで単語を復習できます。
+                KREVARは、ChatGPTを活用して英単語を効率的に覚えることができるアプリです。ユーザーが覚えたい単語を選択すると、その単語に関連した覚えやすいイメージが生成されます。また、エビングハウスの忘却曲線に基づいた復習機能により、最適なタイミングで単語を復習できます。
               </p>
             </div>
           </div>

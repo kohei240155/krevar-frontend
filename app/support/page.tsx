@@ -8,10 +8,10 @@ const ContactPage = () => {
           お問い合わせ
         </h1>
         <p className="mb-4 text-sm text-gray-600">
-          IRUKAをご利用いただきありがとうございます。
+          KREVARをご利用いただきありがとうございます。
         </p>
         <p className="mb-4 text-sm text-gray-600">
-          IRUKAに質問されたいことなどがございましたら下記のメールアドレスまでお問い合わせください。
+          KREVARに質問されたいことなどがございましたら下記のメールアドレスまでお問い合わせください。
         </p>
         <p className="mb-4 text-sm text-gray-600">
           Email:{" "}
