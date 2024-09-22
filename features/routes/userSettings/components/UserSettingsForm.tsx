@@ -106,7 +106,7 @@ const UserSettingsForm = () => {
           </div>
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700">
-              Native Language:
+              Default Native Language:
             </label>
             <Listbox value={nativeLanguageId} onChange={setNativeLanguageId}>
               <div className="relative mt-2">
@@ -142,7 +142,7 @@ const UserSettingsForm = () => {
           </div>
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700">
-              Learning Language:
+              Default Learning Language:
             </label>
             <Listbox
               value={learningLanguageId}
