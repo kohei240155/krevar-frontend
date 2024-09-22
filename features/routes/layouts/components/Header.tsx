@@ -12,7 +12,7 @@ import { BsGraphUpArrow } from "react-icons/bs";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
-
+import { GoQuestion } from "react-icons/go";
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -149,12 +149,12 @@ const Header = () => {
                   <>
                     <li className="block md:hidden">
                       <Link
-                        href="/information"
+                        href="/how-to-use"
                         className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 dark:text-white dark:hover:bg-gray-700"
                         onClick={handleMenuClick}
                       >
-                        <IoInformationCircleOutline className="inline-block mr-2" />
-                        Information
+                        <GoQuestion className="inline-block mr-2" />
+                        How to use
                       </Link>
                     </li>
                     <li className="block md:hidden">
@@ -192,15 +192,15 @@ const Header = () => {
                       <ul className="absolute right-0 mt-40 w-48 bg-white shadow-lg dropdown">
                         <li className="hover:bg-gray-100 transition-colors duration-300">
                           <Link
-                            href="/information"
+                            href="/how-to-use"
                             className="block w-full px-4 py-2 text-left"
                             onClick={() => {
                               handleMenuClick();
                               setIsDropdownOpen(false);
                             }}
                           >
-                            <IoInformationCircleOutline className="inline-block mr-2" />
-                            Information
+                            <GoQuestion className="inline-block mr-2" />
+                            How to use
                           </Link>
                         </li>
                         <li className="hover:bg-gray-100 transition-colors duration-300">
