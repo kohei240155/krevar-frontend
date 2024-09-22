@@ -194,7 +194,10 @@ const Header = () => {
                           <Link
                             href="/information"
                             className="block w-full px-4 py-2 text-left"
-                            onClick={handleMenuClick}
+                            onClick={() => {
+                              handleMenuClick();
+                              setIsDropdownOpen(false);
+                            }}
                           >
                             <IoInformationCircleOutline className="inline-block mr-2" />
                             Information
@@ -204,7 +207,10 @@ const Header = () => {
                           <Link
                             href="/user-settings"
                             className="block w-full px-4 py-2 text-left"
-                            onClick={handleMenuClick}
+                            onClick={() => {
+                              handleMenuClick();
+                              setIsDropdownOpen(false);
+                            }}
                           >
                             <IoSettingsOutline className="inline-block mr-2" />
                             User Settings
@@ -212,7 +218,11 @@ const Header = () => {
                         </li>
                         <li className="hover:bg-gray-100 transition-colors duration-300">
                           <button
-                            onClick={handleLogout}
+                            onClick={() => {
+                              handleLogout();
+                              handleMenuClick();
+                              setIsDropdownOpen(false);
+                            }}
                             className="block w-full px-4 py-2 text-left"
                           >
                             <IoLogOutOutline className="inline-block mr-2" />
