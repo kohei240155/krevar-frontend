@@ -2,7 +2,11 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import * as Common from "../../../common/index";
-import { fetchUserSettings, fetchLanguageList } from "../utils/api";
+import {
+  fetchUserSettings,
+  fetchLanguageList,
+  updateUserSettings,
+} from "../utils/api";
 import {
   Listbox,
   ListboxButton,
@@ -87,6 +91,16 @@ const UserSettingsForm = () => {
   if (isLoading) {
     return <Common.LoadingIndicator />;
   }
+
+  const handleSave = () => {
+    console.log("Save button clicked");
+    updateUserSettings(
+      userId,
+      nativeLanguageId,
+      learningLanguageId,
+      highlightColor
+    );
+  };
 
   return (
     <div className="relative p-5">
@@ -235,6 +249,7 @@ const UserSettingsForm = () => {
             <button
               type="submit"
               className="w-1/2 ml-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              onClick={handleSave}
             >
               Save
             </button>

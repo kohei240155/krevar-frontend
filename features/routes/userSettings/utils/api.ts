@@ -24,12 +24,12 @@ export const fetchUserSettings = async (userId: number) => {
 };
 
 export const updateUserSettings = async (
+  userId: number,
   nativeLanguageId: number,
   learningLanguageId: number,
-  subscriptionStatus: string,
   highlightColor: string
 ) => {
-  const apiUrl = `http://localhost:8080/api/user/settings`;
+  const apiUrl = `http://localhost:8080/api/user/${userId}/settings`;
   try {
     const storedValue = window.localStorage.getItem("JWT");
     setCookie("JWT", storedValue, {
@@ -45,7 +45,6 @@ export const updateUserSettings = async (
       body: JSON.stringify({
         nativeLanguageId,
         learningLanguageId,
-        subscriptionStatus,
         highlightColor,
       }),
     });
