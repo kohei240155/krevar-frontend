@@ -27,7 +27,9 @@ export const fetchDecks = async (
 export const updateDeck = async (
   deckId: number,
   deckName: string,
-  userId: number
+  userId: number,
+  nativeLanguageId: number,
+  learningLanguageId: number
 ) => {
   const apiUrl = `http://localhost:8080/api/deck/${deckId}`;
   try {
@@ -42,7 +44,12 @@ export const updateDeck = async (
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ userId, deckName }),
+      body: JSON.stringify({
+        userId,
+        deckName,
+        nativeLanguageId,
+        learningLanguageId,
+      }),
     });
     return response.ok;
   } catch (error) {
@@ -70,7 +77,12 @@ export const deleteDeck = async (deckId: number) => {
   }
 };
 
-export const createDeck = async (deckName: string, userId: number) => {
+export const createDeck = async (
+  deckName: string,
+  userId: number,
+  nativeLanguageId: number,
+  learningLanguageId: number
+) => {
   const apiUrl = `http://localhost:8080/api/deck`;
   try {
     const storedValue = window.localStorage.getItem("JWT");
@@ -84,7 +96,12 @@ export const createDeck = async (deckName: string, userId: number) => {
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ deckName, userId }),
+      body: JSON.stringify({
+        deckName,
+        userId,
+        nativeLanguageId,
+        learningLanguageId,
+      }),
     });
     return response.ok;
   } catch (error) {

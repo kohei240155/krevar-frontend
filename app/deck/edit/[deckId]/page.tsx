@@ -11,7 +11,11 @@ const SettingsPage = () => {
 
   return (
     <div>
-      <Deck.DeckEditor deckId={deckId as number} deckName={deckName} />
+      <Deck.DeckForm
+        deckId={deckId as number}
+        deckNameValue={deckName}
+        isEditMode={true}
+      />
     </div>
   );
 };

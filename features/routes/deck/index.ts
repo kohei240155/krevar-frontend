@@ -1,5 +1,4 @@
 import DeckList from "./components/DeckList";
-import DeckCreation from "./components/DeckCreation";
-import DeckEditor from "./components/DeckEditor";
+import DeckForm from "./components/DeckForm";
 
-export { DeckList, DeckCreation, DeckEditor };
+export { DeckList, DeckForm };

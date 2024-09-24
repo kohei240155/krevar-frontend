@@ -24,9 +24,7 @@ export interface DeckEditorProps {
 }
 
 export interface DeckFormProps {
-  deckName: string;
-  onDeckNameChange: (newDeckName: string) => void;
-  onSubmit: (event: React.FormEvent) => void;
+  deckNameValue: string;
+  deckId: number;
   isEditMode: boolean;
-  onDelete?: () => void;
 }
