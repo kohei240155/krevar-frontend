@@ -11,6 +11,11 @@ const Footer = () => {
               About
             </a>
           </Link>
+          <Link href="/subscription" legacyBehavior>
+            <a className="text-gray-900 hover:text-blue-600 focus:bg-gray-900 focus:text-white">
+              Subscription
+            </a>
+          </Link>
           <Link href="/privacy" legacyBehavior>
             <a className="text-gray-900 hover:text-blue-600 focus:bg-gray-900 focus:text-white">
               Privacy
