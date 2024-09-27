@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import "tailwindcss/tailwind.css";
 
 const SubscribeButton = ({ selectedPlan }: { selectedPlan: string }) => {
   const handleSubscription = async () => {
