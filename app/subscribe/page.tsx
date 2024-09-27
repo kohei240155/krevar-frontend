@@ -1,11 +1,8 @@
 "use client";
 
-import React from "react";
-import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 
-// クライアントコンポーネントとして定義
-const SubscribeButton = () => {
+const SubscribeButton = ({ selectedPlan }: { selectedPlan: string }) => {
   const handleSubscription = async () => {
     try {
       // ユーザーIDをメタデータとしてバックエンドに送信して、Checkoutセッションを作成
@@ -18,7 +15,7 @@ const SubscribeButton = () => {
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ userId }),
+          body: JSON.stringify({ userId, plan: selectedPlan }), // 選択したプランをバックエンドに送信
         }
       );
 
@@ -32,19 +29,27 @@ const SubscribeButton = () => {
 
   return (
     <button onClick={handleSubscription} type="button">
-      Subscribe for 500円/month
+      Subscribe to {selectedPlan} Plan
     </button>
   );
 };
 
 const SubscribePage = () => {
+  const [selectedPlan, setSelectedPlan] = useState("basic"); // デフォルトはベーシックプラン
+
   return (
     <div>
-      <h1>Subscribe to our Monthly Plan</h1>
-      <p>
-        毎月500円の継続課金プランに登録するには、下記のボタンをクリックしてください。
-      </p>
-      <SubscribeButton />
+      <h1>Subscribe to our Monthly Plans</h1>
+      <p>以下のプランから選択してください。</p>
+      <select
+        value={selectedPlan}
+        onChange={(e) => setSelectedPlan(e.target.value)}
+      >
+        <option value="basic">Basic Plan - 500円/月</option>
+        <option value="premium">Premium Plan - 1000円/月</option>
+        <option value="pro">Pro Plan - 1500円/月</option>
+      </select>
+      <SubscribeButton selectedPlan={selectedPlan} />
     </div>
   );
 };
