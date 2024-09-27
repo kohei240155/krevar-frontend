@@ -41,37 +41,45 @@ const SubscribePage = () => {
   const [selectedPlan, setSelectedPlan] = useState("basic"); // デフォルトはベーシックプラン
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold mb-6 text-center text-blue-700">
-        最適なプランを見つける
-      </h1>
-      <h2 className="text-2xl font-bold mb-12 text-center text-blue-700">
-        料金プラン
-      </h2>
-      <div className="flex flex-wrap justify-center gap-8">
-        <div className="max-w-xs p-6 bg-white rounded-lg shadow-md">
-          <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
-            ¥980 /月
-          </h3>
-          <p className="text-center text-gray-500 mb-4">¥1078 (税込)</p>
-          <p className="text-center text-gray-700 mb-4">ベーシックプラン</p>
-          <SubscribeButton selectedPlan="basic" />
-        </div>
-        <div className="max-w-xs p-6 bg-white rounded-lg shadow-md">
-          <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
-            ¥1980 /月
-          </h3>
-          <p className="text-center text-gray-500 mb-4">¥2178 (税込)</p>
-          <p className="text-center text-gray-700 mb-4">バリュープラン</p>
-          <SubscribeButton selectedPlan="premium" />
-        </div>
-        <div className="max-w-xs p-6 bg-white rounded-lg shadow-md">
-          <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
-            ¥2980 /月
-          </h3>
-          <p className="text-center text-gray-500 mb-4">¥3278 (税込)</p>
-          <p className="text-center text-gray-700 mb-4">プレミアムプラン</p>
-          <SubscribeButton selectedPlan="pro" />
+    <div className="relative p-5">
+      <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+        <h1 className="text-4xl font-bold mb-6 text-center text-blue-700">
+          最適なプランを見つける
+        </h1>
+        <h2 className="text-2xl font-bold mb-12 text-center text-blue-700">
+          料金プラン
+        </h2>
+        <div className="flex flex-wrap justify-center gap-4">
+          <div className="max-w-xs mx-auto p-6 bg-white rounded-lg shadow-md">
+            <div className="flex flex-col items-center">
+              <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
+                ¥980 /月
+              </h3>
+              <p className="text-center text-gray-500 mb-4">¥1078 (税込)</p>
+              <p className="text-center text-gray-700 mb-4">ベーシックプラン</p>
+              <SubscribeButton selectedPlan="basic" />
+            </div>
+          </div>
+          <div className="max-w-xs mx-auto p-6 bg-white rounded-lg shadow-md">
+            <div className="flex flex-col items-center">
+              <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
+                ¥1980 /月
+              </h3>
+              <p className="text-center text-gray-500 mb-4">¥2178 (税込)</p>
+              <p className="text-center text-gray-700 mb-4">バリュープラン</p>
+              <SubscribeButton selectedPlan="premium" />
+            </div>
+          </div>
+          <div className="max-w-xs mx-auto p-6 bg-white rounded-lg shadow-md">
+            <div className="flex flex-col items-center">
+              <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
+                ¥2980 /月
+              </h3>
+              <p className="text-center text-gray-500 mb-4">¥3278 (税込)</p>
+              <p className="text-center text-gray-700 mb-4">プレミアムプラン</p>
+              <SubscribeButton selectedPlan="pro" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
