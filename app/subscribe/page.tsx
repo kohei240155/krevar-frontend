@@ -38,45 +38,43 @@ const SubscribeButton = ({ selectedPlan }: { selectedPlan: string }) => {
 };
 
 const SubscribePage = () => {
-  const [selectedPlan, setSelectedPlan] = useState("basic"); // デフォルトはベーシックプラン
-
   return (
     <div className="relative p-5">
       <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-4xl font-bold mb-6 text-center text-blue-700">
-          最適なプランを見つける
+        <h1 className="text-4xl font-bold mb-6 text-center">
+          Upgrade to KREVAR
         </h1>
-        <h2 className="text-2xl font-bold mb-12 text-center text-blue-700">
-          料金プラン
+        <h2 className="text-2xl font-bold mb-12 text-center">
+          Choose your plan
         </h2>
         <div className="flex flex-wrap justify-center gap-4">
           <div className="max-w-xs mx-auto p-6 bg-white rounded-lg shadow-md">
             <div className="flex flex-col items-center">
+              <p className="text-center text-gray-700 mb-4">Basic</p>
               <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
-                ¥980 /月
+                ¥500
               </h3>
-              <p className="text-center text-gray-500 mb-4">¥1078 (税込)</p>
-              <p className="text-center text-gray-700 mb-4">ベーシックプラン</p>
+              <div className="text-center text-gray-700 mb-4">/month</div>
               <SubscribeButton selectedPlan="basic" />
             </div>
           </div>
           <div className="max-w-xs mx-auto p-6 bg-white rounded-lg shadow-md">
             <div className="flex flex-col items-center">
+              <p className="text-center text-gray-700 mb-4">Premium</p>
               <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
-                ¥1980 /月
+                ¥1000
               </h3>
-              <p className="text-center text-gray-500 mb-4">¥2178 (税込)</p>
-              <p className="text-center text-gray-700 mb-4">バリュープラン</p>
+              <div className="text-center text-gray-700 mb-4">/month</div>
               <SubscribeButton selectedPlan="premium" />
             </div>
           </div>
-          <div className="max-w-xs mx-auto p-6 bg-white rounded-lg shadow-md">
+          <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
             <div className="flex flex-col items-center">
+              <p className="text-center text-gray-700 mb-4">Pro</p>
               <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
-                ¥2980 /月
+                ¥1500
               </h3>
-              <p className="text-center text-gray-500 mb-4">¥3278 (税込)</p>
-              <p className="text-center text-gray-700 mb-4">プレミアムプラン</p>
+              <div className="text-center text-gray-700 mb-4">/month</div>
               <SubscribeButton selectedPlan="pro" />
             </div>
           </div>
