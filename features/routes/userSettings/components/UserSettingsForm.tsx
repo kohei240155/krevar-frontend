@@ -16,7 +16,6 @@ import {
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { SketchPicker } from "react-color";
 import { ColorResult } from "react-color";
-
 interface Language {
   id: number;
   languageName: string;
@@ -28,6 +27,7 @@ const UserSettingsForm = () => {
   const [nativeLanguageId, setNativeLanguageId] = useState(0);
   const [learningLanguageId, setLearningLanguageId] = useState(0);
   const [subscriptionStatus, setSubscriptionStatus] = useState(0);
+  const [subscriptionId, setSubscriptionId] = useState(0);
   const [highlightColor, setHighlightColor] = useState("#000000");
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
@@ -43,6 +43,7 @@ const UserSettingsForm = () => {
       setNativeLanguageId(data.defaultNativeLanguageId);
       setLearningLanguageId(data.defaultLearningLanguageId);
       setSubscriptionStatus(data.subscriptionStatusId);
+      setSubscriptionId(data.subscriptionId);
       setHighlightColor(data.highlightColor);
     } else {
       console.log("Error fetching user settings");
@@ -100,6 +101,31 @@ const UserSettingsForm = () => {
       learningLanguageId,
       highlightColor
     );
+  };
+
+  const handleCancelSubscription = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/cancel-subscription",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ subscriptionId }),
+          credentials: "include",
+        }
+      );
+
+      const data = await response.json();
+      if (data.status === "canceled") {
+        alert("Subscription has been canceled.");
+      } else {
+        alert("Failed to cancel subscription.");
+      }
+    } catch (error) {
+      console.error("Error canceling subscription:", error);
+    }
   };
 
   return (
@@ -213,6 +239,13 @@ const UserSettingsForm = () => {
               className="mt-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Update Subscription
+            </button>
+            <button
+              onClick={handleCancelSubscription}
+              type="button"
+              className="mt-4 w-full px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
+            >
+              Cancel Subscription
             </button>
           </div>
           <div className="mb-5">
