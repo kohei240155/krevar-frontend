@@ -5,7 +5,7 @@ import React, { useState } from "react";
 const SubscribeButton = ({ selectedPlan }: { selectedPlan: string }) => {
   const handleSubscription = async () => {
     try {
-      const userId = "12345"; // ログインしているユーザーIDをここで取得する想定
+      const userId = "5"; // ログインしているユーザーIDをここで取得する想定
       const response = await fetch(
         "http://localhost:8080/api/create-checkout-session",
         {
@@ -49,29 +49,29 @@ const SubscribePage = () => {
         <div className="flex flex-wrap justify-center gap-4">
           <div className="max-w-xs mx-auto p-6 bg-white rounded-lg shadow-md">
             <div className="flex flex-col items-center">
-              <p className="text-center text-gray-700 mb-4">Basic</p>
+              <p className="text-center text-gray-700 mb-4">Trial</p>
               <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
                 ¥500
               </h3>
               <div className="text-center text-gray-700 mb-4">/month</div>
-              <SubscribeButton selectedPlan="basic" />
+              <SubscribeButton selectedPlan="trial" />
             </div>
           </div>
           <div className="max-w-xs mx-auto p-6 bg-white rounded-lg shadow-md">
             <div className="flex flex-col items-center">
-              <p className="text-center text-gray-700 mb-4">Premium</p>
+              <p className="text-center text-gray-700 mb-4">Basic</p>
               <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
-                ¥1000
+                ¥1300
               </h3>
               <div className="text-center text-gray-700 mb-4">/month</div>
-              <SubscribeButton selectedPlan="premium" />
+              <SubscribeButton selectedPlan="basic" />
             </div>
           </div>
           <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
             <div className="flex flex-col items-center">
               <p className="text-center text-gray-700 mb-4">Pro</p>
               <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">
-                ¥1500
+                ¥2000
               </h3>
               <div className="text-center text-gray-700 mb-4">/month</div>
               <SubscribeButton selectedPlan="pro" />
