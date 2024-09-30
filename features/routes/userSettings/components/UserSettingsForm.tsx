@@ -112,7 +112,7 @@ const UserSettingsForm = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ subscriptionId }),
+          body: JSON.stringify({ subscriptionId, userId }),
           credentials: "include",
         }
       );

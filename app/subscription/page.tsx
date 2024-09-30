@@ -5,7 +5,7 @@ import React, { useState } from "react";
 const SubscribeButton = ({ selectedPlan }: { selectedPlan: string }) => {
   const handleSubscription = async () => {
     try {
-      const userId = "5"; // ログインしているユーザーIDをここで取得する想定
+      const userId = "4"; // ログインしているユーザーIDをここで取得する想定
       const response = await fetch(
         "http://localhost:8080/api/create-checkout-session",
         {
