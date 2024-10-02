@@ -121,6 +121,11 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
     }
   };
 
+  const formatImageUrl = (url: string) => {
+    const fileName = url.split("/").pop();
+    return `/images/testImages/${fileName}`;
+  };
+
   return (
     <div className="p-5">
       <div className="max-w-md mx-auto p-5 bg-white rounded-lg shadow-md relative">
@@ -144,10 +149,11 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
             handleReset={handleReset}
             handleColorChange={handleColorChange}
             setDisplayColorPicker={setDisplayColorPicker}
+            disabled={false}
           />
           <MeaningInput meaning={meaning} setMeaning={setMeaning} />
           <NuanceInput nuance={nuance} setNuance={setNuance} />
-          <ImageDisplay imageUrl={imageUrl} />
+          <ImageDisplay imageUrl={formatImageUrl(imageUrl)} />
           <div className="flex justify-between mb-2">
             <button
               type="button"
