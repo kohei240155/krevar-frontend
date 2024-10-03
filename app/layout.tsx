@@ -20,6 +20,13 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8139284305730911"
+          crossOrigin="anonymous"
+        ></script>
+      </head>
       <body className={inter.className}>
         <NextAuthProvider>
           <div className="flex flex-col min-h-screen">
