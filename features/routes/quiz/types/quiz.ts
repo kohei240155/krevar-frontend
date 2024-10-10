@@ -2,7 +2,7 @@ export interface QuizData {
   id: number;
   originalText: string;
   translatedText: string;
-  nuance: string;
+  nuanceText: string;
   imageUrl: string;
   leftQuizCount: number;
 }

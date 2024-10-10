@@ -147,7 +147,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
           </div>
           {quizState.quizData && (
             <p
-              className="text-2xl font-bold mb-6 text-left ml-4"
+              className="text-xl font-bold mb-6 text-left ml-4"
               dangerouslySetInnerHTML={{
                 __html: quizState.quizData?.originalText || "",
               }}
@@ -156,7 +156,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
 
           {quizState.showTranslation && quizState.quizData && (
             <p
-              className="text-xl text-left text-blue-700 font-semibold mb-6 ml-4"
+              className="text-lg text-left text-blue-700 font-semibold mb-6 ml-4"
               dangerouslySetInnerHTML={{
                 __html: quizState.quizData?.translatedText,
               }}
@@ -165,8 +165,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
 
           {quizState.showTranslation && quizState.quizData && (
             <>
-              <p className="text-xl text-left text-gray-700 mb-6 ml-4">
-                {quizState.quizData.nuance}
+              <p className="text-xs text-left text-gray-700 mb-6 ml-4">
+                {quizState.quizData.nuanceText}
               </p>
               {quizState.quizData.imageUrl && (
                 <div className="flex justify-center mb-6">
