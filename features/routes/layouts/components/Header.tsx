@@ -26,7 +26,7 @@ const Header = () => {
       // バックエンド側のセッション無効化APIを呼び出す
       const response = await fetch("http://localhost:8080/api/auth/logout", {
         method: "POST",
-        credentials: "include", // クッキーを含める
+        credentials: "include",
       });
 
       if (!response.ok) {
