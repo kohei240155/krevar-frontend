@@ -7,7 +7,6 @@ import { QuizCardProps, QuizData } from "../types/quiz";
 import * as Common from "../../../common/index";
 import AllDoneCard from "./AllDoneCard";
 import { fetchQuizData, submitAnswer, resetQuizApi } from "../utils/api";
-import { useUser } from "../../../../app/context/UserContext";
 
 const formatImageUrl = (url: string) => {
   const fileName = url.split("/").pop();
@@ -17,8 +16,6 @@ const formatImageUrl = (url: string) => {
 const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   const searchParams = useSearchParams();
   const deckName = searchParams?.get("deckName") || "Deck Name";
-
-  const { userId } = useUser(); // コンテキストからユーザーIDを取得
 
   const [quizState, setQuizState] = useState({
     showTranslation: false,
@@ -30,6 +27,13 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
     isResetting: false,
     quizData: undefined as QuizData | undefined,
   });
+
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
 
   const fetchData = useCallback(async () => {
     const data = await fetchQuizData(deckId, userId, !!isExtraQuiz);
@@ -43,21 +47,18 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
 
   const resetQuiz = useCallback(async () => {
     setQuizState((prev) => ({ ...prev, isLoading: true, isResetting: true }));
-    if (userId !== null && deckId !== null) {
-      const data = await resetQuizApi(userId, deckId);
-      setQuizState((prev) => ({
-        ...prev,
-        quizData: data,
-        isLoading: false,
-        isResetting: false,
-      }));
-    } else {
-      // エラーハンドリングを追加するか、デフォルトの動作を設定します
-    }
+    const data = await resetQuizApi(userId, deckId);
+    setQuizState((prev) => ({
+      ...prev,
+      quizData: data,
+      isLoading: false,
+      isResetting: false,
+    }));
     fetchData();
   }, [deckId, userId, fetchData]);
 
   useEffect(() => {
+    setUserId(getUserId());
     fetchData();
   }, [fetchData]);
 
@@ -84,15 +85,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   const handleNextClick = useCallback(async () => {
     const { isCorrect, quizData } = quizState;
     if (isCorrect !== null && quizData) {
-      const validUserId = userId || 0; // 0 などのデフォルト値を設定
-      await submitAnswer(
-        validUserId,
-        deckId,
-        quizData.id,
-        isCorrect,
-        !!isExtraQuiz
-      );
-      const data = await fetchQuizData(deckId, validUserId, !!isExtraQuiz);
+      await submitAnswer(userId, deckId, quizData.id, isCorrect, !!isExtraQuiz);
+      const data = await fetchQuizData(deckId, userId, !!isExtraQuiz);
       setQuizState((prev) => ({
         ...prev,
         quizData: data,

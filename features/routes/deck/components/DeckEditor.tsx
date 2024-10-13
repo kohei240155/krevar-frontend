@@ -7,7 +7,6 @@ import * as Common from "../../../common/index";
 import DeckForm from "./DeckForm";
 import { DeckEditorProps } from "../types/deck";
 import { updateDeck, deleteDeck } from "../utils/api";
-import { useUser } from "../../../../app/context/UserContext";
 
 const DeckEditor: React.FC<DeckEditorProps> = ({
   deckId,
@@ -18,9 +17,15 @@ const DeckEditor: React.FC<DeckEditorProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const { userId } = useUser();
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
 
   useEffect(() => {
+    setUserId(getUserId());
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);

@@ -13,7 +13,6 @@ import ImageDisplay from "./ImageDisplay";
 import DeleteConfirmModal from "./../../../common/components/DeleteConfirmModal";
 import { WordEditFormProps } from "../types/word";
 import { fetchWordData, updateWord, deleteWord } from "../utils/api";
-import { useUser } from "../../../../app/context/UserContext";
 
 const WordEditForm: React.FC<WordEditFormProps> = () => {
   const [word, setWord] = useState("");
@@ -30,7 +29,12 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { userId } = useUser();
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
 
   const handleReset = () => {
     const wordHtml =
@@ -43,6 +47,7 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
   };
 
   useEffect(() => {
+    setUserId(getUserId());
     const fetchWord = async () => {
       try {
         const wordData = await fetchWordData(userId, wordId);

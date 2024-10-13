@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import DeckItem from "./DeckItem";
 import { Deck } from "../types/deck";
 import { fetchDecks } from "../utils/api";
-import { useUser } from "../../../../app/context/UserContext";
 
 const DeckList = () => {
   const [decks, setDecks] = useState<Deck[]>([]);
@@ -31,10 +30,16 @@ const DeckList = () => {
     }
   };
 
-  const { userId } = useUser();
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
 
   useEffect(() => {
-    fetchDecksData(currentPage, userId);
+    setUserId(getUserId());
+    fetchDecksData(currentPage, userId || 0);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -43,7 +48,7 @@ const DeckList = () => {
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    fetchDecksData(pageNumber, userId);
+    fetchDecksData(pageNumber, userId || 0);
   };
 
   const totalPages = Math.ceil(totalDecks / decksPerPage);

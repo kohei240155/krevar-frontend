@@ -10,7 +10,6 @@ import NuanceInput from "./NuanceInput";
 import ImageDisplay from "./ImageDisplay";
 import WordInput from "./WordInput";
 import { createWord } from "../utils/api";
-import { useUser } from "../../../../app/context/UserContext";
 
 const WordForm = () => {
   const searchParams = useSearchParams();
@@ -28,9 +27,15 @@ const WordForm = () => {
   const deckName = searchParams?.get("deckName") || "Deck Name";
   const deckId = searchParams?.get("deckId") || "0";
 
-  const { userId } = useUser();
+  const getUserId = () => {
+    const storedUserId = localStorage.getItem("userId");
+    return storedUserId ? parseInt(storedUserId, 10) : 0;
+  };
+
+  const [userId, setUserId] = useState(getUserId());
 
   useEffect(() => {
+    setUserId(getUserId());
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
