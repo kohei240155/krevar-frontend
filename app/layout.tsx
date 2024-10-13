@@ -5,6 +5,8 @@ import NextAuthProvider from "./providers";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Header, Footer } from "../features/routes/layouts";
+import { UserProvider } from "./context/UserContext";
+// import { UserProvider } from "./context/UserContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,9 +17,9 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <head>
@@ -29,23 +31,25 @@ export default async function RootLayout({
       </head>
       <body className={inter.className}>
         <NextAuthProvider>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-            <ToastContainer
-              position="top-center"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              style={{ width: "90%", maxWidth: "350px" }}
-            />
-          </div>
+          <UserProvider>
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-grow">{children}</main>
+              <Footer />
+              <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                style={{ width: "90%", maxWidth: "350px" }}
+              />
+            </div>
+          </UserProvider>
         </NextAuthProvider>
       </body>
     </html>

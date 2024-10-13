@@ -4,10 +4,12 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import axios from "axios";
+import { useUser } from "../context/UserContext";
 
 const LoginPage = () => {
   const { status, data: session } = useSession();
   const router = useRouter();
+  const { setUserId } = useUser();
 
   useEffect(() => {
     // 認証が成功したらJWTが取得できているか確認
@@ -30,7 +32,7 @@ const LoginPage = () => {
           if (response.status === 200) {
             const jwtToken = response.data.token; // JWTをレスポンスから取得
             localStorage.setItem("JWT", jwtToken); // ローカルストレージに保存
-            localStorage.setItem("userId", response.data.userId); // ローカルストレージに保存
+            setUserId(response.data.userId); // コンテキストにユーザーIDを保存
             console.log("ローカルストレージにJWTを保存しました。");
             router.push("/deck");
           } else {
@@ -43,7 +45,7 @@ const LoginPage = () => {
 
       fetchJWT();
     }
-  }, [status, session, router]);
+  }, [status, session, router, setUserId]);
 
   const handleLogin = async (event: React.MouseEvent) => {
     event.preventDefault();

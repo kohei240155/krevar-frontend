@@ -16,6 +16,7 @@ import {
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { SketchPicker } from "react-color";
 import { ColorResult } from "react-color";
+import { useUser } from "../../../../app/context/UserContext";
 interface Language {
   id: number;
   languageName: string;
@@ -63,12 +64,7 @@ const UserSettingsForm = () => {
     }
   }, []);
 
-  const getUserId = () => {
-    const storedUserId = localStorage.getItem("userId");
-    return storedUserId ? parseInt(storedUserId, 10) : 0;
-  };
-
-  const [userId, setUserId] = useState(getUserId());
+  const { userId } = useUser();
 
   const getLanguageName = (id: number) => {
     const language = languageList.find((language) => language.id === id);
@@ -80,7 +76,6 @@ const UserSettingsForm = () => {
   };
 
   useEffect(() => {
-    setUserId(getUserId());
     fetchLanguageListData();
     fetchUserSettingsData(userId);
     const timer = setTimeout(() => {

@@ -1,5 +1,4 @@
 "use client";
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,21 +6,16 @@ import { useRouter } from "next/navigation";
 import * as Common from "../../../common/index";
 import DeckForm from "./DeckForm";
 import { createDeck } from "../utils/api";
+import { useUser } from "../../../../app/context/UserContext";
 
 const DeckCreation: React.FC = () => {
   const [deckName, setDeckName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const getUserId = () => {
-    const storedUserId = localStorage.getItem("userId");
-    return storedUserId ? parseInt(storedUserId, 10) : 0;
-  };
-
-  const [userId, setUserId] = useState(getUserId());
+  const { userId } = useUser();
 
   useEffect(() => {
-    setUserId(getUserId());
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
