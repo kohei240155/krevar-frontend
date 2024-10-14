@@ -24,6 +24,7 @@ export interface DeckEditorProps {
 }
 
 export interface DeckFormProps {
+  userId: number;
   deckNameValue: string;
   deckId: number;
   isEditMode: boolean;

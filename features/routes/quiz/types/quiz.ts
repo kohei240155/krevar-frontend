@@ -10,6 +10,7 @@ export interface QuizData {
 export interface QuizCardProps {
   deckId: number;
   isExtraQuiz?: boolean;
+  userId: number;
 }
 
 export interface AllDoneCardProps {

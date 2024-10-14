@@ -27,6 +27,7 @@ const DeckForm: React.FC<DeckFormProps> = ({
   deckNameValue,
   deckId,
   isEditMode,
+  userId,
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -62,20 +63,12 @@ const DeckForm: React.FC<DeckFormProps> = ({
     }
   }, []);
 
-  const getUserId = () => {
-    const storedUserId = localStorage.getItem("userId");
-    return storedUserId ? parseInt(storedUserId, 10) : 0;
-  };
-
-  const [userId, setUserId] = useState(getUserId());
-
   const getLanguageName = (id: number) => {
     const language = languageList.find((language) => language.id === id);
     return language ? language.languageName : "";
   };
 
   useEffect(() => {
-    setUserId(getUserId());
     fetchLanguageListData();
     fetchUserSettingsData(userId);
     const timer = setTimeout(() => {

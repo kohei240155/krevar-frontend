@@ -54,6 +54,7 @@ export interface NuanceInputProps {
 }
 
 export interface WordEditFormProps {
+  userId: number;
   wordId: string;
 }
 

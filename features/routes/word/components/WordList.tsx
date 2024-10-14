@@ -6,7 +6,13 @@ import WordItem from "./WordItem";
 import * as Common from "../../../common/index";
 import { fetchWords } from "../utils/api";
 
-const WordList = ({ deckName }: { deckName: string }) => {
+const WordList = ({
+  deckName,
+  userId,
+}: {
+  deckName: string;
+  userId: number;
+}) => {
   const [words, setWords] = useState<Word[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalWords, setTotalWords] = useState(0);
@@ -23,13 +29,6 @@ const WordList = ({ deckName }: { deckName: string }) => {
 
   const totalPages = Math.ceil(totalWords / wordsPerPage);
 
-  const getUserId = () => {
-    const storedUserId = localStorage.getItem("userId");
-    return storedUserId ? parseInt(storedUserId, 10) : 0;
-  };
-
-  const [userId, setUserId] = useState(getUserId());
-
   const fetchWordsData = useCallback(
     async (page: number) => {
       try {
@@ -44,7 +43,6 @@ const WordList = ({ deckName }: { deckName: string }) => {
   );
 
   useEffect(() => {
-    setUserId(getUserId());
     fetchWordsData(currentPage);
     const timer = setTimeout(() => {
       setIsLoading(false);

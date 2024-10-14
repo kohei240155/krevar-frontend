@@ -14,7 +14,7 @@ import DeleteConfirmModal from "./../../../common/components/DeleteConfirmModal"
 import { WordEditFormProps } from "../types/word";
 import { fetchWordData, updateWord, deleteWord } from "../utils/api";
 
-const WordEditForm: React.FC<WordEditFormProps> = () => {
+const WordEditForm: React.FC<WordEditFormProps> = ({ userId }) => {
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -29,13 +29,6 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getUserId = () => {
-    const storedUserId = localStorage.getItem("userId");
-    return storedUserId ? parseInt(storedUserId, 10) : 0;
-  };
-
-  const [userId, setUserId] = useState(getUserId());
-
   const handleReset = () => {
     const wordHtml =
       (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
@@ -47,7 +40,6 @@ const WordEditForm: React.FC<WordEditFormProps> = () => {
   };
 
   useEffect(() => {
-    setUserId(getUserId());
     const fetchWord = async () => {
       try {
         const wordData = await fetchWordData(userId, wordId);

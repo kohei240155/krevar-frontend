@@ -6,7 +6,11 @@ import DeckItem from "./DeckItem";
 import { Deck } from "../types/deck";
 import { fetchDecks } from "../utils/api";
 
-const DeckList = () => {
+interface DeckListProps {
+  userId: number;
+}
+
+const DeckList = ({ userId }: DeckListProps) => {
   const [decks, setDecks] = useState<Deck[]>([]);
   const [showOptions, setShowOptions] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,16 +34,8 @@ const DeckList = () => {
     }
   };
 
-  const getUserId = () => {
-    const storedUserId = localStorage.getItem("userId");
-    return storedUserId ? parseInt(storedUserId, 10) : 0;
-  };
-
-  const [userId, setUserId] = useState(getUserId());
-
   useEffect(() => {
-    setUserId(getUserId());
-    fetchDecksData(currentPage, userId || 0);
+    fetchDecksData(currentPage, userId);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -48,7 +44,7 @@ const DeckList = () => {
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    fetchDecksData(pageNumber, userId || 0);
+    fetchDecksData(pageNumber, userId);
   };
 
   const totalPages = Math.ceil(totalDecks / decksPerPage);

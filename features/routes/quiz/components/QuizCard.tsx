@@ -13,7 +13,7 @@ const formatImageUrl = (url: string) => {
   return `/images/testImages/${fileName}`;
 };
 
-const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
+const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
   const searchParams = useSearchParams();
   const deckName = searchParams?.get("deckName") || "Deck Name";
 
@@ -27,13 +27,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
     isResetting: false,
     quizData: undefined as QuizData | undefined,
   });
-
-  const getUserId = () => {
-    const storedUserId = localStorage.getItem("userId");
-    return storedUserId ? parseInt(storedUserId, 10) : 0;
-  };
-
-  const [userId, setUserId] = useState(getUserId());
 
   const fetchData = useCallback(async () => {
     const data = await fetchQuizData(deckId, userId, !!isExtraQuiz);
@@ -58,7 +51,6 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
   }, [deckId, userId, fetchData]);
 
   useEffect(() => {
-    setUserId(getUserId());
     fetchData();
   }, [fetchData]);
 

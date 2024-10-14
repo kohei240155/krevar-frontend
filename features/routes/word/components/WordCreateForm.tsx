@@ -11,7 +11,7 @@ import ImageDisplay from "./ImageDisplay";
 import WordInput from "./WordInput";
 import { createWord } from "../utils/api";
 
-const WordForm = () => {
+const WordForm = ({ userId }: { userId: number }) => {
   const searchParams = useSearchParams();
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
@@ -27,15 +27,7 @@ const WordForm = () => {
   const deckName = searchParams?.get("deckName") || "Deck Name";
   const deckId = searchParams?.get("deckId") || "0";
 
-  const getUserId = () => {
-    const storedUserId = localStorage.getItem("userId");
-    return storedUserId ? parseInt(storedUserId, 10) : 0;
-  };
-
-  const [userId, setUserId] = useState(getUserId());
-
   useEffect(() => {
-    setUserId(getUserId());
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
