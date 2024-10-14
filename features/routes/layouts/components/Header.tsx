@@ -9,7 +9,6 @@ import { useSession } from "next-auth/react";
 import { IoList } from "react-icons/io5";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import { BsGraphUpArrow } from "react-icons/bs";
-import { IoInformationCircleOutline } from "react-icons/io5";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
 import { GoQuestion } from "react-icons/go";

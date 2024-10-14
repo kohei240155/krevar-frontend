@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as Common from "../../../common/index";
 import { useRouter } from "next/navigation";
 import DeckItem from "./DeckItem";
@@ -19,20 +19,25 @@ const DeckList = ({ userId }: DeckListProps) => {
   const router = useRouter();
   const decksPerPage = 10;
 
-  const fetchDecksData = async (page: number, userId: number) => {
-    const data = await fetchDecks(userId, page - 1, decksPerPage);
-    if (data) {
-      const formattedDecks = data.deckInfo.map((item: any) => ({
-        id: item.id,
-        deckName: item.deckName,
-        progress: item.progress,
-      }));
-      setDecks(formattedDecks);
-      setTotalDecks(data.deckInfo.length);
-    } else {
-      console.log("Error fetching decks");
-    }
-  };
+  const fetchDecksData = useCallback(
+    async (page: number, userId: number) => {
+      const data = await fetchDecks(userId, page - 1, decksPerPage, router);
+      if (data) {
+        const formattedDecks = data.deckInfo.map((item: any) => ({
+          id: item.id,
+          deckName: item.deckName,
+          progress: item.progress,
+        }));
+        setDecks(formattedDecks);
+        setTotalDecks(data.deckInfo.length);
+      } else {
+        // ここで状態をリセット
+        setDecks([]);
+        setIsLoading(false);
+      }
+    },
+    [router]
+  );
 
   useEffect(() => {
     fetchDecksData(currentPage, userId);
@@ -40,7 +45,7 @@ const DeckList = ({ userId }: DeckListProps) => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [currentPage, userId]);
+  }, [currentPage, userId, fetchDecksData]); // fetchDecksData を依存に追加
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);

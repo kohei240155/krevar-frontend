@@ -1,9 +1,11 @@
 import { setCookie } from "cookies-next";
+import { signIn, useSession, signOut } from "next-auth/react";
 
 export const fetchDecks = async (
   userId: number,
   page: number,
-  size: number
+  size: number,
+  router: any
 ) => {
   const apiUrl = `http://localhost:8080/api/user/${userId}/deck?page=${page}&size=${size}`;
   const storedValue = window.localStorage.getItem("JWT");
@@ -11,11 +13,22 @@ export const fetchDecks = async (
     maxAge: 3600,
     path: "/",
   });
+
   try {
     const response = await fetch(apiUrl, {
       method: "GET",
       credentials: "include",
     });
+
+    // 401エラーが発生した場合はリダイレクト後に処理を終了
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      window.alert("ログインしてください。");
+      signOut();
+      router.push("/"); // ルートにリダイレクト
+      return null; // 関数をここで終了
+    }
+
     const data = await response.json();
     return data;
   } catch (error) {
