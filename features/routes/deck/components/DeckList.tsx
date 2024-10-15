@@ -30,10 +30,6 @@ const DeckList = ({ userId }: DeckListProps) => {
         }));
         setDecks(formattedDecks);
         setTotalDecks(data.deckInfo.length);
-      } else {
-        // ここで状態をリセット
-        setDecks([]);
-        setIsLoading(false);
       }
     },
     [router]
