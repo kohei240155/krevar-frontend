@@ -101,7 +101,7 @@ const DeckList = ({ userId }: DeckListProps) => {
         router.push(`/quiz/extra/${deck.id}`);
         break;
       default:
-        setIsLoading(false); // 無効なオプションの場合、ローディングを解除
+        setIsLoading(false);
         break;
     }
   };
