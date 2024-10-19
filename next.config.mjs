@@ -11,5 +11,6 @@ const nextConfig = {
     env: {
         OPENAI_API_KEY: process.env.OPENAI_API_KEY, // 環境変数を追加
     },
+    reactStrictMode: true,
 };
 export default nextConfig;
