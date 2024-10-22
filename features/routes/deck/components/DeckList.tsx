@@ -20,8 +20,8 @@ const DeckList = ({ userId }: DeckListProps) => {
   const decksPerPage = 10;
 
   const fetchDecksData = useCallback(
-    async (page: number, userId: number) => {
-      const data = await fetchDecks(userId, page - 1, decksPerPage, router);
+    async (page: number) => {
+      const data = await fetchDecks(page - 1, decksPerPage, router);
       if (data) {
         const formattedDecks = data.deckInfo.map((item: any) => ({
           id: item.id,
@@ -36,16 +36,16 @@ const DeckList = ({ userId }: DeckListProps) => {
   );
 
   useEffect(() => {
-    fetchDecksData(currentPage, userId);
+    fetchDecksData(currentPage);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [currentPage, userId, fetchDecksData]); // fetchDecksData を依存に追加
+  }, [currentPage, fetchDecksData]); // fetchDecksData を依存に追加
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    fetchDecksData(pageNumber, userId);
+    fetchDecksData(pageNumber);
   };
 
   const totalPages = Math.ceil(totalDecks / decksPerPage);

@@ -1,17 +1,14 @@
 import { setCookie } from "cookies-next";
 
-export const fetchWordData = async (userId: number, wordId: number) => {
+export const fetchWordData = async (wordId: number) => {
   const storedValue = window.localStorage.getItem("JWT");
   setCookie("JWT", storedValue, {
     maxAge: 3600,
     path: "/",
   });
-  const response = await fetch(
-    `http://localhost:8080/api/user/${userId}/word/${wordId}`,
-    {
-      credentials: "include",
-    }
-  );
+  const response = await fetch(`http://localhost:8080/api/word/${wordId}`, {
+    credentials: "include",
+  });
   return response.json();
 };
 
@@ -49,24 +46,20 @@ export const updateWord = async (wordData: any) => {
   return response.json();
 };
 
-export const deleteWord = async (userId: number, wordId: number) => {
+export const deleteWord = async (wordId: number) => {
   const storedValue = window.localStorage.getItem("JWT");
   setCookie("JWT", storedValue, {
     maxAge: 3600,
     path: "/",
   });
-  const response = await fetch(
-    `http://localhost:8080/api/word/${userId}/${wordId}`,
-    {
-      method: "DELETE",
-      credentials: "include",
-    }
-  );
+  const response = await fetch(`http://localhost:8080/api/word/${wordId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
   return response.json();
 };
 
 export const fetchWords = async (
-  userId: number,
   deckId: number,
   page: number,
   size: number
@@ -77,7 +70,7 @@ export const fetchWords = async (
     path: "/",
   });
   const response = await fetch(
-    `http://localhost:8080/api/user/${userId}/deck/${deckId}?page=${page - 1}&size=${size}`,
+    `http://localhost:8080/api/deck/${deckId}?page=${page - 1}&size=${size}`,
     {
       method: "GET",
       credentials: "include",

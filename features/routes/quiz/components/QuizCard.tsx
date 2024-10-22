@@ -29,18 +29,18 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
   });
 
   const fetchData = useCallback(async () => {
-    const data = await fetchQuizData(deckId, userId, !!isExtraQuiz);
+    const data = await fetchQuizData(deckId, !!isExtraQuiz);
     setQuizState((prev) => ({
       ...prev,
       quizData: data,
       isLoading: false,
       isAllDone: data.leftQuizCount === 0,
     }));
-  }, [deckId, isExtraQuiz, userId]);
+  }, [deckId, isExtraQuiz]);
 
   const resetQuiz = useCallback(async () => {
     setQuizState((prev) => ({ ...prev, isLoading: true, isResetting: true }));
-    const data = await resetQuizApi(userId, deckId);
+    const data = await resetQuizApi(deckId);
     setQuizState((prev) => ({
       ...prev,
       quizData: data,
@@ -48,7 +48,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
       isResetting: false,
     }));
     fetchData();
-  }, [deckId, userId, fetchData]);
+  }, [deckId, fetchData]);
 
   useEffect(() => {
     fetchData();
@@ -77,8 +77,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
   const handleNextClick = useCallback(async () => {
     const { isCorrect, quizData } = quizState;
     if (isCorrect !== null && quizData) {
-      await submitAnswer(userId, deckId, quizData.id, isCorrect, !!isExtraQuiz);
-      const data = await fetchQuizData(deckId, userId, !!isExtraQuiz);
+      await submitAnswer(deckId, quizData.id, isCorrect, !!isExtraQuiz);
+      const data = await fetchQuizData(deckId, !!isExtraQuiz);
       setQuizState((prev) => ({
         ...prev,
         quizData: data,
@@ -91,7 +91,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
         isResetting: false,
       }));
     }
-  }, [quizState, deckId, isExtraQuiz, userId]);
+  }, [quizState, deckId, isExtraQuiz]);
 
   const handleSpeakClick = useCallback(() => {
     const utterance = new SpeechSynthesisUtterance(

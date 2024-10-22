@@ -32,14 +32,14 @@ const WordList = ({
   const fetchWordsData = useCallback(
     async (page: number) => {
       try {
-        const data = await fetchWords(userId, deckId, page, wordsPerPage);
+        const data = await fetchWords(deckId, page, wordsPerPage);
         setWords(data.wordInfo);
         setTotalWords(data.wordInfo.length);
       } catch (error) {
         console.log("Error fetching words:", error);
       }
     },
-    [userId, deckId]
+    [deckId]
   );
 
   useEffect(() => {

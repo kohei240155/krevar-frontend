@@ -42,7 +42,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ userId }) => {
   useEffect(() => {
     const fetchWord = async () => {
       try {
-        const wordData = await fetchWordData(userId, wordId);
+        const wordData = await fetchWordData(wordId);
         setWord(wordData.originalText);
         setMeaning(wordData.translatedText);
         setImageUrl(wordData.imageUrl);
@@ -103,7 +103,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ userId }) => {
 
   const confirmDelete = async () => {
     try {
-      await deleteWord(userId, wordId);
+      await deleteWord(wordId);
       toast.success("Word deleted successfully!");
       router.back();
     } catch (error) {

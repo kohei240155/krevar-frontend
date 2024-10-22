@@ -87,7 +87,6 @@ const DeckForm: React.FC<DeckFormProps> = ({
     const success = await updateDeck(
       deckId,
       deckName,
-      userId,
       nativeLanguageId,
       learningLanguageId
     );
@@ -118,7 +117,6 @@ const DeckForm: React.FC<DeckFormProps> = ({
     event.preventDefault();
     const success = await createDeck(
       deckName,
-      userId,
       nativeLanguageId,
       learningLanguageId
     );

@@ -95,12 +95,7 @@ const UserSettingsForm = () => {
 
   const handleSave = () => {
     console.log("Save button clicked");
-    updateUserSettings(
-      userId,
-      nativeLanguageId,
-      learningLanguageId,
-      highlightColor
-    );
+    updateUserSettings(nativeLanguageId, learningLanguageId, highlightColor);
   };
 
   const handleCancelSubscription = async () => {

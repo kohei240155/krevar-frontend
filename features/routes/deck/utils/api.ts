@@ -1,13 +1,8 @@
 import { setCookie } from "cookies-next";
 import { signIn, useSession, signOut } from "next-auth/react";
 
-export const fetchDecks = async (
-  userId: number,
-  page: number,
-  size: number,
-  router: any
-) => {
-  const apiUrl = `http://localhost:8080/api/user/${userId}/deck?page=${page}&size=${size}`;
+export const fetchDecks = async (page: number, size: number, router: any) => {
+  const apiUrl = `http://localhost:8080/api/deck?page=${page}&size=${size}`;
   const storedValue = window.localStorage.getItem("JWT");
   setCookie("JWT", storedValue, {
     maxAge: 3600,
@@ -40,7 +35,6 @@ export const fetchDecks = async (
 export const updateDeck = async (
   deckId: number,
   deckName: string,
-  userId: number,
   nativeLanguageId: number,
   learningLanguageId: number
 ) => {
@@ -58,7 +52,6 @@ export const updateDeck = async (
       },
       credentials: "include",
       body: JSON.stringify({
-        userId,
         deckName,
         nativeLanguageId,
         learningLanguageId,
@@ -92,7 +85,6 @@ export const deleteDeck = async (deckId: number) => {
 
 export const createDeck = async (
   deckName: string,
-  userId: number,
   nativeLanguageId: number,
   learningLanguageId: number
 ) => {
@@ -111,7 +103,6 @@ export const createDeck = async (
       credentials: "include",
       body: JSON.stringify({
         deckName,
-        userId,
         nativeLanguageId,
         learningLanguageId,
       }),
