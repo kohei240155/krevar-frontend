@@ -6,11 +6,7 @@ import DeckItem from "./DeckItem";
 import { Deck } from "../types/deck";
 import { fetchDecks } from "../utils/api";
 
-interface DeckListProps {
-  userId: number;
-}
-
-const DeckList = ({ userId }: DeckListProps) => {
+const DeckList = () => {
   const [decks, setDecks] = useState<Deck[]>([]);
   const [showOptions, setShowOptions] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -107,28 +103,25 @@ const DeckList = ({ userId }: DeckListProps) => {
   };
 
   return (
-    <div className="relative p-5">
-      <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4 text-left">Deck List</h2>
-        <ul className="space-y-4">
-          {decks.map((deck) => (
-            <DeckItem
-              key={deck.id}
-              deck={deck}
-              showOptions={showOptions}
-              onQuizClick={handleQuizClick}
-              onOptionClick={handleOptionClick}
-              onOptionItemClick={handleOptionItemClick}
-              progress={deck.progress}
-            />
-          ))}
-        </ul>
-        <Common.Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          paginate={paginate}
-        />
-      </div>
+    <div>
+      <ul>
+        {decks.map((deck) => (
+          <DeckItem
+            key={deck.id}
+            deck={deck}
+            showOptions={showOptions}
+            onQuizClick={handleQuizClick}
+            onOptionClick={handleOptionClick}
+            onOptionItemClick={handleOptionItemClick}
+            progress={deck.progress}
+          />
+        ))}
+      </ul>
+      <Common.Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        paginate={paginate}
+      />
     </div>
   );
 };
