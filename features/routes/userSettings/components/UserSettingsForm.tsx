@@ -16,6 +16,7 @@ import {
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { SketchPicker } from "react-color";
 import { ColorResult } from "react-color";
+import { BASE_URL } from "../../../../utils/api/api";
 interface Language {
   id: number;
   languageName: string;
@@ -100,17 +101,14 @@ const UserSettingsForm = () => {
 
   const handleCancelSubscription = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8080/api/cancel-subscription",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ subscriptionId, userId }),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/api/cancel-subscription`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ subscriptionId, userId }),
+        credentials: "include",
+      });
 
       const data = await response.json();
       if (data.status === "canceled") {

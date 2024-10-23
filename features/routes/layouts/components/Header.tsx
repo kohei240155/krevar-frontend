@@ -12,6 +12,7 @@ import { BsGraphUpArrow } from "react-icons/bs";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoLogOutOutline } from "react-icons/io5";
 import { GoQuestion } from "react-icons/go";
+import { BASE_URL } from "../../../../utils/api/api";
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,7 +24,7 @@ const Header = () => {
       await signOut({ callbackUrl: "/" });
 
       // バックエンド側のセッション無効化APIを呼び出す
-      const response = await fetch("http://localhost:8080/api/auth/logout", {
+      const response = await fetch(`${BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

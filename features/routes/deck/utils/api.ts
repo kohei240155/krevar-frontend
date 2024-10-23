@@ -1,8 +1,9 @@
 import { setCookie } from "cookies-next";
 import { signIn, useSession, signOut } from "next-auth/react";
+import { BASE_URL } from "../../../../utils/api/api";
 
 export const fetchDecks = async (page: number, size: number, router: any) => {
-  const apiUrl = `http://localhost:8080/api/deck?page=${page}&size=${size}`;
+  const apiUrl = `${BASE_URL}/api/deck?page=${page}&size=${size}`;
   const storedValue = window.localStorage.getItem("JWT");
   setCookie("JWT", storedValue, {
     maxAge: 3600,
@@ -38,7 +39,7 @@ export const updateDeck = async (
   nativeLanguageId: number,
   learningLanguageId: number
 ) => {
-  const apiUrl = `http://localhost:8080/api/deck/${deckId}`;
+  const apiUrl = `${BASE_URL}/api/deck/${deckId}`;
   try {
     const storedValue = window.localStorage.getItem("JWT");
     setCookie("JWT", storedValue, {
@@ -65,7 +66,7 @@ export const updateDeck = async (
 };
 
 export const deleteDeck = async (deckId: number) => {
-  const apiUrl = `http://localhost:8080/api/deck/${deckId}`;
+  const apiUrl = `${BASE_URL}/api/deck/${deckId}`;
   try {
     const storedValue = window.localStorage.getItem("JWT");
     setCookie("JWT", storedValue, {
@@ -88,7 +89,7 @@ export const createDeck = async (
   nativeLanguageId: number,
   learningLanguageId: number
 ) => {
-  const apiUrl = `http://localhost:8080/api/deck`;
+  const apiUrl = `${BASE_URL}/api/deck`;
   try {
     const storedValue = window.localStorage.getItem("JWT");
     setCookie("JWT", storedValue, {

@@ -1,4 +1,5 @@
 import { setCookie } from "cookies-next";
+import { BASE_URL } from "../../../../utils/api/api";
 
 export const fetchQuizData = async (deckId: number, isExtraQuiz: boolean) => {
   const storedValue = window.localStorage.getItem("JWT");
@@ -7,8 +8,8 @@ export const fetchQuizData = async (deckId: number, isExtraQuiz: boolean) => {
     path: "/",
   });
   const apiUrl = isExtraQuiz
-    ? `http://localhost:8080/api/extra-quiz/deck/${deckId}`
-    : `http://localhost:8080/api/normal-quiz/deck/${deckId}`;
+    ? `${BASE_URL}/api/extra-quiz/deck/${deckId}`
+    : `${BASE_URL}/api/normal-quiz/deck/${deckId}`;
   try {
     const response = await fetch(apiUrl, {
       credentials: "include",
@@ -33,8 +34,8 @@ export const submitAnswer = async (
     path: "/",
   });
   const apiUrl = isExtraQuiz
-    ? `http://localhost:8080/api/extra-quiz`
-    : `http://localhost:8080/api/normal-quiz`;
+    ? `${BASE_URL}/api/extra-quiz`
+    : `${BASE_URL}/api/normal-quiz`;
   const body = {
     deckId,
     wordId,
@@ -56,7 +57,7 @@ export const submitAnswer = async (
 };
 
 export const resetQuizApi = async (deckId: number) => {
-  const apiUrl = `http://localhost:8080/api/extra-quiz/reset/deck/${deckId}`;
+  const apiUrl = `${BASE_URL}/api/extra-quiz/reset/deck/${deckId}`;
   try {
     const storedValue = window.localStorage.getItem("JWT");
     setCookie("JWT", storedValue, {

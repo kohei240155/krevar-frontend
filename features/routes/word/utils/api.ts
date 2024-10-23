@@ -1,4 +1,5 @@
 import { setCookie } from "cookies-next";
+import { BASE_URL } from "../../../../utils/api/api";
 
 export const fetchWordData = async (wordId: number) => {
   const storedValue = window.localStorage.getItem("JWT");
@@ -6,7 +7,7 @@ export const fetchWordData = async (wordId: number) => {
     maxAge: 3600,
     path: "/",
   });
-  const response = await fetch(`http://localhost:8080/api/word/${wordId}`, {
+  const response = await fetch(`${BASE_URL}/api/word/${wordId}`, {
     credentials: "include",
   });
   return response.json();
@@ -18,7 +19,7 @@ export const createWord = async (wordData: any) => {
     maxAge: 3600,
     path: "/",
   });
-  const response = await fetch(`http://localhost:8080/api/word`, {
+  const response = await fetch(`${BASE_URL}/api/word`, {
     credentials: "include",
     method: "POST",
     headers: {
@@ -35,7 +36,7 @@ export const updateWord = async (wordData: any) => {
     maxAge: 3600,
     path: "/",
   });
-  const response = await fetch(`http://localhost:8080/api/word`, {
+  const response = await fetch(`${BASE_URL}/api/word`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -52,7 +53,7 @@ export const deleteWord = async (wordId: number) => {
     maxAge: 3600,
     path: "/",
   });
-  const response = await fetch(`http://localhost:8080/api/word/${wordId}`, {
+  const response = await fetch(`${BASE_URL}/api/word/${wordId}`, {
     method: "DELETE",
     credentials: "include",
   });
@@ -70,7 +71,7 @@ export const fetchWords = async (
     path: "/",
   });
   const response = await fetch(
-    `http://localhost:8080/api/deck/${deckId}?page=${page - 1}&size=${size}`,
+    `${BASE_URL}/api/deck/${deckId}?page=${page - 1}&size=${size}`,
     {
       method: "GET",
       credentials: "include",

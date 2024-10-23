@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import axios from "axios";
+import { BASE_URL } from "../../utils/api/api";
 
 const LoginPage = () => {
   const { status, data: session } = useSession();
@@ -15,7 +16,7 @@ const LoginPage = () => {
       const fetchJWT = async () => {
         try {
           const response = await axios.post(
-            "http://localhost:8080/api/auth/google-login",
+            `${BASE_URL}/api/auth/google-login`,
             {
               email: session.user?.email,
               name: session.user?.name,

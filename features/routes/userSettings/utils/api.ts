@@ -1,7 +1,8 @@
 import { setCookie } from "cookies-next";
+import { BASE_URL } from "../../../../utils/api/api";
 
 export const fetchUserSettings = async (userId: number) => {
-  const apiUrl = `http://localhost:8080/api/settings`;
+  const apiUrl = `${BASE_URL}/api/settings`;
   try {
     const storedValue = window.localStorage.getItem("JWT");
     setCookie("JWT", storedValue, {
@@ -28,7 +29,7 @@ export const updateUserSettings = async (
   learningLanguageId: number,
   highlightColor: string
 ) => {
-  const apiUrl = `http://localhost:8080/api/settings`;
+  const apiUrl = `${BASE_URL}/api/settings`;
   try {
     const storedValue = window.localStorage.getItem("JWT");
     setCookie("JWT", storedValue, {
@@ -55,7 +56,7 @@ export const updateUserSettings = async (
 };
 
 export const fetchLanguageList = async () => {
-  const apiUrl = `http://localhost:8080/api/user/language-list`;
+  const apiUrl = `${BASE_URL}/api/user/language-list`;
   try {
     const response = await fetch(apiUrl, {
       method: "GET",

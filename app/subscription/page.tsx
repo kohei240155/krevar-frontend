@@ -1,22 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
+import { BASE_URL } from "../../utils/api/api";
 
 const SubscribeButton = ({ selectedPlan }: { selectedPlan: string }) => {
   const handleSubscription = async () => {
     try {
       const userId = "4"; // ログインしているユーザーIDをここで取得する想定
-      const response = await fetch(
-        "http://localhost:8080/api/create-checkout-session",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ userId, plan: selectedPlan }), // 選択したプランをバックエンドに送信
-        }
-      );
+      const response = await fetch(`${BASE_URL}/api/create-checkout-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ userId, plan: selectedPlan }), // 選択したプランをバックエンドに送信
+      });
 
       const data = await response.json();
       window.location.href = data.url;
