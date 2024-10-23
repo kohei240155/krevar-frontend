@@ -1,6 +1,15 @@
 import React from "react";
 import DeckOptions from "./DeckOptions";
-import { DeckItemProps } from "../types/deck";
+import { Deck } from "../types/deck";
+
+export interface DeckItemProps {
+  deck: Deck;
+  showOptions: number | null;
+  onQuizClick: (deckId: number, deckName: string) => void;
+  onOptionClick: (e: React.MouseEvent, deckId: number) => void;
+  onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
+  progress: number;
+}
 
 const DeckItem: React.FC<DeckItemProps> = ({
   deck,

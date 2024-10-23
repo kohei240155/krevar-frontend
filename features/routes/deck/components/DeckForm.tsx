@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import { FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { DeckFormProps } from "../types/deck";
 import {
   Listbox,
   ListboxButton,
@@ -21,6 +20,13 @@ import { updateDeck, deleteDeck, createDeck } from "../utils/api";
 interface Language {
   id: number;
   languageName: string;
+}
+
+export interface DeckFormProps {
+  userId: number;
+  deckNameValue: string;
+  deckId: number;
+  isEditMode: boolean;
 }
 
 const DeckForm: React.FC<DeckFormProps> = ({

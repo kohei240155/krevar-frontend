@@ -1,9 +1,14 @@
 import React from "react";
-import { DeckOptionsProps } from "../types/deck";
+import { Deck } from "../types/deck";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import { IoList } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineQuiz } from "react-icons/md";
+
+export interface DeckOptionsProps {
+  deck: Deck;
+  onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
+}
 
 const navigation = [
   {
