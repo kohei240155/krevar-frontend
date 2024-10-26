@@ -1,5 +1,13 @@
+"use client";
+
 import Modal from "react-modal";
-import { DeleteConfirmModalProps } from "../types/common";
+
+export interface DeleteConfirmModalProps {
+  isOpen: boolean;
+  onRequestClose: () => void;
+  onConfirmDelete: () => void;
+  targetWord: string;
+}
 
 const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
   isOpen,
