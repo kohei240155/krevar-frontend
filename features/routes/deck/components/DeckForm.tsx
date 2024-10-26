@@ -15,7 +15,7 @@ import {
   fetchLanguageList,
 } from "../../userSettings/utils/api";
 import * as Common from "../../../common/index";
-import { updateDeck, deleteDeck, createDeck } from "../utils/api";
+import { createDeck, deleteDeck, updateDeck } from "../utils/api";
 
 interface Language {
   id: number;
@@ -23,7 +23,6 @@ interface Language {
 }
 
 export interface DeckFormProps {
-  userId: number;
   deckNameValue: string;
   deckId: number;
   isEditMode: boolean;
@@ -33,24 +32,20 @@ const DeckForm: React.FC<DeckFormProps> = ({
   deckNameValue,
   deckId,
   isEditMode,
-  userId,
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [languageList, setLanguageList] = useState<Language[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userName, setUserName] = useState("");
   const [nativeLanguageId, setNativeLanguageId] = useState(0);
   const [learningLanguageId, setLearningLanguageId] = useState(0);
   const [deckName, setDeckName] = useState(deckNameValue);
 
-  const fetchUserSettingsData = useCallback(async (userId: number) => {
-    const data = await fetchUserSettings(userId);
+  const fetchUserSettingsData = useCallback(async () => {
+    const data = await fetchUserSettings();
     if (data) {
-      // バックエンドから取得したデータをステートに格納
       setNativeLanguageId(data.defaultNativeLanguageId);
       setLearningLanguageId(data.defaultLearningLanguageId);
-      setUserName(data.name);
     } else {
       console.log("Error fetching user settings");
     }
@@ -76,12 +71,12 @@ const DeckForm: React.FC<DeckFormProps> = ({
 
   useEffect(() => {
     fetchLanguageListData();
-    fetchUserSettingsData(userId);
+    fetchUserSettingsData();
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [fetchUserSettingsData, fetchLanguageListData, userId]);
+  }, [fetchUserSettingsData, fetchLanguageListData]);
 
   if (isLoading) {
     return <Common.LoadingIndicator />;
@@ -158,7 +153,9 @@ const DeckForm: React.FC<DeckFormProps> = ({
             </button>
           )}
         </div>
+
         <form onSubmit={handleSubmit}>
+          {/* デッキ名 */}
           <div className="mb-5">
             <label
               htmlFor="deckName"
@@ -166,6 +163,7 @@ const DeckForm: React.FC<DeckFormProps> = ({
             >
               Deck Name:
             </label>
+            {/* デッキ名入力欄 */}
             <input
               type="text"
               id="deckName"
@@ -174,6 +172,8 @@ const DeckForm: React.FC<DeckFormProps> = ({
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
             />
           </div>
+
+          {/* 母語の選択欄 */}
           <div className="mb-5">
             <label className="block text-sm font-medium text-gray-700">
               Native Language:
@@ -210,6 +210,8 @@ const DeckForm: React.FC<DeckFormProps> = ({
               </div>
             </Listbox>
           </div>
+
+          {/* 学習言語の選択欄 */}
           <div className="mb-10">
             <label className="block text-sm font-medium text-gray-700">
               Learning Language:
@@ -249,7 +251,10 @@ const DeckForm: React.FC<DeckFormProps> = ({
               </div>
             </Listbox>
           </div>
+
+          {/* ボタン */}
           <div className="flex justify-between mb-2">
+            {/* 戻るボタン */}
             <button
               type="button"
               onClick={() => router.push("/deck")}
@@ -257,6 +262,7 @@ const DeckForm: React.FC<DeckFormProps> = ({
             >
               Backward
             </button>
+            {/* 登録ボタン */}
             <button
               type="submit"
               className="w-1/2 ml-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
