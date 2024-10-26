@@ -91,8 +91,12 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
       learningLanguageId
     );
     if (success) {
-      toast.success("Deck updated successfully!");
-      router.push("/deck/1");
+      toast.success("Deck updated successfully!", {
+        autoClose: 1500,
+      });
+      setTimeout(() => {
+        window.location.href = "/deck/1";
+      }, 1600);
     } else {
       toast.error("Unexpected response from the server.");
     }
@@ -105,8 +109,12 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
   const confirmDelete = async () => {
     const success = await deleteDeck(deckId);
     if (success) {
-      toast.success("Deck deleted successfully!");
-      router.push("/deck/1");
+      toast.success("Deck deleted successfully!", {
+        autoClose: 1500,
+      });
+      setTimeout(() => {
+        window.location.href = "/deck/1";
+      }, 1600);
     } else {
       toast.error("Unexpected response from the server.");
     }
@@ -121,8 +129,12 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
       learningLanguageId
     );
     if (success) {
-      toast.success("Deck created successfully!");
-      router.push("/deck/1");
+      toast.success("Deck created successfully!", {
+        autoClose: 1500,
+      });
+      setTimeout(() => {
+        window.location.href = "/deck/1";
+      }, 1600);
     } else {
       toast.error("Unexpected response from the server.");
     }

@@ -36,7 +36,7 @@ export const fetchDecks = async (page: number, size: number) => {
   }
 };
 
-const DeckList = async ({ params }: DeckListProps) => {
+const DeckListPage = async ({ params }: DeckListProps) => {
   const currentPage = parseInt(params.pageNo) || 1;
   const data: DeckInfo = await fetchDecks(currentPage - 1, 5);
 
@@ -70,4 +70,4 @@ const DeckList = async ({ params }: DeckListProps) => {
   );
 };
 
-export default DeckList;
+export default DeckListPage;

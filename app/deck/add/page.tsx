@@ -1,7 +1,7 @@
 import React from "react";
 import { DeckForm } from "../../../features/routes/deck";
 
-const NewDeck = () => {
+const DeckAddPage = () => {
   return (
     <div className="p-4">
       <DeckForm deckId={0} isEditMode={false} />
@@ -9,4 +9,4 @@ const NewDeck = () => {
   );
 };
 
-export default NewDeck;
+export default DeckAddPage;
