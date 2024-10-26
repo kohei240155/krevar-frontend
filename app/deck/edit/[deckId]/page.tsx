@@ -27,7 +27,6 @@ const SettingsPage = () => {
         deckId={deckId as number}
         deckNameValue={deckName}
         isEditMode={true}
-        userId={userId}
       />
     </div>
   );
