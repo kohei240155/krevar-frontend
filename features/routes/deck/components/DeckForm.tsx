@@ -13,23 +13,18 @@ import { DeleteConfirmModal, LoadingIndicator } from "../../../common";
 import { Language } from "../../../common/types/types";
 
 export interface DeckFormProps {
-  deckNameValue: string;
   deckId: number;
   isEditMode: boolean;
 }
 
-const DeckForm: React.FC<DeckFormProps> = ({
-  deckNameValue,
-  deckId,
-  isEditMode,
-}) => {
+const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [languageList, setLanguageList] = useState<Language[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [nativeLanguageId, setNativeLanguageId] = useState(0);
   const [learningLanguageId, setLearningLanguageId] = useState(0);
-  const [deckName, setDeckName] = useState(deckNameValue);
+  const [deckName, setDeckName] = useState("");
 
   const fetchUserSettingsData = useCallback(async () => {
     const data = await fetchUserSettings();
