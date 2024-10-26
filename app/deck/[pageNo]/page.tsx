@@ -5,6 +5,7 @@ import { BASE_URL } from "../../../utils/api/api";
 import { cookies } from "next/headers";
 import * as Common from "../../../features/common/index";
 import Pagination from "../../../features/common/components/Pagination";
+import { redirect } from "next/navigation";
 
 interface DeckListProps {
   params: { pageNo: string };
@@ -25,12 +26,13 @@ export const fetchDecks = async (page: number, size: number) => {
     });
     if (response.status === 401) {
       console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
     }
     const data = await response.json();
     return data;
   } catch (error) {
     console.error("Error fetching decks:", error);
-    return { deckInfo: [], totalDeckCount: 0 };
+    redirect("/login");
   }
 };
 
