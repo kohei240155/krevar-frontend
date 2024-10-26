@@ -6,5 +6,7 @@ export interface DeckInfo {
 export interface Deck {
   id: number;
   deckName: string;
+  nativeLanguageId: number;
+  learningLanguageId: number;
   progress: number;
 }

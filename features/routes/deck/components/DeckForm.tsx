@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import LanguageSelector from "../../../common/components/LanguageSelector";
-import { createDeck, deleteDeck, updateDeck } from "../utils/api";
+import { createDeck, deleteDeck, fetchDeck, updateDeck } from "../utils/api";
 import { useState, useCallback, useEffect } from "react";
 import {
   fetchLanguageList,
@@ -58,6 +58,16 @@ const DeckForm: React.FC<DeckFormProps> = ({
     }
   }, []);
 
+  const fetchDeckData = useCallback(async () => {
+    const data = await fetchDeck(deckId);
+    console.log(data);
+    if (data) {
+      setDeckName(data.deckName);
+      setNativeLanguageId(data.nativeLanguageId);
+      setLearningLanguageId(data.learningLanguageId);
+    }
+  }, [deckId]);
+
   const getLanguageName = (id: number) => {
     const language = languageList.find((language) => language.id === id);
     return language ? language.languageName : "";
@@ -66,11 +76,14 @@ const DeckForm: React.FC<DeckFormProps> = ({
   useEffect(() => {
     fetchLanguageListData();
     fetchUserSettingsData();
+    if (isEditMode) {
+      fetchDeckData();
+    }
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [fetchUserSettingsData, fetchLanguageListData]);
+  }, [fetchUserSettingsData, fetchLanguageListData, isEditMode, fetchDeckData]);
 
   if (isLoading) {
     return <LoadingIndicator />;

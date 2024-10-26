@@ -71,7 +71,7 @@ export const fetchWords = async (
     path: "/",
   });
   const response = await fetch(
-    `${BASE_URL}/api/deck/${deckId}?page=${page - 1}&size=${size}`,
+    `${BASE_URL}/api/deck/${deckId}/words?page=${page - 1}&size=${size}`,
     {
       method: "GET",
       credentials: "include",
