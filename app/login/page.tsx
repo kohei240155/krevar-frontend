@@ -1,60 +1,59 @@
 "use client";
-
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import axios from "axios";
 import { BASE_URL } from "../../utils/api/api";
+import { setCookie } from "cookies-next";
 
 const LoginPage = () => {
   const { status, data: session } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    // 認証が成功したらJWTが取得できているか確認
-    if (status === "authenticated" && session) {
-      const fetchJWT = async () => {
-        try {
-          const response = await axios.post(
-            `${BASE_URL}/api/auth/google-login`,
-            {
-              email: session.user?.email,
-              name: session.user?.name,
-              googleId: session.user?.id,
-            },
-            {
-              headers: { "Content-Type": "application/json" },
-              withCredentials: true,
-            }
-          );
-
-          if (response.status === 200) {
-            const jwtToken = response.data.token; // JWTをレスポンスから取得
-            localStorage.setItem("JWT", jwtToken); // ローカルストレージに保存
-            localStorage.setItem("userId", response.data.userId); // ローカルストレージに保存
-            console.log("ローカルストレージにJWTを保存しました。");
-            router.push("/deck");
-          } else {
-            console.error("JWTの取得に失敗しました。");
-          }
-        } catch (error) {
-          console.error("JWTの取得エラー", error);
+  const fetchJWT = async (session: any) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/auth/google-login`,
+        {
+          email: session.user?.email,
+          name: session.user?.name,
+          googleId: session.user?.id,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
         }
-      };
-
-      fetchJWT();
+      );
+      const jwt = response.data.token;
+      setCookie("JWT", jwt);
+    } catch (error) {
+      console.error("JWTの取得エラー", error);
+      throw error;
     }
-  }, [status, session, router]);
+  };
 
   const handleLogin = async (event: React.MouseEvent) => {
     event.preventDefault();
     try {
-      // Google認証を行う
-      await signIn("google", { redirect: false });
+      if (status !== "authenticated") {
+        // Google認証を行う
+        const result = await signIn("google", { redirect: false });
+        if (result?.error) {
+          throw new Error(result.error);
+        }
+      }
     } catch (error: any) {
       alert((error as Error).message);
     }
   };
+
+  useEffect(() => {
+    if (status === "authenticated" && session) {
+      fetchJWT(session).then(() => {
+        router.push("/deck");
+      });
+    }
+  }, [status, session, router]);
 
   return (
     <div className="relative p-5">
