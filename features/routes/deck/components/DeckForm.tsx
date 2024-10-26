@@ -2,14 +2,14 @@
 import { useRouter } from "next/navigation";
 import { FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
-import LanguageSelector from "./LanguageSelector";
-import * as Common from "../../../common/index";
+import LanguageSelector from "../../../common/components/LanguageSelector";
 import { createDeck, deleteDeck, updateDeck } from "../utils/api";
 import { useState, useCallback, useEffect } from "react";
 import {
   fetchLanguageList,
   fetchUserSettings,
 } from "../../userSettings/utils/api";
+import { DeleteConfirmModal, LoadingIndicator } from "../../../common";
 
 interface Language {
   id: number;
@@ -73,7 +73,7 @@ const DeckForm: React.FC<DeckFormProps> = ({
   }, [fetchUserSettingsData, fetchLanguageListData]);
 
   if (isLoading) {
-    return <Common.LoadingIndicator />;
+    return <LoadingIndicator />;
   }
 
   const handleUpdate = async (event: React.FormEvent) => {
@@ -208,7 +208,7 @@ const DeckForm: React.FC<DeckFormProps> = ({
 
         {/* 削除確認モーダル */}
         {isModalOpen && (
-          <Common.DeleteConfirmModal
+          <DeleteConfirmModal
             isOpen={isModalOpen}
             onRequestClose={() => setIsModalOpen(false)}
             onConfirmDelete={confirmDelete}
