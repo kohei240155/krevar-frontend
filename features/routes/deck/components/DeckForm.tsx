@@ -10,11 +10,7 @@ import {
   fetchUserSettings,
 } from "../../userSettings/utils/api";
 import { DeleteConfirmModal, LoadingIndicator } from "../../../common";
-
-interface Language {
-  id: number;
-  languageName: string;
-}
+import { Language } from "../../../common/types/types";
 
 export interface DeckFormProps {
   deckNameValue: string;
@@ -75,9 +71,10 @@ const DeckForm: React.FC<DeckFormProps> = ({
 
   useEffect(() => {
     fetchLanguageListData();
-    fetchUserSettingsData();
     if (isEditMode) {
       fetchDeckData();
+    } else {
+      fetchUserSettingsData();
     }
     const timer = setTimeout(() => {
       setIsLoading(false);
