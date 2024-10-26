@@ -1,3 +1,6 @@
+/**
+ * Deck type
+ */
 export type Deck = {
   id: number;
   deckName: string;

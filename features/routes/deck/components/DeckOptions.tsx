@@ -4,10 +4,10 @@ import { MdOutlineLibraryAdd } from "react-icons/md";
 import { IoList } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineQuiz } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 export interface DeckOptionsProps {
   deck: Deck;
-  onOptionItemClick: (e: React.MouseEvent, option: string, deck: Deck) => void;
 }
 
 const navigation = [
@@ -37,10 +37,33 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const DeckOptions: React.FC<DeckOptionsProps> = ({
-  deck,
-  onOptionItemClick,
-}) => {
+const DeckOptions: React.FC<DeckOptionsProps> = ({ deck }) => {
+  const router = useRouter();
+
+  const handleOptionItemClick = (e: React.MouseEvent, option: string) => {
+    e.stopPropagation();
+    switch (option) {
+      case "word-add":
+        router.push(
+          `/word/add?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`
+        );
+        break;
+      case "word-list":
+        router.push(
+          `/word/list?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`
+        );
+        break;
+      case "deck-settings":
+        router.push(`/deck/edit/${deck.id}`);
+        break;
+      case "extra-quiz":
+        router.push(`/quiz/extra/${deck.id}`);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <nav
       aria-label="Sidebar"
@@ -50,7 +73,7 @@ const DeckOptions: React.FC<DeckOptionsProps> = ({
         {navigation.map((item) => (
           <li key={item.name}>
             <a
-              onClick={(e) => onOptionItemClick(e, item.action, deck)}
+              onClick={(e) => handleOptionItemClick(e, item.action)}
               className={classNames(
                 "text-gray-700 hover:bg-gray-50 hover:text-blue-600",
                 "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 cursor-pointer"

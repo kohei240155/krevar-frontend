@@ -1,37 +1,35 @@
-import { setCookie } from "cookies-next";
-import { signIn, useSession, signOut } from "next-auth/react";
 import { BASE_URL } from "../../../../utils/api/api";
 
-export const fetchDecks = async (page: number, size: number, router: any) => {
-  const apiUrl = `${BASE_URL}/api/deck?page=${page}&size=${size}`;
-  const storedValue = window.localStorage.getItem("JWT");
-  setCookie("JWT", storedValue, {
-    maxAge: 3600,
-    path: "/",
-  });
+// export const fetchDecks = async (page: number, size: number) => {
+//   const apiUrl = `${BASE_URL}/api/deck?page=${page}&size=${size}`;
 
-  try {
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      credentials: "include",
-    });
+//   const cookieStore = cookies();
+//   const jwt = cookieStore.get("JWT")?.value;
 
-    // 401エラーが発生した場合はリダイレクト後に処理を終了
-    if (response.status === 401) {
-      console.error("Authentication error: Invalid JWT token");
-      window.alert("ログインしてください。");
-      signOut();
-      router.push("/"); // ルートにリダイレクト
-      return null; // 関数をここで終了
-    }
+//   try {
+//     const response = await fetch(apiUrl, {
+//       method: "GET",
+//       credentials: "include",
+//       headers: {
+//         Authorization: `Bearer ${jwt}`,
+//       },
+//     });
+//     if (response.status === 401) {
+//       console.error("Authentication error: Invalid JWT token");
+//       cookies().delete("JWT"); // JWTを削除
+//       signOut();
+//       redirect("/");
+//     }
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching decks:", error);
-    return null;
-  }
-};
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error("Error fetching decks:", error);
+//     cookies().delete("JWT"); // JWTを削除
+//     signOut();
+//     redirect("/");
+//   }
+// };
 
 export const updateDeck = async (
   deckId: number,
@@ -41,11 +39,6 @@ export const updateDeck = async (
 ) => {
   const apiUrl = `${BASE_URL}/api/deck/${deckId}`;
   try {
-    const storedValue = window.localStorage.getItem("JWT");
-    setCookie("JWT", storedValue, {
-      maxAge: 3600,
-      path: "/",
-    });
     const response = await fetch(apiUrl, {
       method: "PUT",
       headers: {
@@ -68,11 +61,6 @@ export const updateDeck = async (
 export const deleteDeck = async (deckId: number) => {
   const apiUrl = `${BASE_URL}/api/deck/${deckId}`;
   try {
-    const storedValue = window.localStorage.getItem("JWT");
-    setCookie("JWT", storedValue, {
-      maxAge: 3600,
-      path: "/",
-    });
     const response = await fetch(apiUrl, {
       method: "DELETE",
       credentials: "include",
@@ -89,13 +77,8 @@ export const createDeck = async (
   nativeLanguageId: number,
   learningLanguageId: number
 ) => {
-  const apiUrl = `${BASE_URL}/api/deck`;
+  const apiUrl = `${BASE_URL}/api/deck/1`;
   try {
-    const storedValue = window.localStorage.getItem("JWT");
-    setCookie("JWT", storedValue, {
-      maxAge: 3600,
-      path: "/",
-    });
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {

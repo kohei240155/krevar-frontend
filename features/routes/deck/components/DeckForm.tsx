@@ -87,7 +87,7 @@ const DeckForm: React.FC<DeckFormProps> = ({
     );
     if (success) {
       toast.success("Deck updated successfully!");
-      router.push("/deck");
+      router.push("/deck/1");
     } else {
       toast.error("Unexpected response from the server.");
     }
@@ -101,7 +101,7 @@ const DeckForm: React.FC<DeckFormProps> = ({
     const success = await deleteDeck(deckId);
     if (success) {
       toast.success("Deck deleted successfully!");
-      router.push("/deck");
+      router.push("/deck/1");
     } else {
       toast.error("Unexpected response from the server.");
     }
@@ -117,7 +117,7 @@ const DeckForm: React.FC<DeckFormProps> = ({
     );
     if (success) {
       toast.success("Deck created successfully!");
-      router.push("/deck");
+      router.push("/deck/1");
     } else {
       toast.error("Unexpected response from the server.");
     }
@@ -148,6 +148,7 @@ const DeckForm: React.FC<DeckFormProps> = ({
           )}
         </div>
 
+        {/* デッキ入力フォーム */}
         <form onSubmit={handleSubmit}>
           {/* デッキ名 */}
           <div className="mb-5">
@@ -190,7 +191,7 @@ const DeckForm: React.FC<DeckFormProps> = ({
             {/* 戻るボタン */}
             <button
               type="button"
-              onClick={() => router.push("/deck")}
+              onClick={() => router.push("/deck/1")}
               className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Backward
@@ -204,6 +205,8 @@ const DeckForm: React.FC<DeckFormProps> = ({
             </button>
           </div>
         </form>
+
+        {/* 削除確認モーダル */}
         {isModalOpen && (
           <Common.DeleteConfirmModal
             isOpen={isModalOpen}

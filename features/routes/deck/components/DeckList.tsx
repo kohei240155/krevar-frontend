@@ -1,51 +1,17 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import * as Common from "../../../common/index";
 import { useRouter } from "next/navigation";
 import DeckItem from "./DeckItem";
 import { Deck } from "../types/deck";
-import { fetchDecks } from "../utils/api";
 
-const DeckList = () => {
-  const [decks, setDecks] = useState<Deck[]>([]);
-  const [showOptions, setShowOptions] = useState<number | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalDecks, setTotalDecks] = useState(0);
+interface DeckListProps {
+  data: Deck[];
+}
+
+const DeckList = ({ data }: DeckListProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const decksPerPage = 10;
-
-  const fetchDecksData = useCallback(
-    async (page: number) => {
-      const data = await fetchDecks(page - 1, decksPerPage, router);
-      if (data) {
-        const formattedDecks = data.deckInfo.map((item: any) => ({
-          id: item.id,
-          deckName: item.deckName,
-          progress: item.progress,
-        }));
-        setDecks(formattedDecks);
-        setTotalDecks(data.deckInfo.length);
-      }
-    },
-    [router]
-  );
-
-  useEffect(() => {
-    fetchDecksData(currentPage);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [currentPage, fetchDecksData]); // fetchDecksData を依存に追加
-
-  const paginate = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-    fetchDecksData(pageNumber);
-  };
-
-  const totalPages = Math.ceil(totalDecks / decksPerPage);
-
   const handleQuizClick = (deckId: number, deckName: string) => {
     setIsLoading(true);
     router.push(`/quiz/normal/${deckId}`);
@@ -56,11 +22,11 @@ const DeckList = () => {
     setShowOptions(deckId === showOptions ? null : deckId);
   };
 
-  if (isLoading) {
-    return <Common.LoadingIndicator />;
-  }
+  // if (isLoading) {
+  //   return <Common.LoadingIndicator />;
+  // }
 
-  if (decks.length === 0 && !isLoading) {
+  if (data.length === 0) {
     return (
       <Common.EmptyList
         title="Deck List"
@@ -72,40 +38,10 @@ const DeckList = () => {
     );
   }
 
-  const handleOptionItemClick = (
-    e: React.MouseEvent,
-    option: string,
-    deck: Deck
-  ) => {
-    e.stopPropagation();
-    setIsLoading(true); // ローディング状態を設定
-    switch (option) {
-      case "word-add":
-        router.push(
-          `/word/add?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`
-        );
-        break;
-      case "word-list":
-        router.push(
-          `/word/list?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`
-        );
-        break;
-      case "deck-settings":
-        router.push(`/deck/edit/${deck.id}`);
-        break;
-      case "extra-quiz":
-        router.push(`/quiz/extra/${deck.id}`);
-        break;
-      default:
-        setIsLoading(false);
-        break;
-    }
-  };
-
   return (
     <div>
       <ul>
-        {decks.map((deck) => (
+        {data.map((deck: Deck) => (
           <DeckItem
             key={deck.id}
             deck={deck}
@@ -117,11 +53,6 @@ const DeckList = () => {
           />
         ))}
       </ul>
-      <Common.Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        paginate={paginate}
-      />
     </div>
   );
 };
