@@ -54,7 +54,7 @@ const DeckOptions: React.FC<DeckOptionsProps> = ({ deck }) => {
         );
         break;
       case "deck-settings":
-        router.push(`/deck/edit/${deck.id}`);
+        router.push(`/deck/${deck.id}`);
         break;
       case "extra-quiz":
         router.push(`/quiz/extra/${deck.id}`);
