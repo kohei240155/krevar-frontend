@@ -138,7 +138,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
     <div className="p-5">
       <div
         className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between"
-        style={{ minHeight: "700px" }}
+        style={{ minHeight: "750px" }}
       >
         <div className="flex-grow">
           <div
@@ -187,18 +187,31 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
           )}
         </div>
 
-        <div className="flex justify-center space-x-4 mt-11">
-          <NoIdeaButton onClick={handleDontKnowClick} />
-          <div className="relative">
-            <GotItButton onClick={handleKnowClick} />
-            <GiSpeaker
-              onClick={handleSpeakClick}
-              className="absolute -top-16 right-14 text-5xl cursor-pointer text-gray-800"
-            />
-            <HiArrowCircleRight
-              onClick={quizState.isArrowActive ? handleNextClick : undefined}
-              className={`absolute -top-16 right-0 text-5xl cursor-pointer ${quizState.arrowColor} ${quizState.isArrowActive ? "" : "opacity-50 cursor-not-allowed"}`}
-            />
+        <div className="max-w-md mx-auto relative mb-4">
+          <div className="flex justify-end ml-48 md:ml-64">
+            <div className="mr-1">
+              <GiSpeaker
+                onClick={handleSpeakClick}
+                className="text-5xl cursor-pointer text-gray-800"
+              />
+            </div>
+            <div className="ml-1">
+              <HiArrowCircleRight
+                onClick={quizState.isArrowActive ? handleNextClick : undefined}
+                className={`text-5xl cursor-pointer ${quizState.arrowColor} ${quizState.isArrowActive ? "" : "opacity-50 cursor-not-allowed"}`}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-md mx-auto">
+          <div className="flex justify-between">
+            <div className="mr-2">
+              <NoIdeaButton onClick={handleDontKnowClick} />
+            </div>
+            <div className="ml-2">
+              <GotItButton onClick={handleKnowClick} />
+            </div>
           </div>
         </div>
       </div>
