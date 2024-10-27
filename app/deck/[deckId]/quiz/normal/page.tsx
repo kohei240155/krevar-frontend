@@ -141,15 +141,20 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
         style={{ minHeight: "750px" }}
       >
         <div className="flex-grow">
+          {/* ヘッダー */}
           <div
             className={`flex justify-between items-center mb-4 pb-1 border-b border-gray-700`}
           >
+            {/* デッキ名 */}
             <h2 className="text-2xl font-bold text-left ml-4 truncate">
               {deckName}
             </h2>
+            {/* 残りの問題数 */}
             <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${quizState.quizData?.leftQuizCount}`}</p>
           </div>
+
           {quizState.quizData && (
+            // 原文
             <p
               className="text-xl font-bold mb-6 text-left ml-4"
               dangerouslySetInnerHTML={{
@@ -159,6 +164,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
           )}
 
           {quizState.showTranslation && quizState.quizData && (
+            // 翻訳
             <p
               className="text-lg text-left text-gray-700 font-semibold mb-6 ml-4"
               dangerouslySetInnerHTML={{
@@ -168,34 +174,36 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
           )}
 
           {quizState.showTranslation && quizState.quizData && (
-            <>
+            <div>
+              {/* ニュアンス */}
               <p className="text-xs text-left text-gray-700 mb-6 ml-4">
                 {quizState.quizData.nuanceText}
               </p>
-              {quizState.quizData.imageUrl && (
-                <div className="flex justify-center mb-6">
-                  <Image
-                    src={formatImageUrl(quizState.quizData.imageUrl)}
-                    alt="Word Image"
-                    width={300}
-                    height={300}
-                    className="max-w-full h-auto"
-                  />
-                </div>
-              )}
-            </>
+              {/* 画像 */}
+              <div className="flex justify-center mb-6">
+                <Image
+                  src={formatImageUrl(quizState.quizData.imageUrl)}
+                  alt="Word Image"
+                  width={300}
+                  height={300}
+                  className="max-w-full h-auto"
+                />
+              </div>
+            </div>
           )}
         </div>
 
         <div className="max-w-md mx-auto relative mb-4">
           <div className="flex justify-end ml-48 md:ml-64">
             <div className="mr-1">
+              {/* スピーカーボタン */}
               <GiSpeaker
                 onClick={handleSpeakClick}
                 className="text-5xl cursor-pointer text-gray-800"
               />
             </div>
             <div className="ml-1">
+              {/* 矢印ボタン */}
               <HiArrowCircleRight
                 onClick={quizState.isArrowActive ? handleNextClick : undefined}
                 className={`text-5xl cursor-pointer ${quizState.arrowColor} ${quizState.isArrowActive ? "" : "opacity-50 cursor-not-allowed"}`}
@@ -207,9 +215,11 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz }) => {
         <div className="max-w-md mx-auto">
           <div className="flex justify-between">
             <div className="mr-2">
+              {/* 知らないボタン */}
               <NoIdeaButton onClick={handleDontKnowClick} />
             </div>
             <div className="ml-2">
+              {/* 知っているボタン */}
               <GotItButton onClick={handleKnowClick} />
             </div>
           </div>
