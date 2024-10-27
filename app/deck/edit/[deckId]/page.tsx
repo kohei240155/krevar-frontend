@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
-import { DeckForm } from "../../../../features/routes/deck";
+import DeckForm from "../../../../features/routes/deck/components/DeckForm";
 
 const DeckEditPage = () => {
   const params = useParams();
