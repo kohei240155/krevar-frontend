@@ -7,27 +7,27 @@ const Footer = () => {
       <div className="w-full px-2 flex justify-between items-center">
         <div className="flex space-x-4">
           <Link href="/about" legacyBehavior>
-            <a className="text-gray-900 hover:text-blue-600 focus:font-bold focus:text-blue-600">
+            <a className="text-gray-900 hover:text-gray-700 focus:font-bold focus:text-gray-700">
               About
             </a>
           </Link>
           <Link href="/subscription" legacyBehavior>
-            <a className="text-gray-900 hover:text-blue-600 focus:font-bold focus:text-blue-600">
+            <a className="text-gray-900 hover:text-gray-700 focus:font-bold focus:text-gray-700">
               Subscription
             </a>
           </Link>
           <Link href="/privacy" legacyBehavior>
-            <a className="text-gray-900 hover:text-blue-600 focus:font-bold focus:text-blue-600">
+            <a className="text-gray-900 hover:text-gray-700 focus:font-bold focus:text-gray-700">
               Privacy
             </a>
           </Link>
           <Link href="/terms" legacyBehavior>
-            <a className="text-gray-900 hover:text-blue-600 focus:font-bold focus:text-blue-600">
+            <a className="text-gray-900 hover:text-gray-700 focus:font-bold focus:text-gray-700">
               Terms
             </a>
           </Link>
           <Link href="/support" legacyBehavior>
-            <a className="text-gray-900 hover:text-blue-600 focus:font-bold focus:text-blue-600">
+            <a className="text-gray-900 hover:text-gray-700 focus:font-bold focus:text-gray-700">
               Support
             </a>
           </Link>

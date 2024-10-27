@@ -82,7 +82,7 @@ const Header = () => {
         </Link>
         {!session ? (
           <Link href="/login">
-            <button className="rounded-lg bg-blue-600 px-4 py-[7px] text-white hover:bg-blue-700">
+            <button className="rounded-lg bg-gray-700 px-4 py-[7px] text-white hover:bg-gray-800">
               Login
             </button>
           </Link>
@@ -121,7 +121,7 @@ const Header = () => {
                 <li>
                   <Link
                     href="/deck/page/1"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-gray-700 md:p-0 dark:text-white md:dark:hover:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     onClick={handleMenuClick}
                   >
                     <IoList className="inline-block mr-2 md:" />
@@ -131,7 +131,7 @@ const Header = () => {
                 <li>
                   <Link
                     href="/deck/add"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-gray-700 md:p-0 dark:text-white md:dark:hover:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     onClick={handleMenuClick}
                   >
                     <MdOutlineLibraryAdd className="inline-block mr-2" />
@@ -141,7 +141,7 @@ const Header = () => {
                 <li>
                   <Link
                     href="/statistic"
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-gray-700 md:p-0 dark:text-white md:dark:hover:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     onClick={handleMenuClick}
                   >
                     <BsGraphUpArrow className="inline-block mr-2" />
