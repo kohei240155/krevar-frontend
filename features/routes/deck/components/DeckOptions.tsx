@@ -57,7 +57,7 @@ const DeckOptions: React.FC<DeckOptionsProps> = ({ deck }) => {
         break;
       case "extra-quiz":
         console.log("extra-quiz");
-        router.push(`/quiz/extra/${deck.id}`);
+        router.push(`/deck/${deck.id}/quiz/extra`);
         break;
       default:
         break;

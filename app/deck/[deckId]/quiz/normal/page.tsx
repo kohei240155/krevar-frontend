@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import * as Quiz from "../../../../features/routes/quiz/index";
-import { useParams, useSearchParams } from "next/navigation";
-import * as Common from "../../../../features/common";
-const QuizPage = () => {
+import { useParams } from "next/navigation";
+import { LoadingIndicator } from "../../../../../features/common";
+import { QuizCard } from "../../../../../features/routes/quiz";
+
+const NormalQuizPage = () => {
   const { deckId } = useParams() as { deckId: string };
   const isExtraQuiz = false;
 
@@ -15,12 +16,12 @@ const QuizPage = () => {
   }, []);
 
   if (userId === null) {
-    return <Common.LoadingIndicator />; // userIdがロードされるまでの待機画面
+    return <LoadingIndicator />; // userIdがロードされるまでの待機画面
   }
 
   return (
     <div>
-      <Quiz.QuizCard
+      <QuizCard
         deckId={parseInt(deckId, 10)}
         isExtraQuiz={isExtraQuiz}
         userId={userId}
@@ -29,4 +30,4 @@ const QuizPage = () => {
   );
 };
 
-export default QuizPage;
+export default NormalQuizPage;
