@@ -44,14 +44,10 @@ const DeckOptions: React.FC<DeckOptionsProps> = ({ deck }) => {
     e.stopPropagation();
     switch (option) {
       case "word-add":
-        router.push(
-          `/word/add?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`
-        );
+        router.push(`/deck/${deck.id}/word/add}`);
         break;
       case "word-list":
-        router.push(
-          `/word/list?deckId=${deck.id}&deckName=${encodeURIComponent(deck.deckName)}`
-        );
+        router.push(`/deck/${deck.id}/word/page/1}`);
         break;
       case "deck-settings":
         router.push(`/deck/${deck.id}`);

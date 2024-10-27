@@ -62,7 +62,7 @@ const DeckListPage = async ({ params }: DeckListProps) => {
             <Pagination
               currentPage={currentPage}
               totalPages={Math.ceil(data.totalDeckCount / 5)}
-              paginateUrl="/deck/list"
+              paginateUrl="/deck/page"
             />
           </>
         )}
