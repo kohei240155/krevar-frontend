@@ -8,6 +8,7 @@ export interface QuizData {
 }
 
 export interface Quiz {
+  deckName: string;
   showTranslation: boolean;
   arrowColor: string;
   isArrowActive: boolean;

@@ -1,17 +1,20 @@
+// features/routes/quiz/components/QuizCard.tsx
+"use client";
 import React, { useEffect, useState, useCallback } from "react";
-import { HiArrowCircleRight } from "react-icons/hi";
-import { useSearchParams } from "next/navigation";
-import { GiSpeaker } from "react-icons/gi";
-import Image from "next/image";
-import { QuizData } from "../types/quiz";
-import * as Common from "../../../common/index";
+import { Quiz } from "../types/quiz";
+import { fetchQuizData, resetQuizApi, submitAnswer } from "../utils/api";
+import { LoadingIndicator } from "../../../common";
 import AllDoneCard from "./AllDoneCard";
-import { fetchQuizData, submitAnswer, resetQuizApi } from "../utils/api";
+import Image from "next/image";
+import { HiArrowCircleRight } from "react-icons/hi";
+import { GiSpeaker } from "react-icons/gi";
+import NoIdeaButton from "./NoIdeaButton";
+import GotItButton from "./GotItButton";
 
 export interface QuizCardProps {
   deckId: number;
   isExtraQuiz?: boolean;
-  userId: number;
+  initialData: Quiz;
 }
 
 const formatImageUrl = (url: string) => {
@@ -19,19 +22,15 @@ const formatImageUrl = (url: string) => {
   return `/images/testImages/${fileName}`;
 };
 
-const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
-  const searchParams = useSearchParams();
-  const deckName = searchParams?.get("deckName") || "Deck Name";
-
-  const [quizState, setQuizState] = useState({
-    showTranslation: false,
-    arrowColor: "text-gray-800",
-    isArrowActive: false,
-    isCorrect: null as boolean | null,
-    isAllDone: false,
-    isLoading: true,
+const QuizCard: React.FC<QuizCardProps> = ({
+  deckId,
+  isExtraQuiz,
+  initialData,
+}) => {
+  const [quizState, setQuizState] = useState<Quiz>({
+    ...initialData,
+    isLoading: false,
     isResetting: false,
-    quizData: undefined as QuizData | undefined,
   });
 
   const fetchData = useCallback(async () => {
@@ -57,8 +56,12 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
   }, [deckId, fetchData]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    setQuizState((prev) => ({
+      ...prev,
+      quizData: initialData.quizData,
+    }));
+    if (!initialData.quizData) fetchData();
+  }, [fetchData, initialData]);
 
   const handleKnowClick = useCallback(() => {
     setQuizState((prev) => ({
@@ -93,7 +96,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
         arrowColor: "text-gray-800",
         isAllDone: data.leftQuizCount === 0,
         showTranslation: false,
-        isCorrect: null as boolean | null,
+        isCorrect: null,
         isResetting: false,
       }));
     }
@@ -108,13 +111,13 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
   }, [quizState.quizData]);
 
   if (quizState.isLoading) {
-    return <Common.LoadingIndicator />;
+    return <LoadingIndicator />;
   }
 
   if (quizState.isAllDone) {
     return (
       <AllDoneCard
-        deckName={deckName}
+        deckName={quizState.deckName}
         isExtraQuiz={!!isExtraQuiz}
         quizData={quizState.quizData}
         setIsAllDone={(val) =>
@@ -132,18 +135,23 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
     <div className="p-5">
       <div
         className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between"
-        style={{ minHeight: "700px" }}
+        style={{ minHeight: "750px" }}
       >
         <div className="flex-grow">
+          {/* ヘッダー */}
           <div
             className={`flex justify-between items-center mb-4 pb-1 border-b border-gray-700`}
           >
+            {/* デッキ名 */}
             <h2 className="text-2xl font-bold text-left ml-4 truncate">
-              {deckName}
+              {quizState.deckName}
             </h2>
+            {/* 残りの問題数 */}
             <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${quizState.quizData?.leftQuizCount}`}</p>
           </div>
+
           {quizState.quizData && (
+            // 原文
             <p
               className="text-xl font-bold mb-6 text-left ml-4"
               dangerouslySetInnerHTML={{
@@ -153,6 +161,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
           )}
 
           {quizState.showTranslation && quizState.quizData && (
+            // 翻訳
             <p
               className="text-lg text-left text-gray-700 font-semibold mb-6 ml-4"
               dangerouslySetInnerHTML={{
@@ -162,47 +171,54 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
           )}
 
           {quizState.showTranslation && quizState.quizData && (
-            <>
+            <div>
+              {/* ニュアンス */}
               <p className="text-xs text-left text-gray-700 mb-6 ml-4">
                 {quizState.quizData.nuanceText}
               </p>
-              {quizState.quizData.imageUrl && (
-                <div className="flex justify-center mb-6">
-                  <Image
-                    src={formatImageUrl(quizState.quizData.imageUrl)}
-                    alt="Word Image"
-                    width={300}
-                    height={300}
-                    className="max-w-full h-auto"
-                  />
-                </div>
-              )}
-            </>
+              {/* 画像 */}
+              <div className="flex justify-center mb-6">
+                <Image
+                  src={formatImageUrl(quizState.quizData.imageUrl)}
+                  alt="Word Image"
+                  width={300}
+                  height={300}
+                  className="max-w-full h-auto"
+                />
+              </div>
+            </div>
           )}
         </div>
 
-        <div className="flex justify-center space-x-4 mt-11">
-          <button
-            onClick={handleDontKnowClick}
-            className="w-40 px-6 py-3 bg-white text-gray-700 border border-gray-700 rounded-lg hover:bg-gray-100 transition"
-          >
-            No Idea
-          </button>
-          <div className="relative">
-            <button
-              onClick={handleKnowClick}
-              className="w-40 px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"
-            >
-              Got It
-            </button>
-            <GiSpeaker
-              onClick={handleSpeakClick}
-              className="absolute -top-16 right-14 text-5xl cursor-pointer text-gray-800"
-            />
-            <HiArrowCircleRight
-              onClick={quizState.isArrowActive ? handleNextClick : undefined}
-              className={`absolute -top-16 right-0 text-5xl cursor-pointer ${quizState.arrowColor} ${quizState.isArrowActive ? "" : "opacity-50 cursor-not-allowed"}`}
-            />
+        <div className="max-w-md mx-auto relative mb-4">
+          <div className="flex justify-end ml-48 md:ml-64">
+            <div className="mr-1">
+              {/* スピーカーボタン */}
+              <GiSpeaker
+                onClick={handleSpeakClick}
+                className="text-5xl cursor-pointer text-gray-800"
+              />
+            </div>
+            <div className="ml-1">
+              {/* 矢印ボタン */}
+              <HiArrowCircleRight
+                onClick={quizState.isArrowActive ? handleNextClick : undefined}
+                className={`text-5xl cursor-pointer ${quizState.arrowColor} ${quizState.isArrowActive ? "" : "opacity-50 cursor-not-allowed"}`}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-md mx-auto">
+          <div className="flex justify-between">
+            <div className="mr-2">
+              {/* 知らないボタン */}
+              <NoIdeaButton onClick={handleDontKnowClick} />
+            </div>
+            <div className="ml-2">
+              {/* 知っているボタン */}
+              <GotItButton onClick={handleKnowClick} />
+            </div>
           </div>
         </div>
       </div>
