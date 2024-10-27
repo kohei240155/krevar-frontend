@@ -4,13 +4,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ColorResult } from "react-color";
 import { imageGenerationPrompt } from "../../../../../prompts/promptForImage";
 import { literaryAnalysisPrompt } from "../../../../../prompts/promptForMeaning";
-import * as Common from "../../../../../features/common";
 import MeaningInput from "../../../../../features/routes/word/components/MeaningInput";
 import NuanceInput from "../../../../../features/routes/word/components/NuanceInput";
 import ImageDisplay from "../../../../../features/routes/word/components/ImageDisplay";
 import WordInput from "../../../../../features/routes/word/components/WordInput";
 import { useParams } from "next/navigation";
 import { createWord } from "../../../../../features/routes/word/utils/api";
+import {
+  ButtonLoadingIndicator,
+  LoadingIndicator,
+} from "../../../../../features/common";
 
 const WordCreatePage = () => {
   const searchParams = useSearchParams();
@@ -37,7 +40,7 @@ const WordCreatePage = () => {
   }, []);
 
   if (isLoading) {
-    return <Common.LoadingIndicator />;
+    return <LoadingIndicator />;
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -211,7 +214,7 @@ const WordCreatePage = () => {
               className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               disabled={isLoadingGpt}
             >
-              {isLoadingGpt && <Common.ButtonLoadingIndicator />}
+              {isLoadingGpt && <ButtonLoadingIndicator />}
               Image generate
             </button>
             <button
