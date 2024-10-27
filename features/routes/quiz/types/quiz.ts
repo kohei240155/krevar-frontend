@@ -6,3 +6,14 @@ export interface QuizData {
   imageUrl: string;
   leftQuizCount: number;
 }
+
+export interface Quiz {
+  showTranslation: boolean;
+  arrowColor: string;
+  isArrowActive: boolean;
+  isCorrect: boolean | null;
+  isAllDone: boolean;
+  isLoading: boolean;
+  isResetting: boolean;
+  quizData: QuizData | undefined;
+}
