@@ -178,14 +178,14 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
         <div className="flex justify-center space-x-4 mt-11">
           <button
             onClick={handleDontKnowClick}
-            className="w-40 px-6 py-3 bg-white text-indigo-600 border border-indigo-600 rounded-lg hover:bg-gray-100 transition"
+            className="w-40 px-6 py-3 bg-white text-gray-700 border border-gray-700 rounded-lg hover:bg-gray-100 transition"
           >
             No Idea
           </button>
           <div className="relative">
             <button
               onClick={handleKnowClick}
-              className="w-40 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+              className="w-40 px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"
             >
               Got It
             </button>

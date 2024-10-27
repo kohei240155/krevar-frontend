@@ -37,12 +37,12 @@ const WordInput: React.FC<WordInputProps> = ({
         innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
         html={word}
         onChange={(e) => setWord(e.target.value)}
-        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
+        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-gray-500 sm:text-sm"
       />
       <div className="relative mt-2 inline-flex items-center">
         <div
           onClick={() => setDisplayColorPicker(!displayColorPicker)}
-          className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           style={{
             backgroundColor: highlightColor,
             cursor: "pointer",
@@ -53,7 +53,7 @@ const WordInput: React.FC<WordInputProps> = ({
         <button
           type="button"
           onClick={handleHighlight}
-          className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="ml-2 inline-flex items-center justify-center px-2 py-2 border border-gray-700 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
           style={{ height: "30px", width: "70px" }}
           disabled={disabled}
         >

@@ -54,7 +54,7 @@ const Pagination: React.FC<PaginationProps> = ({
             href={`${paginateUrl}/${number}`}
             className={`inline-flex items-center border-t-2 ${
               currentPage === number
-                ? "border-indigo-500 text-indigo-600"
+                ? "border-gray-500 text-gray-700"
                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
             } px-4 pt-4 text-sm font-medium`}
           >

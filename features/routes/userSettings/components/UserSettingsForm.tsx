@@ -134,7 +134,7 @@ const UserSettingsForm = () => {
               type="text"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-gray-500 sm:text-sm"
             />
           </div>
           <div className="mb-5">
@@ -143,7 +143,7 @@ const UserSettingsForm = () => {
             </label>
             <Listbox value={nativeLanguageId} onChange={setNativeLanguageId}>
               <div className="relative mt-2">
-                <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 sm:text-sm sm:leading-6">
                   <span className="block truncate">
                     {getLanguageName(nativeLanguageId)}
                   </span>
@@ -159,12 +159,12 @@ const UserSettingsForm = () => {
                     <ListboxOption
                       key={language.id}
                       value={language.id}
-                      className="group relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
+                      className="group relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900 data-[focus]:bg-gray-700 data-[focus]:text-white"
                     >
                       <span className="block truncate font-normal group-data-[selected]:font-semibold">
                         {language.languageName}
                       </span>
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-gray-700 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
                         <CheckIcon aria-hidden="true" className="h-5 w-5" />
                       </span>
                     </ListboxOption>
@@ -182,7 +182,7 @@ const UserSettingsForm = () => {
               onChange={setLearningLanguageId}
             >
               <div className="relative mt-2">
-                <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 sm:text-sm sm:leading-6">
                   <span className="block truncate">
                     {getLanguageName(learningLanguageId)}
                   </span>
@@ -198,12 +198,12 @@ const UserSettingsForm = () => {
                     <ListboxOption
                       key={language.id}
                       value={language.id}
-                      className="group relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
+                      className="group relative cursor-default select-none py-2 pl-8 pr-4 text-gray-900 data-[focus]:bg-gray-700 data-[focus]:text-white"
                     >
                       <span className="block truncate font-normal group-data-[selected]:font-semibold">
                         {language.languageName}
                       </span>
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-1.5 text-gray-700 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
                         <CheckIcon aria-hidden="true" className="h-5 w-5" />
                       </span>
                     </ListboxOption>
@@ -224,12 +224,12 @@ const UserSettingsForm = () => {
               id="subscriptionStatus"
               value={subscriptionStatus}
               readOnly
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-gray-500 sm:text-sm"
             />
             <button
               type="button"
               // onClick={() => onSubscriptionUpdate(subscriptionStatus)}
-              className="mt-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="mt-2 inline-flex items-center justify-center px-4 py-2 border border-gray-700 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
               Update Subscription
             </button>
@@ -251,7 +251,7 @@ const UserSettingsForm = () => {
             <div className="flex items-center mt-2">
               <div
                 onClick={() => setDisplayColorPicker(!displayColorPicker)}
-                className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex items-center justify-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 style={{
                   backgroundColor: highlightColor,
                   cursor: "pointer",
@@ -268,13 +268,13 @@ const UserSettingsForm = () => {
             <button
               type="button"
               onClick={() => router.push("/deck/page/1")}
-              className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-indigo-600 text-sm font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-gray-700 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
               Backward
             </button>
             <button
               type="submit"
-              className="w-1/2 ml-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-1/2 ml-2 inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               onClick={handleSave}
             >
               Save
