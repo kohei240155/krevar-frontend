@@ -1,8 +1,6 @@
 import React, { Suspense } from "react";
 
 import { cookies } from "next/headers";
-import { BASE_URL } from "../../../../../../utils/api/api";
-import { redirect } from "next/navigation";
 import {
   Word,
   WordInfo,
@@ -15,44 +13,18 @@ import {
 } from "../../../../../../features/common";
 import WordItem from "../../../../../../features/routes/word/components/WordItem";
 import ForwardButton from "../../../../../../features/routes/word/components/ForwardButton";
+import { fetchWords } from "../../../../../../features/routes/word/utils/api";
 
 interface WordListProps {
   params: { deckId: string; page: string };
 }
 
-export const fetchWords = async (
-  deckId: number,
-  page: number,
-  size: number
-) => {
-  const apiUrl = `${BASE_URL}/api/deck/${deckId}/words?page=${page}&size=${size}`;
-  const cookieStore = cookies();
-  const jwt = cookieStore.get("JWT")?.value;
-
-  try {
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    });
-    if (response.status === 401) {
-      console.error("Authentication error: Invalid JWT token");
-      redirect("/login");
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching decks:", error);
-    redirect("/login");
-  }
-};
-
 const WordListPage = async ({ params }: WordListProps) => {
   const deckId = parseInt(params.deckId);
   const currentPage = parseInt(params.page) || 1;
-  const data: WordInfo = await fetchWords(deckId, currentPage - 1, 5);
+  const cookieStore = cookies();
+  const jwt = cookieStore.get("JWT")?.value || "";
+  const data: WordInfo = await fetchWords(deckId, currentPage - 1, 5, jwt);
   return (
     <Suspense fallback={<LoadingIndicator />}>
       <div>
