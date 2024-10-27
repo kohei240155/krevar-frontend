@@ -1,11 +1,12 @@
 import React from "react";
-import { Deck, DeckInfo } from "../../../features/routes/deck/types/deck";
-import DeckItem from "../../../features/routes/deck/components/DeckItem";
-import { BASE_URL } from "../../../utils/api/api";
+
+import { BASE_URL } from "../../../../utils/api/api";
 import { cookies } from "next/headers";
-import Pagination from "../../../features/common/components/Pagination";
+import Pagination from "../../../../features/common/components/Pagination";
 import { redirect } from "next/navigation";
-import { EmptyList } from "../../../features/common";
+import { EmptyList } from "../../../../features/common";
+import DeckItem from "../../../../features/routes/deck/components/DeckItem";
+import { Deck, DeckInfo } from "../../../../features/routes/deck/types/deck";
 
 interface DeckListProps {
   params: { pageNo: string };
@@ -61,7 +62,7 @@ const DeckListPage = async ({ params }: DeckListProps) => {
             <Pagination
               currentPage={currentPage}
               totalPages={Math.ceil(data.totalDeckCount / 5)}
-              paginateUrl="/deck"
+              paginateUrl="/deck/list"
             />
           </>
         )}

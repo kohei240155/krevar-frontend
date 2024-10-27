@@ -50,7 +50,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (status === "authenticated" && session) {
       fetchJWT(session).then(() => {
-        router.push("/deck/1");
+        router.push("/deck/list/1");
       });
     }
   }, [status, session, router]);
