@@ -2,11 +2,6 @@ import { setCookie } from "cookies-next";
 import { BASE_URL } from "../../../../utils/api/api";
 
 export const fetchQuizData = async (deckId: number, isExtraQuiz: boolean) => {
-  const storedValue = window.localStorage.getItem("JWT");
-  setCookie("JWT", storedValue, {
-    maxAge: 3600,
-    path: "/",
-  });
   const apiUrl = isExtraQuiz
     ? `${BASE_URL}/api/extra-quiz/deck/${deckId}`
     : `${BASE_URL}/api/normal-quiz/deck/${deckId}`;
@@ -28,11 +23,6 @@ export const submitAnswer = async (
   isCorrect: boolean,
   isExtraQuiz: boolean
 ) => {
-  const storedValue = window.localStorage.getItem("JWT");
-  setCookie("JWT", storedValue, {
-    maxAge: 3600,
-    path: "/",
-  });
   const apiUrl = isExtraQuiz
     ? `${BASE_URL}/api/extra-quiz`
     : `${BASE_URL}/api/normal-quiz`;
@@ -59,11 +49,6 @@ export const submitAnswer = async (
 export const resetQuizApi = async (deckId: number) => {
   const apiUrl = `${BASE_URL}/api/extra-quiz/reset/deck/${deckId}`;
   try {
-    const storedValue = window.localStorage.getItem("JWT");
-    setCookie("JWT", storedValue, {
-      maxAge: 3600,
-      path: "/",
-    });
     const response = await fetch(apiUrl, {
       credentials: "include",
       method: "PUT",
