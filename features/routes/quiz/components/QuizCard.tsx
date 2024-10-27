@@ -3,10 +3,16 @@ import { HiArrowCircleRight } from "react-icons/hi";
 import { useSearchParams } from "next/navigation";
 import { GiSpeaker } from "react-icons/gi";
 import Image from "next/image";
-import { QuizCardProps, QuizData } from "../types/quiz";
+import { QuizData } from "../types/quiz";
 import * as Common from "../../../common/index";
 import AllDoneCard from "./AllDoneCard";
 import { fetchQuizData, submitAnswer, resetQuizApi } from "../utils/api";
+
+export interface QuizCardProps {
+  deckId: number;
+  isExtraQuiz?: boolean;
+  userId: number;
+}
 
 const formatImageUrl = (url: string) => {
   const fileName = url.split("/").pop();

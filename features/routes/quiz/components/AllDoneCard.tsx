@@ -1,6 +1,15 @@
 import React from "react";
 import { useRouter } from "next/navigation";
-import { AllDoneCardProps } from "../types/quiz";
+import { QuizData } from "../types/quiz";
+
+export interface AllDoneCardProps {
+  quizData: QuizData | undefined;
+  deckName: string;
+  isExtraQuiz: boolean;
+  setIsAllDone: (value: boolean) => void;
+  setIsLoading: (value: boolean) => void;
+  resetQuiz: () => Promise<void>;
+}
 
 const AllDoneCard: React.FC<AllDoneCardProps> = ({
   deckName,
