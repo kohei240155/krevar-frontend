@@ -16,8 +16,20 @@ const DeckItem: React.FC<DeckItemProps> = ({ deck }) => {
   return (
     <li
       className="relative flex flex-col md:flex-row justify-between items-center p-4 bg-white rounded-lg shadow-md space-y-2 md:space-y-0 md:space-x-4 deck-list-item"
-      style={{ height: "auto", minHeight: "120px" }}
+      style={{
+        height: "auto",
+        minHeight: "120px",
+        position: "relative",
+      }}
     >
+      <div
+        className="absolute left-0 w-1 bg-blue-400"
+        style={{
+          height: "90%",
+          top: "50%",
+          transform: "translateY(-50%)",
+        }}
+      ></div>
       <div className="flex flex-col space-y-1 deck-info">
         <span className="text-xl font-medium">
           {truncateDeckName(deck.deckName)}
