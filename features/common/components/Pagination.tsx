@@ -16,7 +16,7 @@ const Pagination: React.FC<PaginationProps> = ({
   paginateUrl,
 }) => {
   const pageNumbers = [];
-  const maxPageNumbersToShow = 5;
+  const maxPageNumbersToShow = 4;
   const halfMaxPageNumbersToShow = Math.floor(maxPageNumbersToShow / 2);
   let startPage = Math.max(1, currentPage - halfMaxPageNumbersToShow);
   let endPage = Math.min(totalPages, currentPage + halfMaxPageNumbersToShow);
@@ -27,8 +27,24 @@ const Pagination: React.FC<PaginationProps> = ({
     startPage = Math.max(1, totalPages - maxPageNumbersToShow + 1);
   }
 
+  // 1ページ目を常に表示
+  if (startPage > 1) {
+    pageNumbers.push(1);
+    if (startPage > 2) {
+      pageNumbers.push("...");
+    }
+  }
+
   for (let i = startPage; i <= endPage; i++) {
     pageNumbers.push(i);
+  }
+
+  // 最終ページを常に表示
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      pageNumbers.push("...");
+    }
+    pageNumbers.push(totalPages);
   }
 
   return (
@@ -48,31 +64,27 @@ const Pagination: React.FC<PaginationProps> = ({
         )}
       </div>
       <div className="hidden md:-mt-px md:flex">
-        {pageNumbers.map((number) => (
-          <Link
-            key={number}
-            href={`${paginateUrl}/${number}`}
-            className={`inline-flex items-center border-t-2 ${
-              currentPage === number
-                ? "border-gray-500 text-gray-700"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-            } px-4 pt-4 text-sm font-medium`}
-          >
-            {number}
-          </Link>
-        ))}
-        {endPage < totalPages && (
-          <span className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500">
-            ...
-          </span>
-        )}
-        {endPage < totalPages && (
-          <Link
-            href={`${paginateUrl}/${totalPages}`}
-            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-          >
-            {totalPages}
-          </Link>
+        {pageNumbers.map((number, index) =>
+          typeof number === "number" ? (
+            <Link
+              key={index}
+              href={`${paginateUrl}/${number}`}
+              className={`inline-flex items-center border-t-2 ${
+                currentPage === number
+                  ? "border-gray-500 text-gray-700"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              } px-4 pt-4 text-sm font-medium`}
+            >
+              {number}
+            </Link>
+          ) : (
+            <span
+              key={index}
+              className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500"
+            >
+              {number}
+            </span>
+          )
         )}
       </div>
       <div className="-mt-px flex w-0 flex-1 justify-end">
