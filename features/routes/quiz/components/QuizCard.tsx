@@ -130,7 +130,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
       >
         <div className="flex-grow">
           <div
-            className={`flex justify-between items-center mb-4 pb-1 ${isExtraQuiz ? "border-b border-blue-700" : "border-b border-gray-700"}`}
+            className={`flex justify-between items-center mb-4 pb-1 border-b border-gray-700`}
           >
             <h2 className="text-2xl font-bold text-left ml-4 truncate">
               {deckName}
@@ -148,7 +148,7 @@ const QuizCard: React.FC<QuizCardProps> = ({ deckId, isExtraQuiz, userId }) => {
 
           {quizState.showTranslation && quizState.quizData && (
             <p
-              className="text-lg text-left text-blue-700 font-semibold mb-6 ml-4"
+              className="text-lg text-left text-gray-700 font-semibold mb-6 ml-4"
               dangerouslySetInnerHTML={{
                 __html: quizState.quizData?.translatedText,
               }}

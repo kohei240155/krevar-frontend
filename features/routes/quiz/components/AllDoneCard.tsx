@@ -20,16 +20,14 @@ const AllDoneCard: React.FC<AllDoneCardProps> = ({
       >
         <div className="flex-grow">
           <div
-            className={`flex justify-between items-center mb-4 pb-1 ${isExtraQuiz ? "border-b border-blue-700" : "border-b border-gray-700"}`}
+            className={`flex justify-between items-center mb-4 pb-1 border-b border-gray-700`}
           >
             <h2 className="text-2xl font-bold text-left ml-4 truncate">
               {deckName}
             </h2>
             <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${quizData?.leftQuizCount}`}</p>
           </div>
-          <p
-            className={`text-blue-800 text-center mt-4 text-3xl font-bold ${isExtraQuiz ? "text-blue-800" : "text-blue-800"}`}
-          >
+          <p className="text-gray-700 text-center mt-4 text-3xl font-bold">
             All done!
           </p>
         </div>

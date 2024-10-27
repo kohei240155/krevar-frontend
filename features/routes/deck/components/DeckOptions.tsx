@@ -75,7 +75,7 @@ const DeckOptions: React.FC<DeckOptionsProps> = ({ deck }) => {
             <a
               onClick={(e) => handleOptionItemClick(e, item.action)}
               className={classNames(
-                "text-gray-700 hover:bg-gray-50 hover:text-blue-600",
+                "text-gray-700 hover:bg-gray-50 hover:text-gray-700",
                 "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 cursor-pointer"
               )}
             >
