@@ -1,46 +1,22 @@
 import React, { Suspense } from "react";
 
-import { BASE_URL } from "../../../../utils/api/api";
 import { cookies } from "next/headers";
 import Pagination from "../../../../features/common/components/Pagination";
-import { redirect } from "next/navigation";
 import { EmptyList } from "../../../../features/common";
 import DeckItem from "../../../../features/routes/deck/components/DeckItem";
 import { Deck, DeckInfo } from "../../../../features/routes/deck/types/deck";
 import LoadingIndicator from "../../../../features/common/components/LoadingIndicator";
+import { fetchDecks } from "../../../../features/routes/deck/utils/api";
 
 interface DeckListProps {
   params: { pageNo: string };
 }
 
-export const fetchDecks = async (page: number, size: number) => {
-  const apiUrl = `${BASE_URL}/api/deck?page=${page}&size=${size}`;
-  const cookieStore = cookies();
-  const jwt = cookieStore.get("JWT")?.value;
-
-  try {
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    });
-    if (response.status === 401) {
-      console.error("Authentication error: Invalid JWT token");
-      redirect("/login");
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching decks:", error);
-    redirect("/login");
-  }
-};
-
 const DeckListPage = async ({ params }: DeckListProps) => {
   const currentPage = parseInt(params.pageNo) || 1;
-  const data: DeckInfo = await fetchDecks(currentPage - 1, 5);
+  const cookieStore = cookies();
+  const jwt = cookieStore.get("JWT")?.value || "";
+  const data: DeckInfo = await fetchDecks(currentPage - 1, 5, jwt);
 
   return (
     <Suspense fallback={<LoadingIndicator />}>

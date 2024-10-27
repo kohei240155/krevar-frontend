@@ -1,4 +1,28 @@
+import { redirect } from "next/navigation";
 import { BASE_URL } from "../../../../utils/api/api";
+
+export const fetchDecks = async (page: number, size: number, jwt: string) => {
+  const apiUrl = `${BASE_URL}/api/deck?page=${page}&size=${size}`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching decks:", error);
+    redirect("/login");
+  }
+};
 
 export const updateDeck = async (
   deckId: number,
