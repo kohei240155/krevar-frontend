@@ -44,15 +44,19 @@ const DeckOptions: React.FC<DeckOptionsProps> = ({ deck }) => {
     e.stopPropagation();
     switch (option) {
       case "word-add":
-        router.push(`/deck/${deck.id}/word/add}`);
+        console.log("word-add");
+        router.push(`/deck/${deck.id}/word/add`);
         break;
       case "word-list":
+        console.log("word-list");
         router.push(`/deck/${deck.id}/word/page/1}`);
         break;
       case "deck-settings":
+        console.log("deck-settings");
         router.push(`/deck/${deck.id}`);
         break;
       case "extra-quiz":
+        console.log("extra-quiz");
         router.push(`/quiz/extra/${deck.id}`);
         break;
       default:

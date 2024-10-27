@@ -20,12 +20,13 @@ const DeckItem: React.FC<DeckItemProps> = ({ deck }) => {
         height: "auto",
         minHeight: "120px",
         position: "relative",
+        border: "1px solid #e0e0e0",
       }}
     >
       <div
         className="absolute left-0 w-1 bg-blue-400"
         style={{
-          height: "90%",
+          height: "95%",
           top: "50%",
           transform: "translateY(-50%)",
         }}
