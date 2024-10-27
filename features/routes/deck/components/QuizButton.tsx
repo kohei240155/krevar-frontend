@@ -11,7 +11,7 @@ const QuizButton: React.FC<QuizButtonProps> = ({ deckId }) => {
 
   return (
     <button
-      className="px-4 py-2 bg-blue-600 text-white rounded-md transition hover:bg-blue-700"
+      className="px-4 py-2 bg-gray-700 text-white rounded-md transition hover:bg-gray-800"
       onClick={() => router.push(`/quiz/normal/${deckId}`)}
     >
       Quiz

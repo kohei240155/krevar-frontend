@@ -10,6 +10,7 @@ import {
 import BackwardButton from "../../../../../../features/common/components/BackwardButton";
 import { EmptyList, Pagination } from "../../../../../../features/common";
 import WordItem from "../../../../../../features/routes/word/components/WordItem";
+import ForwardButton from "../../../../../../features/routes/word/components/ForwardButton";
 
 interface WordListProps {
   params: { deckId: string; page: string };
@@ -73,8 +74,12 @@ const WordListPage = async ({ params }: WordListProps) => {
                 totalPages={Math.ceil(data.totalWordCount / 5)}
                 paginateUrl={`/deck/${deckId}/word/page`}
               />
-              <div className="flex justify-center mt-4">
+              <div className="flex justify-between mt-4">
                 <BackwardButton pageNumber={currentPage} />
+                <ForwardButton
+                  url={`/deck/${deckId}/word/add`}
+                  label="Add Word"
+                />
               </div>
             </>
           )}

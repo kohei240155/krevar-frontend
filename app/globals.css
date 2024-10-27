@@ -6,7 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --background-color: #ecf5ff; /* バックグラウンドに#ecf5ffを適用 */
+  --background-color: #f5f5f5; /* 薄いグレーを適用 */
   /* --background-color: rgb(243, 248, 252); 薄い水色をRGB指定で追加 */
 }
 

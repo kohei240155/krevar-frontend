@@ -24,7 +24,7 @@ const DeckItem: React.FC<DeckItemProps> = ({ deck }) => {
       }}
     >
       <div
-        className="absolute left-0 w-1 bg-blue-400"
+        className="absolute left-0 w-1 bg-gray-500"
         style={{
           height: "95%",
           top: "50%",
