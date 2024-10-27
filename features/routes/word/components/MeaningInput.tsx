@@ -1,6 +1,9 @@
 import React from "react";
-import { MeaningInputProps } from "../types/word";
 
+export interface MeaningInputProps {
+  meaning: string;
+  setMeaning: (value: string) => void;
+}
 const MeaningInput: React.FC<MeaningInputProps> = ({ meaning, setMeaning }) => {
   return (
     <div className="mb-4">

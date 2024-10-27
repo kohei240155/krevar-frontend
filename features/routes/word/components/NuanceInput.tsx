@@ -1,5 +1,9 @@
 import React from "react";
-import { NuanceInputProps } from "../types/word";
+
+export interface NuanceInputProps {
+  nuance: string;
+  setNuance: (value: string) => void;
+}
 
 const NuanceInput: React.FC<NuanceInputProps> = ({ nuance, setNuance }) => {
   return (

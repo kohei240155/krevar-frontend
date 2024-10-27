@@ -1,4 +1,9 @@
-import { WordItemProps } from "../types/word";
+import { Word } from "../types/word";
+
+export interface WordItemProps {
+  word: Word;
+  onEditClick: (wordId: number) => void;
+}
 
 const WordItem: React.FC<WordItemProps> = ({ word, onEditClick }) => (
   <li

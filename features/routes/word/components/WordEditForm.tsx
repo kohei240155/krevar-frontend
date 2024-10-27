@@ -11,8 +11,12 @@ import MeaningInput from "./MeaningInput";
 import NuanceInput from "./NuanceInput";
 import ImageDisplay from "./ImageDisplay";
 import DeleteConfirmModal from "./../../../common/components/DeleteConfirmModal";
-import { WordEditFormProps } from "../types/word";
 import { fetchWordData, updateWord, deleteWord } from "../utils/api";
+
+export interface WordEditFormProps {
+  userId: number;
+  wordId: string;
+}
 
 const WordEditForm: React.FC<WordEditFormProps> = ({ userId }) => {
   const [word, setWord] = useState("");
@@ -113,10 +117,10 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ userId }) => {
     }
   };
 
-  const formatImageUrl = (url: string) => {
-    const fileName = url.split("/").pop();
-    return `/images/testImages/${fileName}`;
-  };
+  // const formatImageUrl = (url: string) => {
+  //   const fileName = url.split("/").pop();
+  //   return `/images/testImages/${fileName}`;
+  // };
 
   return (
     <div className="p-5">
@@ -145,7 +149,7 @@ const WordEditForm: React.FC<WordEditFormProps> = ({ userId }) => {
           />
           <MeaningInput meaning={meaning} setMeaning={setMeaning} />
           <NuanceInput nuance={nuance} setNuance={setNuance} />
-          <ImageDisplay imageUrl={formatImageUrl(imageUrl)} />
+          {/* <ImageDisplay imageUrl={formatImageUrl(imageUrl)} /> */}
           <div className="flex justify-between mb-2">
             <button
               type="button"
