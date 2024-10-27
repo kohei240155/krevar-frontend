@@ -1,12 +1,6 @@
-import { setCookie } from "cookies-next";
 import { BASE_URL } from "../../../../utils/api/api";
 
 export const fetchWordData = async (wordId: number) => {
-  const storedValue = window.localStorage.getItem("JWT");
-  setCookie("JWT", storedValue, {
-    maxAge: 3600,
-    path: "/",
-  });
   const response = await fetch(`${BASE_URL}/api/word/${wordId}`, {
     credentials: "include",
   });
@@ -14,11 +8,6 @@ export const fetchWordData = async (wordId: number) => {
 };
 
 export const createWord = async (wordData: any) => {
-  const storedValue = window.localStorage.getItem("JWT");
-  setCookie("JWT", storedValue, {
-    maxAge: 3600,
-    path: "/",
-  });
   const response = await fetch(`${BASE_URL}/api/word`, {
     credentials: "include",
     method: "POST",
@@ -31,11 +20,6 @@ export const createWord = async (wordData: any) => {
 };
 
 export const updateWord = async (wordData: any) => {
-  const storedValue = window.localStorage.getItem("JWT");
-  setCookie("JWT", storedValue, {
-    maxAge: 3600,
-    path: "/",
-  });
   const response = await fetch(`${BASE_URL}/api/word`, {
     method: "PUT",
     headers: {
@@ -48,11 +32,6 @@ export const updateWord = async (wordData: any) => {
 };
 
 export const deleteWord = async (wordId: number) => {
-  const storedValue = window.localStorage.getItem("JWT");
-  setCookie("JWT", storedValue, {
-    maxAge: 3600,
-    path: "/",
-  });
   const response = await fetch(`${BASE_URL}/api/word/${wordId}`, {
     method: "DELETE",
     credentials: "include",
@@ -60,22 +39,22 @@ export const deleteWord = async (wordId: number) => {
   return response.json();
 };
 
-export const fetchWords = async (
-  deckId: number,
-  page: number,
-  size: number
-) => {
-  const storedValue = window.localStorage.getItem("JWT");
-  setCookie("JWT", storedValue, {
-    maxAge: 3600,
-    path: "/",
-  });
-  const response = await fetch(
-    `${BASE_URL}/api/deck/${deckId}/words?page=${page - 1}&size=${size}`,
-    {
-      method: "GET",
-      credentials: "include",
-    }
-  );
-  return response.json();
-};
+// export const fetchWords = async (
+//   deckId: number,
+//   page: number,
+//   size: number
+// ) => {
+//   const storedValue = window.localStorage.getItem("JWT");
+//   setCookie("JWT", storedValue, {
+//     maxAge: 3600,
+//     path: "/",
+//   });
+//   const response = await fetch(
+//     `${BASE_URL}/api/deck/${deckId}/words?page=${page - 1}&size=${size}`,
+//     {
+//       method: "GET",
+//       credentials: "include",
+//     }
+//   );
+//   return response.json();
+// };

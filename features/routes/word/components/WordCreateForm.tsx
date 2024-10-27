@@ -10,8 +10,9 @@ import NuanceInput from "./NuanceInput";
 import ImageDisplay from "./ImageDisplay";
 import WordInput from "./WordInput";
 import { createWord } from "../utils/api";
+import { useParams } from "next/navigation";
 
-const WordForm = ({ userId }: { userId: number }) => {
+const WordCreateForm = () => {
   const searchParams = useSearchParams();
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
@@ -25,7 +26,8 @@ const WordForm = ({ userId }: { userId: number }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingGpt, setIsLoadingGpt] = useState(false);
   const deckName = searchParams?.get("deckName") || "Deck Name";
-  const deckId = searchParams?.get("deckId") || "0";
+  const params = useParams();
+  const deckId = params?.deckId as number | undefined;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -45,7 +47,6 @@ const WordForm = ({ userId }: { userId: number }) => {
         (wordRef.current as unknown as HTMLElement)?.innerHTML || "";
       const nuanceText = nuance.trim() !== "" ? nuance : "";
       const wordData = {
-        userId: userId,
         originalText: wordHtml,
         translatedText: meaning,
         imageUrl: imageUrl,
@@ -102,57 +103,59 @@ const WordForm = ({ userId }: { userId: number }) => {
         highlightedText
       );
 
-      const gptResponse = await fetch(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "gpt-4o-mini",
-            messages: [
-              { role: "system", content: "You are a helpful assistant." },
-              { role: "user", content: JSON.stringify(promptForMeaning) },
-            ],
-          }),
-        }
-      );
+      // const gptResponse = await fetch(
+      //   "https://api.openai.com/v1/chat/completions",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       model: "gpt-4o-mini",
+      //       messages: [
+      //         { role: "system", content: "You are a helpful assistant." },
+      //         { role: "user", content: JSON.stringify(promptForMeaning) },
+      //       ],
+      //     }),
+      //   }
+      // );
 
-      const gptData = await gptResponse.json();
-      const wordData = JSON.parse(gptData.choices[0].message.content);
+      // const gptData = await gptResponse.json();
+      // const wordData = JSON.parse(gptData.choices[0].message.content);
 
       const promptForImage = imageGenerationPrompt.replacePlaceholders(
         wordHtml,
         highlightedText
       );
 
-      const dalleResponse = await fetch(
-        "https://api.openai.com/v1/images/generations",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "dall-e-3",
-            quality: "standard",
-            style: "vivid",
-            prompt: JSON.stringify(promptForImage),
-            n: 1,
-            size: "1024x1024",
-          }),
-        }
-      );
+      // const dalleResponse = await fetch(
+      //   "https://api.openai.com/v1/images/generations",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({
+      //       model: "dall-e-3",
+      //       quality: "standard",
+      //       style: "vivid",
+      //       prompt: JSON.stringify(promptForImage),
+      //       n: 1,
+      //       size: "1024x1024",
+      //     }),
+      //   }
+      // );
 
-      const dalleData = await dalleResponse.json();
-      const imageUrl = dalleData.data[0].url;
+      // const dalleData = await dalleResponse.json();
+      // const imageUrl = dalleData.data[0].url;
 
-      setMeaning(wordData.wordMeaning);
-      setNuance(wordData.wordNuance);
-      setImageUrl(imageUrl);
+      // setMeaning(wordData.wordMeaning);
+      // setNuance(wordData.wordNuance);
+      setMeaning("テスト意味");
+      setNuance("テストニュアンス");
+      setImageUrl("https://example.com/image.jpg");
 
       setIsImageGenerated(true);
       setWord(wordHtml);
@@ -248,4 +251,4 @@ const WordForm = ({ userId }: { userId: number }) => {
   );
 };
 
-export default WordForm;
+export default WordCreateForm;
