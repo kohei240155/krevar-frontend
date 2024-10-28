@@ -215,7 +215,7 @@ const WordCreatePage = () => {
       </div>
       <p className="text-base mb-3 text-left">{deckName}</p>
       <Modal open={isModalOpen} setOpen={setIsModalOpen} />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="mb-3">
         <WordInput
           wordRef={wordRef as React.RefObject<HTMLElement>}
           word={word}
