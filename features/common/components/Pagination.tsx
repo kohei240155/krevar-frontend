@@ -63,6 +63,11 @@ const Pagination: React.FC<PaginationProps> = ({
           </Link>
         )}
       </div>
+      <div className="md:hidden -mt-px flex justify-center">
+        <span className="inline-flex items-center border-t-2 border-gray-500 px-4 pt-4 text-sm font-medium text-gray-700">
+          {currentPage}
+        </span>
+      </div>
       <div className="hidden md:-mt-px md:flex">
         {pageNumbers.map((number, index) =>
           typeof number === "number" ? (
