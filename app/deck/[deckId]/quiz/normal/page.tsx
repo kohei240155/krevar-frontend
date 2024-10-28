@@ -14,7 +14,6 @@ const QuizPage: React.FC<QuizPageProps> = async ({ params }) => {
   const cookieStore = cookies();
   const jwt = cookieStore.get("JWT")?.value || "";
   const data: QuizInfo = await fetchQuizData(deckId, false, jwt);
-  console.log("data", data);
 
   if (data.leftQuizCount === 0) {
     return (
@@ -39,14 +38,7 @@ const QuizPage: React.FC<QuizPageProps> = async ({ params }) => {
           {/* 残りの問題数 */}
           <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${data.quizData?.leftQuizCount}`}</p>
         </div>
-        {/* 問題文 */}
-        <p
-          className="text-xl font-bold mb-6 text-left ml-4"
-          dangerouslySetInnerHTML={{
-            __html: data.quizData?.originalText || "",
-          }}
-        ></p>
-        {/* 子コンポーネント（QuizCard）をカード下部に配置 */}
+
         <QuizCard
           deckId={deckId}
           quizData={data.quizData}

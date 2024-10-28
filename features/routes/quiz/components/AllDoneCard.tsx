@@ -24,7 +24,7 @@ const AllDoneCard: React.FC<AllDoneCardProps> = ({
     <div className="p-5">
       <div
         className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col justify-between"
-        style={{ minHeight: "700px" }}
+        style={{ minHeight: "750px" }}
       >
         <div className="flex-grow">
           <div
