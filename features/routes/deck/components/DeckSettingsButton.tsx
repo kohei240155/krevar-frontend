@@ -1,9 +1,7 @@
 "use client";
-import React from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { Deck } from "../types/deck";
 import DeckOptions from "./DeckOptions";
-import { useState } from "react";
 
 interface DeckSettingsButtonProps {
   deck: Deck;
@@ -17,6 +15,10 @@ const DeckSettingsButton: React.FC<DeckSettingsButtonProps> = ({ deck }) => {
     setIsOptionsOpen(!isOptionsOpen);
   };
 
+  const handleCloseOptions = () => {
+    setIsOptionsOpen(false);
+  };
+
   return (
     <div className="relative">
       <button
@@ -25,7 +27,9 @@ const DeckSettingsButton: React.FC<DeckSettingsButtonProps> = ({ deck }) => {
       >
         &#8230;
       </button>
-      {isOptionsOpen && <DeckOptions deck={deck} />}
+      {isOptionsOpen && (
+        <DeckOptions deck={deck} onClose={handleCloseOptions} />
+      )}
     </div>
   );
 };

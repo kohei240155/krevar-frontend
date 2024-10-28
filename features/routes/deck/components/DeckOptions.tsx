@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Deck } from "../types/deck";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import { IoList } from "react-icons/io5";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 export interface DeckOptionsProps {
   deck: Deck;
+  onClose: () => void;
 }
 
 const navigation = [
@@ -37,35 +38,47 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const DeckOptions: React.FC<DeckOptionsProps> = ({ deck }) => {
+const DeckOptions: React.FC<DeckOptionsProps> = ({ deck, onClose }) => {
   const router = useRouter();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleOptionItemClick = (e: React.MouseEvent, option: string) => {
     e.stopPropagation();
     switch (option) {
       case "word-add":
-        console.log("word-add");
         router.push(`/deck/${deck.id}/word/add`);
         break;
       case "word-list":
-        console.log("word-list");
-        router.push(`/deck/${deck.id}/word/page/1}`);
+        router.push(`/deck/${deck.id}/word/page/1`);
         break;
       case "deck-settings":
-        console.log("deck-settings");
         router.push(`/deck/${deck.id}`);
         break;
       case "extra-quiz":
-        console.log("extra-quiz");
         router.push(`/deck/${deck.id}/quiz/extra`);
         break;
       default:
         break;
     }
+    onClose();
   };
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [onClose]);
 
   return (
     <nav
+      ref={menuRef}
       aria-label="Sidebar"
       className="absolute bottom-full w-48 right-0 bg-white border border-gray-300 rounded-lg shadow-lg p-2 mb-2 z-50"
     >
