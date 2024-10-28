@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { Quiz } from "../types/quiz";
 import { submitAnswer } from "../utils/api";
 import Image from "next/image";
@@ -64,7 +64,6 @@ const QuizCard: React.FC<QuizCardProps> = ({
 
   return (
     <div className="flex flex-col h-full justify-between">
-      {/* 答えが表示されていない場合も最小高さを設定してスペースを維持 */}
       <div
         className={`flex flex-col ${showTranslation ? "min-h-[300px]" : "min-h-[400px]"}`}
       >
@@ -97,17 +96,18 @@ const QuizCard: React.FC<QuizCardProps> = ({
         )}
       </div>
 
-      {/* スピーカーと矢印ボタン */}
       <div>
         <div className="max-w-md mx-auto relative mb-4">
           <div className="flex justify-end ml-48 md:ml-64">
             <div className="mr-1">
+              {/* スピーカー */}
               <GiSpeaker
                 onClick={handleSpeakClick}
                 className="text-5xl cursor-pointer text-gray-800"
               />
             </div>
             <div className="ml-1">
+              {/* 矢印ボタン */}
               <HiArrowCircleRight
                 onClick={isArrowActive ? handleNextClick : undefined}
                 className={`text-5xl cursor-pointer ${arrowColor} ${isArrowActive ? "" : "opacity-50 cursor-not-allowed"}`}
@@ -116,13 +116,14 @@ const QuizCard: React.FC<QuizCardProps> = ({
           </div>
         </div>
 
-        {/* No Idea と Got It ボタン */}
         <div className="max-w-md mx-auto">
           <div className="flex justify-between">
             <div className="mr-1">
+              {/* No Idea ボタン */}
               <NoIdeaButton onClick={handleDontKnowClick} />
             </div>
             <div className="ml-2">
+              {/* Got It ボタン */}
               <GotItButton onClick={handleKnowClick} />
             </div>
           </div>
