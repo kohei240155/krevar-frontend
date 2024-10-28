@@ -1,23 +1,22 @@
+"use client";
+
 import React from "react";
 import { useRouter } from "next/navigation";
-import { QuizData } from "../types/quiz";
+import { QuizInfo } from "../types/quiz";
+import { resetQuiz } from "../utils/api";
 
 export interface AllDoneCardProps {
-  quizData: QuizData | undefined;
+  quizData: QuizInfo;
   deckName: string;
   isExtraQuiz: boolean;
-  setIsAllDone: (value: boolean) => void;
-  setIsLoading: (value: boolean) => void;
-  resetQuiz: () => Promise<void>;
+  deckId: number;
 }
 
 const AllDoneCard: React.FC<AllDoneCardProps> = ({
   deckName,
   isExtraQuiz,
   quizData,
-  setIsAllDone,
-  setIsLoading,
-  resetQuiz,
+  deckId,
 }) => {
   const router = useRouter();
 
@@ -34,7 +33,7 @@ const AllDoneCard: React.FC<AllDoneCardProps> = ({
             <h2 className="text-2xl font-bold text-left ml-4 truncate">
               {deckName}
             </h2>
-            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${quizData?.leftQuizCount}`}</p>
+            <p className="text-gray-700 text-right mr-4 lg:mr-8 whitespace-nowrap">{`Left: ${quizData.leftQuizCount}`}</p>
           </div>
           <p className="text-gray-700 text-center mt-4 text-3xl font-bold">
             All done!
@@ -45,9 +44,7 @@ const AllDoneCard: React.FC<AllDoneCardProps> = ({
             <button
               type="button"
               onClick={async () => {
-                setIsAllDone(false);
-                setIsLoading(true);
-                await resetQuiz();
+                await resetQuiz(deckId);
               }}
               className="w-full inline-flex items-center justify-center px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"
             >

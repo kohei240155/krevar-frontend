@@ -1,13 +1,19 @@
-import { setCookie } from "cookies-next";
 import { BASE_URL } from "../../../../utils/api/api";
 
-export const fetchQuizData = async (deckId: number, isExtraQuiz: boolean) => {
+export const fetchQuizData = async (
+  deckId: number,
+  isExtraQuiz: boolean,
+  jwt: string
+) => {
   const apiUrl = isExtraQuiz
     ? `${BASE_URL}/api/extra-quiz/deck/${deckId}`
     : `${BASE_URL}/api/normal-quiz/deck/${deckId}`;
   try {
     const response = await fetch(apiUrl, {
       credentials: "include",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
     });
     const data = await response.json();
     return data;
@@ -40,13 +46,12 @@ export const submitAnswer = async (
       },
       body: JSON.stringify(body),
     });
-    console.log("Answer submitted");
   } catch (error) {
     console.error("Error submitting answer:", error);
   }
 };
 
-export const resetQuizApi = async (deckId: number) => {
+export const resetQuiz = async (deckId: number) => {
   const apiUrl = `${BASE_URL}/api/extra-quiz/reset/deck/${deckId}`;
   try {
     const response = await fetch(apiUrl, {

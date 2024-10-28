@@ -7,7 +7,7 @@ interface GotItButtonProps {
 const GotItButton: React.FC<GotItButtonProps> = ({ onClick }) => (
   <button
     onClick={onClick}
-    className="w-36 md:w-44 px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"
+    className="w-36 md:w-48 px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"
   >
     Got It
   </button>
