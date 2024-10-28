@@ -8,7 +8,7 @@ export interface WordItemProps {
 
 const WordItem: React.FC<WordItemProps> = ({ word, deckId }) => (
   <li
-    className="relative flex flex-col md:flex-row justify-between items-center p-3 pr-4 bg-white rounded-lg shadow-md space-y-2 md:space-y-0 md:space-x-4 word-list-item"
+    className="relative flex flex-row justify-between items-center p-3 pr-4 bg-white rounded-lg shadow-md space-x-4 word-list-item"
     style={{
       height: "auto",
       minHeight: "120px",
@@ -24,7 +24,7 @@ const WordItem: React.FC<WordItemProps> = ({ word, deckId }) => (
         transform: "translateY(-50%)",
       }}
     ></div>
-    <div className="flex flex-col items-start space-y-2">
+    <div className="flex flex-col">
       <span
         className="text-lg font-medium"
         dangerouslySetInnerHTML={{ __html: word.originalText }}
