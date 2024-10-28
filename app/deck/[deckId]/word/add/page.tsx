@@ -17,9 +17,13 @@ import {
 import { toast } from "react-toastify";
 import { GoQuestion } from "react-icons/go";
 import Modal from "../../../../../features/routes/word/components/Modal";
+import { fetchDeck } from "../../../../../features/routes/deck/utils/api";
+import { Deck } from "../../../../../types/deck/deck";
+import ImageGenerateButton from "../../../../../features/routes/word/components/ImageGenerateButton";
+import BackwardButton from "../../../../../features/routes/word/components/BackwardButton";
 
 const WordCreatePage = () => {
-  const searchParams = useSearchParams();
+  const [deckName, setDeckName] = useState("");
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -31,12 +35,17 @@ const WordCreatePage = () => {
   const [isImageGenerated, setIsImageGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingGpt, setIsLoadingGpt] = useState(false);
-  const deckName = searchParams?.get("deckName") || "Deck Name";
   const params = useParams();
   const deckId = params?.deckId as number | undefined;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const fetchDeckData = async () => {
+    const data: Deck = await fetchDeck(deckId as number);
+    setDeckName(data.deckName);
+  };
+
   useEffect(() => {
+    fetchDeckData();
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
@@ -230,23 +239,11 @@ const WordCreatePage = () => {
         />
         {!isImageGenerated && (
           <>
-            <button
-              type="button"
+            <ImageGenerateButton
               onClick={handleImageGenerate}
-              className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-              disabled={isLoadingGpt}
-            >
-              {isLoadingGpt && <ButtonLoadingIndicator />}
-              Image generate
-            </button>
-            <button
-              type="button"
-              onClick={() => router.back()}
-              className="w-full mt-3 inline-flex items-center justify-center px-4 py-2 border border-gray-700 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-              disabled={isLoadingGpt}
-            >
-              Backward
-            </button>
+              isLoading={isLoadingGpt}
+            />
+            <BackwardButton pageNumber={1} />
           </>
         )}
         {isImageGenerated && (
