@@ -9,7 +9,7 @@ import NoIdeaButton from "./NoIdeaButton";
 import GotItButton from "./GotItButton";
 import { useRouter } from "next/navigation";
 
-export interface QuizCardProps {
+export interface QuizMainContentProps {
   deckId: number;
   isExtraQuiz?: boolean;
   quizData: Quiz;
@@ -20,7 +20,7 @@ const formatImageUrl = (url: string) => {
   return `/images/testImages/${fileName}`;
 };
 
-const QuizCard: React.FC<QuizCardProps> = ({
+const QuizMainContent: React.FC<QuizMainContentProps> = ({
   deckId,
   isExtraQuiz,
   quizData,
@@ -140,4 +140,4 @@ const QuizCard: React.FC<QuizCardProps> = ({
   );
 };
 
-export default QuizCard;
+export default QuizMainContent;

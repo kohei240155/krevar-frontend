@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { useRouter } from "next/navigation";
 import { QuizInfo } from "../types/quiz";
@@ -45,6 +44,7 @@ const AllDoneCard: React.FC<AllDoneCardProps> = ({
               type="button"
               onClick={async () => {
                 await resetQuiz(deckId);
+                router.refresh();
               }}
               className="w-full inline-flex items-center justify-center px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"
             >

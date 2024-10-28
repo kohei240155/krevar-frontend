@@ -1,33 +1,48 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { LoadingIndicator } from "../../../../../features/common";
-import { QuizCard } from "../../../../../features/routes/quiz";
+import React from "react";
+import { fetchQuizData } from "../../../../../features/routes/quiz/utils/api";
+import { cookies } from "next/headers";
+import { QuizInfo } from "../../../../../features/routes/quiz/types/quiz";
+import AllDoneCard from "../../../../../features/routes/quiz/components/AllDoneCard";
+import QuizHeaderContent from "../../../../../features/routes/quiz/components/QuizHeaderContent";
+import QuizMainContent from "../../../../../features/routes/quiz/components/QuizMainContent";
 
-const ExtraQuizPage = () => {
-  const { deckId } = useParams() as { deckId: string };
+interface QuizPageProps {
+  params: { deckId: string };
+}
+
+const QuizPage: React.FC<QuizPageProps> = async ({ params }) => {
+  const deckId = parseInt(params.deckId, 10);
+  const cookieStore = cookies();
+  const jwt = cookieStore.get("JWT")?.value || "";
+  const data: QuizInfo = await fetchQuizData(deckId, true, jwt);
   const isExtraQuiz = true;
 
-  const [userId, setUserId] = useState<number | null>(null);
-
-  useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    setUserId(storedUserId ? parseInt(storedUserId, 10) : 0);
-  }, []);
-
-  if (userId === null) {
-    return <LoadingIndicator />; // userIdがロードされるまでの待機画面
+  if (data.leftQuizCount === 0) {
+    return (
+      <AllDoneCard
+        deckName={data.deckName}
+        isExtraQuiz={isExtraQuiz}
+        quizData={data}
+        deckId={deckId}
+      />
+    );
   }
 
   return (
-    <div>
-      <QuizCard
-        deckId={parseInt(deckId, 10)}
-        isExtraQuiz={isExtraQuiz}
-        userId={userId}
-      />
+    <div className="p-5">
+      <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md flex flex-col h-[750px]">
+        <QuizHeaderContent
+          deckName={data.deckName}
+          leftQuizCount={data.quizData?.leftQuizCount}
+        />
+        <QuizMainContent
+          deckId={deckId}
+          quizData={data.quizData}
+          isExtraQuiz={isExtraQuiz}
+        />
+      </div>
     </div>
   );
 };
 
-export default ExtraQuizPage;
+export default QuizPage;
