@@ -2,6 +2,7 @@ import React from "react";
 import { SketchPicker } from "react-color";
 import ContentEditable from "react-contenteditable";
 import { ColorResult } from "react-color";
+import DOMPurify from "dompurify";
 
 export interface WordInputProps {
   wordRef: React.RefObject<HTMLElement>;
@@ -35,7 +36,7 @@ const WordInput: React.FC<WordInputProps> = ({
       </label>
       <ContentEditable
         innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
-        html={word}
+        html={DOMPurify.sanitize(word)}
         onChange={(e) => setWord(e.target.value)}
         onPaste={(e) => {
           e.preventDefault();
