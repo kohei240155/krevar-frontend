@@ -57,7 +57,15 @@ const QuizMainContent: React.FC<QuizMainContentProps> = ({
   };
 
   const handleSpeakClick = () => {
-    const utterance = new SpeechSynthesisUtterance(quizData.originalText);
+    // 既存の音声を停止
+    speechSynthesis.cancel();
+
+    // HTMLをパースしてテキストのみを抽出
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(quizData.originalText, "text/html");
+    const textContent = doc.body.textContent || "";
+
+    const utterance = new SpeechSynthesisUtterance(textContent);
     utterance.lang = "en-US";
     speechSynthesis.speak(utterance);
   };
