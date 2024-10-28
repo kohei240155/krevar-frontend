@@ -96,7 +96,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
       });
       setTimeout(() => {
         window.location.href = "/deck/page/1";
-      }, 1600);
+      }, 1500);
     } else {
       toast.error("Unexpected response from the server.");
     }

@@ -14,6 +14,7 @@ import {
   ButtonLoadingIndicator,
   LoadingIndicator,
 } from "../../../../../features/common";
+import { toast } from "react-toastify";
 
 const WordCreatePage = () => {
   const searchParams = useSearchParams();
@@ -189,6 +190,15 @@ const WordCreatePage = () => {
     selection.getRangeAt(0).insertNode(document.createTextNode(text));
   };
 
+  const handleSuccessToast = () => {
+    toast.success("Word added successfully!", {
+      autoClose: 1500,
+    });
+    setTimeout(() => {
+      window.location.href = "/deck/page/1";
+    }, 1500);
+  };
+
   return (
     <div className="max-w-md mx-auto mt-5 p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-3 text-left">Add Word</h1>
@@ -235,7 +245,7 @@ const WordCreatePage = () => {
             <div className="flex justify-between mb-2">
               <button
                 type="button"
-                onClick={() => router.push("/deck/page/1")}
+                onClick={handleSuccessToast}
                 className="w-1/2 mr-2 inline-flex items-center justify-center px-4 py-2 border border-gray-700 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               >
                 Backward
