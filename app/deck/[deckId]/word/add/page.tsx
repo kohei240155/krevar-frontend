@@ -15,6 +15,8 @@ import {
   LoadingIndicator,
 } from "../../../../../features/common";
 import { toast } from "react-toastify";
+import { GoQuestion } from "react-icons/go";
+import Modal from "../../../../../features/routes/word/components/Modal";
 
 const WordCreatePage = () => {
   const searchParams = useSearchParams();
@@ -32,6 +34,7 @@ const WordCreatePage = () => {
   const deckName = searchParams?.get("deckName") || "Deck Name";
   const params = useParams();
   const deckId = params?.deckId as number | undefined;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -201,8 +204,17 @@ const WordCreatePage = () => {
 
   return (
     <div className="max-w-md mx-auto mt-5 p-6 bg-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-3 text-left">Add Word</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold mb-3 text-left align-middle">
+          Add Word
+        </h1>
+        <GoQuestion
+          onClick={() => setIsModalOpen(true)}
+          className="mb-3 text-2xl"
+        />
+      </div>
       <p className="text-base mb-3 text-left">{deckName}</p>
+      <Modal open={isModalOpen} setOpen={setIsModalOpen} />
       <form onSubmit={handleSubmit}>
         <WordInput
           wordRef={wordRef as React.RefObject<HTMLElement>}
