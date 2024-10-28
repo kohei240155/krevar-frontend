@@ -36,7 +36,9 @@ const WordItem: React.FC<WordItemProps> = ({ word, deckId }) => {
         </span>
         <span className="text-gray-600">{word.translatedText}</span>
       </div>
-      <WordSettingsButton wordId={word.id.toString()} deckId={deckId} />
+      <div className="pr-1">
+        <WordSettingsButton wordId={word.id.toString()} deckId={deckId} />
+      </div>
     </li>
   );
 };
