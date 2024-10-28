@@ -37,6 +37,14 @@ const WordInput: React.FC<WordInputProps> = ({
         innerRef={wordRef as unknown as React.RefObject<HTMLElement>}
         html={word}
         onChange={(e) => setWord(e.target.value)}
+        onPaste={(e) => {
+          e.preventDefault();
+          const text = e.clipboardData.getData("text/plain");
+          const selection = window.getSelection();
+          if (!selection || !selection.rangeCount) return;
+          selection.deleteFromDocument();
+          selection.getRangeAt(0).insertNode(document.createTextNode(text));
+        }}
         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-gray-500 sm:text-sm"
       />
       <div className="relative mt-2 inline-flex items-center">
