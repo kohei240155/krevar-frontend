@@ -1,5 +1,5 @@
 import { BASE_URL } from "../../../../utils/api/api";
-
+import { redirect } from "next/navigation";
 export const fetchUserSettings = async () => {
   const apiUrl = `${BASE_URL}/api/user/settings`;
   try {
@@ -10,11 +10,15 @@ export const fetchUserSettings = async () => {
       },
       credentials: "include",
     });
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
     const data = await response.json();
     return data;
   } catch (error) {
     console.error("Error fetching user settings:", error);
-    return null;
+    redirect("/login");
   }
 };
 
@@ -37,10 +41,14 @@ export const updateUserSettings = async (
         highlightColor,
       }),
     });
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
     return response.ok;
   } catch (error) {
     console.error("Error updating deck:", error);
-    return false;
+    redirect("/login");
   }
 };
 
@@ -54,11 +62,14 @@ export const fetchLanguageList = async () => {
       },
       credentials: "include",
     });
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
     const data = await response.json();
-    console.log("data", data);
     return data;
   } catch (error) {
     console.error("Error fetching language list:", error);
-    return null;
+    redirect("/login");
   }
 };

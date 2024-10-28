@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { BASE_URL } from "../../../../utils/api/api";
 
 export const fetchQuizData = async (
@@ -15,11 +16,15 @@ export const fetchQuizData = async (
         Authorization: `Bearer ${jwt}`,
       },
     });
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
     const data = await response.json();
     return data;
   } catch (error) {
     console.error("Error fetching quiz data:", error);
-    return null;
+    redirect("/login");
   }
 };
 
@@ -38,7 +43,7 @@ export const submitAnswer = async (
     isCorrect,
   };
   try {
-    await fetch(apiUrl, {
+    const response = await fetch(apiUrl, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -46,8 +51,13 @@ export const submitAnswer = async (
       },
       body: JSON.stringify(body),
     });
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
   } catch (error) {
     console.error("Error submitting answer:", error);
+    redirect("/login");
   }
 };
 
@@ -58,10 +68,14 @@ export const resetQuiz = async (deckId: number) => {
       credentials: "include",
       method: "PUT",
     });
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
     const data = await response.json();
     return data;
   } catch (error) {
     console.error("Error resetting quiz:", error);
-    return null;
+    redirect("/login");
   }
 };

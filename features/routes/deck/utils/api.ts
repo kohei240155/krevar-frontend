@@ -44,10 +44,14 @@ export const updateDeck = async (
         learningLanguageId,
       }),
     });
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
     return response.ok;
   } catch (error) {
     console.error("Error updating deck:", error);
-    return false;
+    redirect("/login");
   }
 };
 
@@ -58,10 +62,14 @@ export const deleteDeck = async (deckId: number) => {
       method: "DELETE",
       credentials: "include",
     });
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
     return response.ok;
   } catch (error) {
     console.error("Error deleting deck:", error);
-    return false;
+    redirect("/login");
   }
 };
 
@@ -84,10 +92,14 @@ export const createDeck = async (
         learningLanguageId,
       }),
     });
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
     return response.ok;
   } catch (error) {
     console.error("Error creating deck:", error);
-    return false;
+    redirect("/login");
   }
 };
 
@@ -95,10 +107,13 @@ export const fetchDeck = async (deckId: number) => {
   const apiUrl = `${BASE_URL}/api/deck/${deckId}`;
   try {
     const response = await fetch(apiUrl, { credentials: "include" });
-    console.log(response);
+    if (response.status === 401) {
+      console.error("Authentication error: Invalid JWT token");
+      redirect("/login");
+    }
     return response.json();
   } catch (error) {
     console.error("Error fetching deck:", error);
-    return null;
+    redirect("/login");
   }
 };
