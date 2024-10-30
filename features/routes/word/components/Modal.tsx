@@ -47,17 +47,17 @@ const Modal: React.FC<ModalProps> = ({ open, setOpen }) => {
                 </DialogTitle>
                 <div className="mt-4 space-y-4">
                   <p className="text-sm text-gray-700 leading-relaxed">
-                    <strong className="text-gray-900 bg-yellow-200">
+                    <strong className="text-gray-90">
                       ▶ ハイライト色を設定する場合
                     </strong>
                     <br />
-                    <span className="border-b border-gray-900">
+                    <span className="border-b border-gray-900 bg-yellow-200">
                       ハイライトされた単語
                     </span>
                     に対するイメージ画像と訳が出力されます。
                   </p>
                   <p className="text-sm text-gray-700 leading-relaxed">
-                    <strong className="text-gray-900 bg-gray-200">
+                    <strong className="text-gray-90">
                       ▶ ハイライト色を設定しない場合
                     </strong>
                     <br />
