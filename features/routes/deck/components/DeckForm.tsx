@@ -11,6 +11,7 @@ import {
 } from "../../userSettings/utils/api";
 import { DeleteConfirmModal, LoadingIndicator } from "../../../common";
 import { Language } from "../../../common/types/types";
+import { useForm } from "react-hook-form";
 
 export interface DeckFormProps {
   deckId: number;
@@ -25,6 +26,11 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
   const [nativeLanguageId, setNativeLanguageId] = useState(0);
   const [learningLanguageId, setLearningLanguageId] = useState(0);
   const [deckName, setDeckName] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const fetchUserSettingsData = useCallback(async () => {
     const data = await fetchUserSettings();
@@ -83,7 +89,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
 
   const handleUpdate = async (event: React.FormEvent) => {
     setIsLoading(true);
-    event.preventDefault();
+    // event.preventDefault();
     const success = await updateDeck(
       deckId,
       deckName,
@@ -122,7 +128,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
   };
 
   const handleCreate = async (event: React.FormEvent) => {
-    event.preventDefault();
+    // event.preventDefault();
     const success = await createDeck(
       deckName,
       nativeLanguageId,
@@ -140,11 +146,11 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmitForm = async (data: any) => {
     if (isEditMode) {
-      handleUpdate(event);
+      await handleUpdate(data);
     } else {
-      handleCreate(event);
+      await handleCreate(data);
     }
   };
 
@@ -166,7 +172,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
         </div>
 
         {/* デッキ入力フォーム */}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(handleSubmitForm)}>
           {/* デッキ名 */}
           <div className="mb-5">
             <label
@@ -179,10 +185,25 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
             <input
               type="text"
               id="deckName"
-              value={deckName}
-              onChange={(e) => setDeckName(e.target.value)}
+              defaultValue={deckName}
+              {...register("deckName", {
+                required: "Deck name is required",
+                minLength: {
+                  value: 1,
+                  message: "Deck name must be at least 1 character",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "Deck name must be at most 20 characters",
+                },
+              })}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-gray-500 sm:text-sm"
             />
+            {errors.deckName?.message && (
+              <span className="text-red-500 text-sm">
+                {String(errors.deckName.message)}
+              </span>
+            )}
           </div>
 
           {/* 母語の選択欄 */}
