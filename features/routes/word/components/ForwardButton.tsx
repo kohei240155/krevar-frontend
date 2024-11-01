@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 interface ForwardButtonProps {
   url: string;
-  label: string; // 新しく追加
+  label: string;
 }
 
 const ForwardButton: React.FC<ForwardButtonProps> = ({ url, label }) => {
