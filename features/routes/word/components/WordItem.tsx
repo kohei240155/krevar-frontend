@@ -14,7 +14,7 @@ const WordItem: React.FC<WordItemProps> = ({ word, deckId }) => {
 
   return (
     <li
-      className="relative flex flex-row justify-between items-center p-3 pr-4 bg-white rounded-lg shadow-md space-x-4 word-list-item"
+      className="relative rounded-lg flex flex-col md:flex-row justify-between items-center p-5 bg-white shadow-md space-y-2 md:space-y-0 md:space-x-4 deck-list-item"
       style={{
         height: "auto",
         minHeight: "120px",
@@ -22,15 +22,7 @@ const WordItem: React.FC<WordItemProps> = ({ word, deckId }) => {
         border: "1px solid #e0e0e0",
       }}
     >
-      <div
-        className="absolute left-0 w-1 bg-gray-500"
-        style={{
-          height: "95%",
-          top: "50%",
-          transform: "translateY(-50%)",
-        }}
-      ></div>
-      <div className="flex flex-col">
+      <div className="flex flex-col space-y-1 deck-info ml-2">
         <span className="text-lg font-medium">
           {extractHighlightedText(word.originalText)}
         </span>

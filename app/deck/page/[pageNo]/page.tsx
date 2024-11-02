@@ -20,8 +20,8 @@ const DeckListPage = async ({ params }: DeckListProps) => {
 
   return (
     <Suspense fallback={<LoadingIndicator />}>
-      <div className="relative p-5">
-        <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      <div className="relative mt-1">
+        <div className="max-w-2xl mx-auto p-6 rounded-lg">
           <h2 className="text-2xl font-bold mb-4 text-left">Deck List</h2>
           {data.deckInfo.length === 0 ? (
             <EmptyList
