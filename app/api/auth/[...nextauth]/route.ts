@@ -12,7 +12,8 @@ declare module "next-auth" {
   }
 }
 
-export default NextAuth({
+// NextAuth のインスタンスを handler としてエクスポート
+const handler = NextAuth({
   debug: true,
   providers: [
     GoogleProvider({
@@ -33,3 +34,5 @@ export default NextAuth({
     },
   },
 });
+
+export { handler as GET, handler as POST };
