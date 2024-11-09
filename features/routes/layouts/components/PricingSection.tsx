@@ -27,7 +27,7 @@ const PricingSection: React.FC = () => {
 
         <div className="bg-white h-[450px] p-1 rounded-lg shadow-md w-full md:w-1/4 text-center">
           <h3 className="mt-10 text-3xl font-bold text-gray-900">
-            <span className="bg-yellow-500 p-2 pl-12 pr-12 rounded-lg">
+            <span className="bg-yellow-600 p-2 pl-12 pr-12 rounded-lg">
               Basic Plan
             </span>
           </h3>
@@ -72,6 +72,14 @@ const PricingSection: React.FC = () => {
             </li>
           </ul>
         </div>
+      </div>
+      <div className="text-center mt-20 mb-20">
+        <h2 className="text-4xl font-semibold text-gray-800 mb-4">
+          \ いまなら3日間の無料体験を実施しています /
+        </h2>
+        <button className="w-[800px] h-[70px] font-bold text-2xl bg-yellow-600 px-6 py-2 rounded-full hover:bg-yellow-700">
+          試してみる
+        </button>
       </div>
     </section>
   );
