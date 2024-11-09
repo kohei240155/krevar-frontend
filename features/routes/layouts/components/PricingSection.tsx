@@ -22,6 +22,9 @@ const PricingSection: React.FC = () => {
             <li className="pl-10 text-left mb-3 mt-6">
               ・クイズ機能は無制限で利用可
             </li>
+            <li className="pl-10 text-left mb-3 mt-6">
+              ・無料体験はこちらのプランになります
+            </li>
           </ul>
         </div>
 
