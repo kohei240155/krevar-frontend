@@ -27,7 +27,7 @@ const PricingSection: React.FC = () => {
 
         <div className="bg-white h-[450px] p-1 rounded-lg shadow-md w-full md:w-1/4 text-center">
           <h3 className="mt-10 text-3xl font-bold text-gray-900">
-            <span className="bg-gray-800 text-white p-2 pl-12 pr-12 rounded-lg">
+            <span className="bg-yellow-500 p-2 pl-12 pr-12 rounded-lg">
               Basic Plan
             </span>
           </h3>
