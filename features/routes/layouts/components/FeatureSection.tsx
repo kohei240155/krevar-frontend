@@ -66,9 +66,8 @@ const FeatureSection: React.FC = () => {
             <p className="mt-4 ml-9 text-xl text-gray-700 font-bold">
               → 大変だった
               <span className="text-gray-900 font-bold bg-yellow-300 pt-1">
-                単語帳探しの旅
+                単語帳探しの旅は終わり！
               </span>
-              は終わり！
             </p>
           </span>
         </li>
