@@ -5,8 +5,8 @@ import React, { useState } from "react";
 const FAQSection: React.FC = () => {
   const faqs = [
     {
-      question: "無料体験はありますか？",
-      answer: "登録後3日間、ベーシックプランを体験することができます。",
+      question: "無料体験のプランは何でしょうか？",
+      answer: "登録後3日間、Trial Planを体験することができます。",
     },
     {
       question: "Google以外のログイン方法は使えますか？",

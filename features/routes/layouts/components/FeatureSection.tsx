@@ -11,7 +11,8 @@ const FeatureSection: React.FC = () => {
         <li className="flex items-start mb-6 w-full max-w-3xl">
           <span className="text-xl text-gray-900">
             <span className="text-2xl  p-1 font-bold border-b-2 border-gray-400">
-              1. 簡単AIイメージ生成機能
+              {/* 1. 簡単AIイメージ生成機能 */}
+              1. AIが生成したイメージを簡単に登録できる
             </span>
             <br />
             <p className="mt-4 ml-9 text-xl text-gray-700 font-normal">

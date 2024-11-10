@@ -1,14 +1,22 @@
-import { useSession } from "next-auth/react";
 import styles from "./page.module.css";
-import Decks from "./deck/page";
-import HomePage from "./home/page"; // Added
-export default function Home() {
-  const { data: session, status } = useSession();
+import HomePage from "./home/page";
+import HeroSection from "../features/routes/layouts/components/HeroSection";
+import StatsSection from "../features/routes/layouts/components/StatsSection";
+import FAQSection from "../features/routes/layouts/components/FAQSection";
+import FeatureSection from "../features/routes/layouts/components/FeatureSection";
+import PricingSection from "../features/routes/layouts/components/PricingSection";
 
+export default function Home() {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        {status === "authenticated" ? <Decks /> : <HomePage />}
+        <div className="space-y-12">
+          <HeroSection />
+          <StatsSection />
+          <FeatureSection />
+          <PricingSection />
+          <FAQSection />
+        </div>
       </main>
     </div>
   );
