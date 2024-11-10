@@ -1,5 +1,4 @@
 import styles from "./page.module.css";
-import HomePage from "./home/page";
 import HeroSection from "../features/routes/layouts/components/HeroSection";
 import StatsSection from "../features/routes/layouts/components/StatsSection";
 import FAQSection from "../features/routes/layouts/components/FAQSection";

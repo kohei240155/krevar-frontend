@@ -22,7 +22,7 @@ const FeatureSection: React.FC = () => {
             </p>
             <p className="mt-4 ml-9 text-xl text-gray-700 font-bold">
               → AIが生成したイメージと訳を登録するだけなので、
-              <span className="text-gray-900 font-bold bg-yellow-300 pt-1">
+              <span className="text-gray-900 bg-yellow-600 pt-1">
                 手間がかからない！
               </span>
             </p>
@@ -44,7 +44,7 @@ const FeatureSection: React.FC = () => {
             </p>
             <p className="mt-4 ml-9 text-xl text-gray-700 font-bold">
               → イメージを使って最適な間隔で復習できるので、
-              <span className="text-gray-900 font-bold bg-yellow-300 pt-1">
+              <span className="text-gray-900 bg-yellow-600 pt-1">
                 暗記効率が大幅アップ！
               </span>
             </p>
@@ -66,7 +66,7 @@ const FeatureSection: React.FC = () => {
             </p>
             <p className="mt-4 ml-9 text-xl text-gray-700 font-bold">
               → 大変だった
-              <span className="text-gray-900 font-bold bg-yellow-300 pt-1">
+              <span className="text-gray-900 bg-yellow-600 pt-1">
                 単語帳探しの旅は終わり！
               </span>
             </p>
