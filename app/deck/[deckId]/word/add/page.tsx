@@ -36,7 +36,7 @@ const WordCreatePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingGpt, setIsLoadingGpt] = useState(false);
   const params = useParams();
-  const deckId = params?.deckId as number | undefined;
+  const deckId = params?.deckId as unknown as number | undefined;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchDeckData = async () => {
