@@ -6,7 +6,7 @@ const Footer = () => {
     <footer id="footer" className="bg-white text-gray-900 py-2 ">
       <div className="w-full px-2 flex justify-between items-center">
         <div className="flex space-x-4">
-          <Link href="/about" legacyBehavior>
+          <Link href="/" legacyBehavior>
             <a className="text-gray-900 hover:text-gray-700 focus:font-bold focus:text-gray-700">
               About
             </a>
