@@ -1,5 +1,5 @@
 "use client";
-// components/FAQSection.tsx
+
 import React, { useState } from "react";
 
 const FAQSection: React.FC = () => {
