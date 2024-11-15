@@ -24,11 +24,15 @@ const handler = NextAuth({
   callbacks: {
     async session({ session, token }) {
       if (session.user) {
-        console.log("token", token);
-        session.user.id = token.sub as string;
-        session.user.email = token.email as string;
-        session.user.name = token.name as string;
-        session.user.picture = token.picture as string;
+        if (!token.sub || !token.email || !token.name || !token.picture) {
+          throw new Error("トークンが不完全です");
+        }
+        session.user.id = token.sub;
+        session.user.email = token.email;
+        session.user.name = token.name;
+        session.user.picture = token.picture;
+      } else {
+        throw new Error("sessionが存在しません");
       }
       return session;
     },

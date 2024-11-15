@@ -26,8 +26,11 @@ const LoginPage = () => {
       );
       const jwt = response.data.token;
       setCookie("JWT", jwt);
-    } catch (error) {
-      console.error("JWTの取得エラー", error);
+    } catch (error: any) {
+      console.error("JWTの取得エラー", {
+        message: error.message,
+        response: error.response?.data,
+      });
       throw error;
     }
   };
@@ -43,16 +46,24 @@ const LoginPage = () => {
         }
       }
     } catch (error: any) {
+      console.error("ログインエラー", error);
       alert((error as Error).message);
     }
   };
 
   useEffect(() => {
-    if (status === "authenticated" && session) {
-      fetchJWT(session).then(() => {
-        router.push("/deck/page/1");
-      });
-    }
+    const processSession = async () => {
+      if (status === "authenticated" && session) {
+        try {
+          await fetchJWT(session);
+          router.push("/deck/page/1");
+        } catch (error) {
+          console.error("セッション処理エラー", error);
+          alert("セッションの処理に失敗しました");
+        }
+      }
+    };
+    processSession();
   }, [status, session, router]);
 
   return (
