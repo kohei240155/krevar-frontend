@@ -31,7 +31,7 @@ const DeckListPage = async ({ params }: DeckListProps) => {
               forwardUrl="/deck/add"
             />
           ) : (
-            <>
+            <div>
               {data.deckInfo.map((deck: Deck) => (
                 <div key={deck.id} className="mb-4">
                   <DeckItem deck={deck} />
@@ -42,7 +42,7 @@ const DeckListPage = async ({ params }: DeckListProps) => {
                 totalPages={Math.ceil(data.totalDeckCount / 5)}
                 paginateUrl="/deck/page"
               />
-            </>
+            </div>
           )}
         </div>
       </div>
