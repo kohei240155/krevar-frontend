@@ -26,6 +26,7 @@ const QuizPage: React.FC<QuizPageProps> = async ({ params }) => {
         isExtraQuiz={isExtraQuiz}
         quizData={data}
         deckId={deckId}
+        jwt={jwt}
       />
     );
   }
@@ -42,6 +43,7 @@ const QuizPage: React.FC<QuizPageProps> = async ({ params }) => {
             deckId={deckId}
             quizData={data.quizData}
             isExtraQuiz={isExtraQuiz}
+            jwt={jwt}
           />
         </div>
       </div>

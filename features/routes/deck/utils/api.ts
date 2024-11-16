@@ -7,7 +7,6 @@ export const fetchDecks = async (page: number, size: number, jwt: string) => {
   try {
     const response = await fetch(apiUrl, {
       method: "GET",
-      credentials: "include",
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -28,7 +27,8 @@ export const updateDeck = async (
   deckId: number,
   deckName: string,
   nativeLanguageId: number,
-  learningLanguageId: number
+  learningLanguageId: number,
+  jwt: string
 ) => {
   const apiUrl = `${BASE_URL}/api/deck/${deckId}`;
   try {
@@ -36,8 +36,9 @@ export const updateDeck = async (
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
       },
-      credentials: "include",
+      // credentials: "include",
       body: JSON.stringify({
         deckName,
         nativeLanguageId,
@@ -55,12 +56,14 @@ export const updateDeck = async (
   }
 };
 
-export const deleteDeck = async (deckId: number) => {
+export const deleteDeck = async (deckId: number, jwt: string) => {
   const apiUrl = `${BASE_URL}/api/deck/${deckId}`;
   try {
     const response = await fetch(apiUrl, {
       method: "DELETE",
-      credentials: "include",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
     });
     if (response.status === 401) {
       console.error("Authentication error: Invalid JWT token");
@@ -76,7 +79,8 @@ export const deleteDeck = async (deckId: number) => {
 export const createDeck = async (
   deckName: string,
   nativeLanguageId: number,
-  learningLanguageId: number
+  learningLanguageId: number,
+  jwt: string
 ) => {
   const apiUrl = `${BASE_URL}/api/deck`;
   try {
@@ -84,8 +88,9 @@ export const createDeck = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
       },
-      credentials: "include",
+      // credentials: "include",
       body: JSON.stringify({
         deckName,
         nativeLanguageId,
@@ -103,10 +108,14 @@ export const createDeck = async (
   }
 };
 
-export const fetchDeck = async (deckId: number) => {
+export const fetchDeck = async (deckId: number, jwt: string) => {
   const apiUrl = `${BASE_URL}/api/deck/${deckId}`;
   try {
-    const response = await fetch(apiUrl, { credentials: "include" });
+    const response = await fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
     if (response.status === 401) {
       console.error("Authentication error: Invalid JWT token");
       redirect("/login");

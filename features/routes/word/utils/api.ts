@@ -12,7 +12,6 @@ export const fetchWords = async (
   try {
     const response = await fetch(apiUrl, {
       method: "GET",
-      credentials: "include",
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -29,20 +28,22 @@ export const fetchWords = async (
   }
 };
 
-export const fetchWordData = async (wordId: number) => {
+export const fetchWordData = async (wordId: number, jwt: string) => {
   const response = await fetch(`${BASE_URL}/api/word/${wordId}`, {
-    credentials: "include",
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
   });
   return response.json();
 };
 
-export const createWord = async (wordData: any) => {
+export const createWord = async (wordData: any, jwt: string) => {
   try {
     const response = await fetch(`${BASE_URL}/api/word`, {
-      credentials: "include",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
       },
       body: JSON.stringify(wordData),
     });
@@ -57,14 +58,14 @@ export const createWord = async (wordData: any) => {
   }
 };
 
-export const updateWord = async (wordData: any) => {
+export const updateWord = async (wordData: any, jwt: string) => {
   try {
     const response = await fetch(`${BASE_URL}/api/word`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
       },
-      credentials: "include",
       body: JSON.stringify(wordData),
     });
     if (response.status === 401) {
@@ -78,11 +79,13 @@ export const updateWord = async (wordData: any) => {
   }
 };
 
-export const deleteWord = async (wordId: number) => {
+export const deleteWord = async (wordId: number, jwt: string) => {
   try {
     const response = await fetch(`${BASE_URL}/api/word/${wordId}`, {
       method: "DELETE",
-      credentials: "include",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
     });
     if (response.status === 401) {
       console.error("Authentication error: Invalid JWT token");

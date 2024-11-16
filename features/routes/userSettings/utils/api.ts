@@ -1,14 +1,15 @@
 import { BASE_URL } from "../../../../utils/api/api";
 import { redirect } from "next/navigation";
-export const fetchUserSettings = async () => {
+export const fetchUserSettings = async (jwt: string) => {
   const apiUrl = `${BASE_URL}/api/user/settings`;
   try {
     const response = await fetch(apiUrl, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
       },
-      credentials: "include",
+      // credentials: "include",
     });
     if (response.status === 401) {
       console.error("Authentication error: Invalid JWT token");
@@ -25,7 +26,8 @@ export const fetchUserSettings = async () => {
 export const updateUserSettings = async (
   nativeLanguageId: number,
   learningLanguageId: number,
-  highlightColor: string
+  highlightColor: string,
+  jwt: string
 ) => {
   const apiUrl = `${BASE_URL}/api/user/settings`;
   try {
@@ -33,8 +35,8 @@ export const updateUserSettings = async (
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
       },
-      credentials: "include",
       body: JSON.stringify({
         nativeLanguageId,
         learningLanguageId,
@@ -52,15 +54,15 @@ export const updateUserSettings = async (
   }
 };
 
-export const fetchLanguageList = async () => {
+export const fetchLanguageList = async (jwt: string) => {
   const apiUrl = `${BASE_URL}/api/user/language-list`;
   try {
     const response = await fetch(apiUrl, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`,
       },
-      credentials: "include",
     });
     if (response.status === 401) {
       console.error("Authentication error: Invalid JWT token");

@@ -9,6 +9,7 @@ export interface AllDoneCardProps {
   deckName: string;
   isExtraQuiz: boolean;
   deckId: number;
+  jwt: string;
 }
 
 const AllDoneCard: React.FC<AllDoneCardProps> = ({
@@ -16,6 +17,7 @@ const AllDoneCard: React.FC<AllDoneCardProps> = ({
   isExtraQuiz,
   quizData,
   deckId,
+  jwt,
 }) => {
   const router = useRouter();
 
@@ -43,7 +45,7 @@ const AllDoneCard: React.FC<AllDoneCardProps> = ({
             <button
               type="button"
               onClick={async () => {
-                await resetQuiz(deckId);
+                await resetQuiz(deckId, jwt);
                 router.refresh();
               }}
               className="w-full inline-flex items-center justify-center px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition"

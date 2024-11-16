@@ -11,7 +11,6 @@ export const fetchQuizData = async (
     : `${BASE_URL}/api/normal-quiz/deck/${deckId}`;
   try {
     const response = await fetch(apiUrl, {
-      credentials: "include",
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -32,7 +31,8 @@ export const submitAnswer = async (
   deckId: number,
   wordId: number,
   isCorrect: boolean,
-  isExtraQuiz: boolean
+  isExtraQuiz: boolean,
+  jwt: string
 ) => {
   const apiUrl = isExtraQuiz
     ? `${BASE_URL}/api/extra-quiz`
@@ -45,8 +45,8 @@ export const submitAnswer = async (
   try {
     const response = await fetch(apiUrl, {
       method: "PUT",
-      credentials: "include",
       headers: {
+        Authorization: `Bearer ${jwt}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
@@ -61,11 +61,13 @@ export const submitAnswer = async (
   }
 };
 
-export const resetQuiz = async (deckId: number) => {
+export const resetQuiz = async (deckId: number, jwt: string) => {
   const apiUrl = `${BASE_URL}/api/extra-quiz/reset/deck/${deckId}`;
   try {
     const response = await fetch(apiUrl, {
-      credentials: "include",
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
       method: "PUT",
     });
     if (response.status === 401) {

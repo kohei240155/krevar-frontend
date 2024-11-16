@@ -32,18 +32,24 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
     formState: { errors },
   } = useForm();
 
+  const jwt =
+    document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("JWT="))
+      ?.split("=")[1] || "";
+
   const fetchUserSettingsData = useCallback(async () => {
-    const data = await fetchUserSettings();
+    const data = await fetchUserSettings(jwt);
     if (data) {
       setNativeLanguageId(data.defaultNativeLanguageId);
       setLearningLanguageId(data.defaultLearningLanguageId);
     } else {
       console.log("Error fetching user settings");
     }
-  }, []);
+  }, [jwt]);
 
   const fetchLanguageListData = useCallback(async () => {
-    const data = await fetchLanguageList();
+    const data = await fetchLanguageList(jwt);
     if (data) {
       const formattedData = data.map(
         (language: { languageId: number; languageName: string }) => ({
@@ -53,17 +59,17 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
       );
       setLanguageList(formattedData);
     }
-  }, []);
+  }, [jwt]);
 
   const fetchDeckData = useCallback(async () => {
-    const data = await fetchDeck(deckId);
+    const data = await fetchDeck(deckId, jwt);
     console.log(data);
     if (data) {
       setDeckName(data.deckName);
       setNativeLanguageId(data.nativeLanguageId);
       setLearningLanguageId(data.learningLanguageId);
     }
-  }, [deckId]);
+  }, [deckId, jwt]);
 
   const getLanguageName = (id: number) => {
     const language = languageList.find((language) => language.id === id);
@@ -94,7 +100,8 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
       deckId,
       deckName,
       nativeLanguageId,
-      learningLanguageId
+      learningLanguageId,
+      jwt
     );
     if (success) {
       toast.success("Deck updated successfully!", {
@@ -113,7 +120,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
   };
 
   const confirmDelete = async () => {
-    const success = await deleteDeck(deckId);
+    const success = await deleteDeck(deckId, jwt);
     if (success) {
       toast.success("Deck deleted successfully!", {
         autoClose: 1500,
@@ -132,7 +139,8 @@ const DeckForm: React.FC<DeckFormProps> = ({ deckId, isEditMode }) => {
     const success = await createDeck(
       deckName,
       nativeLanguageId,
-      learningLanguageId
+      learningLanguageId,
+      jwt
     );
     if (success) {
       toast.success("Deck created successfully!", {

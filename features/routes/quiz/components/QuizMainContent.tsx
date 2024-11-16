@@ -13,6 +13,7 @@ export interface QuizMainContentProps {
   deckId: number;
   isExtraQuiz?: boolean;
   quizData: Quiz;
+  jwt: string;
 }
 
 const formatImageUrl = (url: string) => {
@@ -24,6 +25,7 @@ const QuizMainContent: React.FC<QuizMainContentProps> = ({
   deckId,
   isExtraQuiz,
   quizData,
+  jwt,
 }) => {
   const [showTranslation, setShowTranslation] = useState(false);
   const [isArrowActive, setIsArrowActive] = useState(false);
@@ -47,7 +49,7 @@ const QuizMainContent: React.FC<QuizMainContentProps> = ({
 
   const handleNextClick = async () => {
     if (isCorrect !== null) {
-      await submitAnswer(deckId, quizData.id, isCorrect, !!isExtraQuiz);
+      await submitAnswer(deckId, quizData.id, isCorrect, !!isExtraQuiz, jwt);
       setShowTranslation(false);
       setIsArrowActive(false);
       setArrowColor("text-gray-800");

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ColorResult } from "react-color";
 import { imageGenerationPrompt } from "../../../../../prompts/promptForImage";
@@ -38,11 +38,16 @@ const WordCreatePage = () => {
   const params = useParams();
   const deckId = params?.deckId as unknown as number | undefined;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const jwt =
+    document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("JWT="))
+      ?.split("=")[1] || "";
 
-  const fetchDeckData = async () => {
-    const data: Deck = await fetchDeck(deckId as number);
+  const fetchDeckData = useCallback(async () => {
+    const data: Deck = await fetchDeck(deckId as number, jwt);
     setDeckName(data.deckName);
-  };
+  }, [deckId, jwt]);
 
   useEffect(() => {
     fetchDeckData();
@@ -50,7 +55,7 @@ const WordCreatePage = () => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [fetchDeckData]);
 
   if (isLoading) {
     return <LoadingIndicator />;
@@ -69,7 +74,7 @@ const WordCreatePage = () => {
         deckId: deckId,
         nuanceText: nuanceText,
       };
-      await createWord(wordData);
+      await createWord(wordData, jwt);
     } catch (error) {
       console.error("Error submitting word:", error);
     }
