@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, signOut, useSession } from "next-auth/react";
 import axios from "axios";
@@ -11,31 +11,34 @@ const LoginPage = () => {
   const router = useRouter();
   const idToken = session?.idToken;
 
-  const fetchJWT = async (session: any) => {
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/api/auth/google-login`,
-        {
-          email: session.user?.email,
-          name: session.user?.name,
-          googleId: session.user?.id,
-          idToken,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      const jwt = response.data.token;
-      setCookie("JWT", jwt);
-    } catch (error: any) {
-      console.error("JWTの取得エラー", {
-        message: error.message,
-        response: error.response?.data,
-      });
-      throw error;
-    }
-  };
+  const fetchJWT = useCallback(
+    async (session: any) => {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/api/auth/google-login`,
+          {
+            email: session.user?.email,
+            name: session.user?.name,
+            googleId: session.user?.id,
+            idToken,
+          },
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
+        const jwt = response.data.token;
+        setCookie("JWT", jwt);
+      } catch (error: any) {
+        console.error("JWTの取得エラー", {
+          message: error.message,
+          response: error.response?.data,
+        });
+        throw error;
+      }
+    },
+    [idToken]
+  );
 
   const handleLogin = async (event: React.MouseEvent) => {
     event.preventDefault();
@@ -66,7 +69,7 @@ const LoginPage = () => {
       }
     };
     processSession();
-  }, [status, session, router]);
+  }, [status, session, router, fetchJWT]);
 
   return (
     <div className="relative p-5">
