@@ -9,6 +9,7 @@ import { setCookie } from "cookies-next";
 const LoginPage = () => {
   const { status, data: session } = useSession();
   const router = useRouter();
+  const idToken = session?.idToken;
 
   const fetchJWT = async (session: any) => {
     try {
@@ -18,6 +19,7 @@ const LoginPage = () => {
           email: session.user?.email,
           name: session.user?.name,
           googleId: session.user?.id,
+          idToken,
         },
         {
           headers: { "Content-Type": "application/json" },
