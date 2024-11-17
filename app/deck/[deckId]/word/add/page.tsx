@@ -10,10 +10,7 @@ import ImageDisplay from "../../../../../features/routes/word/components/ImageDi
 import WordInput from "../../../../../features/routes/word/components/WordInput";
 import { useParams } from "next/navigation";
 import { createWord } from "../../../../../features/routes/word/utils/api";
-import {
-  ButtonLoadingIndicator,
-  LoadingIndicator,
-} from "../../../../../features/common";
+import { LoadingIndicator } from "../../../../../features/common";
 import { toast } from "react-toastify";
 import { GoQuestion } from "react-icons/go";
 import Modal from "../../../../../features/routes/word/components/Modal";
