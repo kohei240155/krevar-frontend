@@ -1,10 +1,15 @@
-export interface UserSettingsFormProps {
+export interface UserSettings {
+  name: string;
   defaultNativeLanguageId: number;
-  onNativeLanguageChange: (languageId: number) => void;
   defaultLearningLanguageId: number;
-  onLearningLanguageChange: (languageId: number) => void;
-  subscriptionStatus: number;
-  onSubscriptionUpdate: (subscriptionStatus: number) => void;
+  imageGenerationRemaining: number;
+  imageGenerationResetDate: string;
+  subscriptionStatusId: number;
+  subscriptionId: null;
   highlightColor: string;
-  onHighlightColorChange: (color: string) => void;
+}
+
+export interface LanguageList {
+  languageId: number;
+  languageName: string;
 }

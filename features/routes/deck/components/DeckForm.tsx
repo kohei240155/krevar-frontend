@@ -12,6 +12,12 @@ import {
 import { DeleteConfirmModal, LoadingIndicator } from "../../../common";
 import { Language } from "../../../common/types/types";
 import { useForm } from "react-hook-form";
+import { DeckInfo } from "../types/deck";
+import {
+  LanguageList,
+  UserSettings,
+} from "../../userSettings/types/userSettings";
+import { useCookies } from "react-cookie";
 
 export interface DeckFormProps {
   isEditMode: boolean;
@@ -20,36 +26,39 @@ export interface DeckFormProps {
 const DeckForm: React.FC<DeckFormProps> = ({ isEditMode }) => {
   const router = useRouter();
   const params = useParams();
+  // 言語一覧
   const [languageList, setLanguageList] = useState<Language[]>([]);
+  // 削除確認モーダル
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // 母語ID
   const [nativeLanguageId, setNativeLanguageId] = useState(0);
+  // 学習言語ID
   const [learningLanguageId, setLearningLanguageId] = useState(0);
+  // デッキ名
   const [deckName, setDeckName] = useState("");
+  // デッキID
   const deckId = parseInt(params?.deckId as string, 10);
+  // フォーム
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const jwt =
-    document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("JWT="))
-      ?.split("=")[1] || "";
+  // JWTを取得
+  const [cookies] = useCookies(["JWT"]);
+  const jwt = cookies.JWT || "";
 
+  // ユーザー設定を取得
   const fetchUserSettingsData = useCallback(async () => {
-    const data = await fetchUserSettings(jwt);
-    if (data) {
-      setNativeLanguageId(data.defaultNativeLanguageId);
-      setLearningLanguageId(data.defaultLearningLanguageId);
-    } else {
-      console.log("Error fetching user settings");
-    }
+    const data: UserSettings = await fetchUserSettings(jwt);
+    setNativeLanguageId(data.defaultNativeLanguageId);
+    setLearningLanguageId(data.defaultLearningLanguageId);
   }, [jwt]);
 
+  // 言語一覧を取得
   const fetchLanguageListData = useCallback(async () => {
-    const data = await fetchLanguageList(jwt);
+    const data: LanguageList[] = await fetchLanguageList(jwt);
     if (data) {
       const formattedData = data.map(
         (language: { languageId: number; languageName: string }) => ({
@@ -61,9 +70,9 @@ const DeckForm: React.FC<DeckFormProps> = ({ isEditMode }) => {
     }
   }, [jwt]);
 
+  // デッキデータを取得
   const fetchDeckData = useCallback(async () => {
-    const data = await fetchDeck(deckId, jwt);
-    console.log(data);
+    const data: DeckInfo = await fetchDeck(deckId, jwt);
     if (data) {
       setDeckName(data.deckName);
       setNativeLanguageId(data.nativeLanguageId);
@@ -71,6 +80,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ isEditMode }) => {
     }
   }, [deckId, jwt]);
 
+  // 言語名を取得
   const getLanguageName = (id: number) => {
     const language = languageList.find((language) => language.id === id);
     return language ? language.languageName : "";
