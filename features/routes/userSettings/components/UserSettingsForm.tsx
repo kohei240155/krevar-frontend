@@ -37,7 +37,8 @@ const UserSettingsForm = () => {
   const [userName, setUserName] = useState("");
 
   const fetchUserSettingsData = useCallback(async (userId: number) => {
-    const data = await fetchUserSettings();
+    const jwt = getJwt();
+    const data = await fetchUserSettings(jwt);
     if (data) {
       // バックエンドから取得したデータをステートに格納
       setUserName(data.name);
@@ -51,8 +52,8 @@ const UserSettingsForm = () => {
     }
   }, []);
 
-  const fetchLanguageListData = useCallback(async () => {
-    const data = await fetchLanguageList();
+  const fetchLanguageListData = useCallback(async (jwt: string) => {
+    const data = await fetchLanguageList(jwt);
     if (data) {
       const formattedData = data.map(
         (language: { languageId: number; languageName: string }) => ({
@@ -80,9 +81,19 @@ const UserSettingsForm = () => {
     setHighlightColor(color.hex);
   };
 
+  const getJwt = () => {
+    const jwt =
+      document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("JWT="))
+        ?.split("=")[1] || "";
+    return jwt;
+  };
+
   useEffect(() => {
+    const jwt = getJwt();
     setUserId(getUserId());
-    fetchLanguageListData();
+    fetchLanguageListData(jwt);
     fetchUserSettingsData(userId);
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -96,7 +107,13 @@ const UserSettingsForm = () => {
 
   const handleSave = () => {
     console.log("Save button clicked");
-    updateUserSettings(nativeLanguageId, learningLanguageId, highlightColor);
+    const jwt = getJwt();
+    updateUserSettings(
+      nativeLanguageId,
+      learningLanguageId,
+      highlightColor,
+      jwt
+    );
   };
 
   const handleCancelSubscription = async () => {
