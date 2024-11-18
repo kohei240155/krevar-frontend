@@ -16,9 +16,14 @@ interface DeckListProps {
 }
 
 const DeckListPage = async ({ params }: DeckListProps) => {
+  // ページ番号を取得
   const currentPage = parseInt(params.pageNo) || 1;
+
+  // クッキーからJWTを取得
   const cookieStore = cookies();
   const jwt = cookieStore.get("JWT")?.value || "";
+
+  // デッキ一覧を取得
   const deckList: DeckList = await fetchDecks(currentPage - 1, 5, jwt);
 
   return (
