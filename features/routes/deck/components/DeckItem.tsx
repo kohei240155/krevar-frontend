@@ -19,7 +19,12 @@ const DeckItem: React.FC<DeckItemProps> = ({ deck }) => {
       }}
     >
       <div className="flex flex-col space-y-1 deck-info ml-2">
-        <span className="text-xl font-medium">{deck.deckName}</span>
+        <span
+          className="text-xl font-medium"
+          style={{ wordBreak: "break-word" }}
+        >
+          {deck.deckName}
+        </span>
         <span className="text-lg text-gray-600">Left: {deck.progress}</span>
       </div>
       <div className="flex items-center space-x-4 mt-4 ml-2 md:mt-0 deck-actions">
