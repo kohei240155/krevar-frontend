@@ -8,5 +8,5 @@ export interface DeckInfo {
   deckName: string;
   nativeLanguageId: number;
   learningLanguageId: number;
-  progress: number;
+  remainingQuestionCount: number;
 }

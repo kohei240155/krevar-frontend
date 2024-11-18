@@ -25,7 +25,9 @@ const DeckItem: React.FC<DeckItemProps> = ({ deck }) => {
         >
           {deck.deckName}
         </span>
-        <span className="text-lg text-gray-600">Left: {deck.progress}</span>
+        <span className="text-lg text-gray-600">
+          Left: {deck.remainingQuestionCount}
+        </span>
       </div>
       <div className="flex items-center space-x-4 mt-4 ml-2 md:mt-0 deck-actions">
         <QuizButton deckId={deck.id.toString()} />
