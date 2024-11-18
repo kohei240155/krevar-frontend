@@ -49,10 +49,20 @@ const WordEditPage: React.FC<WordEditPageProps> = ({ userId }) => {
     }
   };
 
+  const getJwt = () => {
+    const jwt =
+      document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("JWT="))
+        ?.split("=")[1] || "";
+    return jwt;
+  };
+
   useEffect(() => {
     const fetchWord = async () => {
       try {
-        const wordData = await fetchWordData(wordId);
+        const jwt = getJwt();
+        const wordData = await fetchWordData(wordId, jwt);
         setWord(wordData.originalText);
         setMeaning(wordData.translatedText);
         setImageUrl(wordData.imageUrl);
@@ -100,7 +110,8 @@ const WordEditPage: React.FC<WordEditPageProps> = ({ userId }) => {
         nuanceText: nuance,
         deckId: deckId,
       };
-      await updateWord(wordData);
+      const jwt = getJwt();
+      await updateWord(wordData, jwt);
       toast.success("Word updated successfully!");
     } catch (error) {
       toast.error("Error updating word: " + error);
@@ -113,7 +124,8 @@ const WordEditPage: React.FC<WordEditPageProps> = ({ userId }) => {
 
   const confirmDelete = async () => {
     try {
-      await deleteWord(wordId);
+      const jwt = getJwt();
+      await deleteWord(wordId, jwt);
       toast.success("Word deleted successfully!");
       router.back();
     } catch (error) {
