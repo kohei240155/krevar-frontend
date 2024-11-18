@@ -35,7 +35,7 @@ const DeckListPage = async ({ params }: DeckListProps) => {
             <EmptyList
               message="No decks to display."
               buttonText="Add Deck"
-              backUrl="/"
+              backUrl="/deck/page/1"
               forwardUrl="/deck/add"
             />
           ) : (
