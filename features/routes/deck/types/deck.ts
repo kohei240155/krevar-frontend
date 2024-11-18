@@ -1,9 +1,9 @@
-export interface DeckInfo {
-  deckInfo: Deck[];
-  totalDeckCount: number;
+export interface DeckList {
+  deckInfo: DeckInfo[];
+  userDeckCount: number;
 }
 
-export interface Deck {
+export interface DeckInfo {
   id: number;
   deckName: string;
   nativeLanguageId: number;
