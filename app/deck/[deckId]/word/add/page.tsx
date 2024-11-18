@@ -15,9 +15,9 @@ import { toast } from "react-toastify";
 import { GoQuestion } from "react-icons/go";
 import Modal from "../../../../../features/routes/word/components/Modal";
 import { fetchDeck } from "../../../../../features/routes/deck/utils/api";
-import { Deck } from "../../../../../types/deck/deck";
 import ImageGenerateButton from "../../../../../features/routes/word/components/ImageGenerateButton";
 import BackwardButton from "../../../../../features/routes/word/components/BackwardButton";
+import { DeckInfo } from "../../../../../features/routes/deck/types/deck";
 
 const WordCreatePage = () => {
   const [deckName, setDeckName] = useState("");
@@ -42,7 +42,7 @@ const WordCreatePage = () => {
       ?.split("=")[1] || "";
 
   const fetchDeckData = useCallback(async () => {
-    const data: Deck = await fetchDeck(deckId as number, jwt);
+    const data: DeckInfo = await fetchDeck(deckId as number, jwt);
     setDeckName(data.deckName);
   }, [deckId, jwt]);
 
