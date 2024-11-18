@@ -23,8 +23,18 @@ const DeckListPage = async ({ params }: DeckListProps) => {
   const cookieStore = cookies();
   const jwt = cookieStore.get("JWT")?.value || "";
 
+  // 1ページあたりの表示件数
+  const DISPLAY_ITEMS_PER_PAGE = 10;
+
+  // ページ番号を1ページ目からのインデックスに変換
+  const pageIndex = currentPage - 1;
+
   // デッキ一覧を取得
-  const deckList: DeckList = await fetchDecks(currentPage - 1, 5, jwt);
+  const deckList: DeckList = await fetchDecks(
+    pageIndex,
+    DISPLAY_ITEMS_PER_PAGE,
+    jwt
+  );
 
   return (
     <Suspense fallback={<LoadingIndicator />}>
@@ -47,7 +57,9 @@ const DeckListPage = async ({ params }: DeckListProps) => {
               ))}
               <Pagination
                 currentPage={currentPage}
-                totalPages={Math.ceil(deckList.userDeckCount / 5)}
+                totalPages={Math.ceil(
+                  deckList.userDeckCount / DISPLAY_ITEMS_PER_PAGE
+                )}
                 paginateUrl="/deck/page"
               />
             </div>

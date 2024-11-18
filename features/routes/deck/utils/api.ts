@@ -4,13 +4,17 @@ import { DeckList } from "../types/deck";
 
 /**
  * デッキ一覧を取得
- * @param page ページ番号
+ * @param pageIndex ページ番号
  * @param size ページサイズ
  * @param jwt JWTトークン
  * @returns デッキ一覧
  */
-export const fetchDecks = async (page: number, size: number, jwt: string) => {
-  const apiUrl = `${BASE_URL}/api/deck?page=${page}&size=${size}`;
+export const fetchDecks = async (
+  pageIndex: number,
+  size: number,
+  jwt: string
+) => {
+  const apiUrl = `${BASE_URL}/api/deck?page=${pageIndex}&size=${size}`;
 
   try {
     const response = await fetch(apiUrl, {
