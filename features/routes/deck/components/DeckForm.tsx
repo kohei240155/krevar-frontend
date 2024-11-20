@@ -100,7 +100,6 @@ const DeckForm: React.FC<DeckFormProps> = ({ isEditMode }) => {
   }, [fetchUserSettingsData, fetchLanguageListData, isEditMode, fetchDeckData]);
 
   const handleUpdate = async (event: React.FormEvent) => {
-    // event.preventDefault();
     const success = await updateDeck(
       deckId,
       deckName,
