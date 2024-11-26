@@ -15,6 +15,11 @@ interface DeckListProps {
   params: { pageNo: string };
 }
 
+/**
+ * デッキ一覧ページ
+ * @param param0 ページ番号
+ * @returns
+ */
 const DeckListPage = async ({ params }: DeckListProps) => {
   // ページ番号を取得
   const currentPage = parseInt(params.pageNo) || 1;
@@ -41,6 +46,7 @@ const DeckListPage = async ({ params }: DeckListProps) => {
       <div className="relative mt-1">
         <div className="max-w-2xl mx-auto p-6 rounded-lg">
           <h2 className="text-2xl font-bold mb-4 text-left">Deck List</h2>
+          {/* デッキリストが空の場合*/}
           {deckList.deckInfo.length === 0 ? (
             <EmptyList
               message="No decks to display."
@@ -55,6 +61,7 @@ const DeckListPage = async ({ params }: DeckListProps) => {
                   <DeckItem deck={deck} />
                 </div>
               ))}
+              {/* ページネーション */}
               <Pagination
                 currentPage={currentPage}
                 totalPages={Math.ceil(
