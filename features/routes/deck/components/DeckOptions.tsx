@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import { Deck } from "../types/deck";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import { IoList } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineQuiz } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { DeckInfo } from "../types/deck";
 
 export interface DeckOptionsProps {
-  deck: Deck;
+  deck: DeckInfo;
   onClose: () => void;
 }
 
