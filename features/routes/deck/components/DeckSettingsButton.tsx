@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { Deck } from "../types/deck";
 import DeckOptions from "./DeckOptions";
+import { DeckInfo } from "../types/deck";
 
 interface DeckSettingsButtonProps {
-  deck: Deck;
+  deck: DeckInfo;
 }
 
 const DeckSettingsButton: React.FC<DeckSettingsButtonProps> = ({ deck }) => {
