@@ -127,7 +127,6 @@ export const createDeck = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
       },
-      // credentials: "include",
       body: JSON.stringify({
         deckName,
         nativeLanguageId,
