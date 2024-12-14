@@ -19,6 +19,9 @@ import ImageGenerateButton from "../../../../../features/routes/word/components/
 import BackwardButton from "../../../../../features/routes/word/components/BackwardButton";
 import { DeckInfo } from "../../../../../features/routes/deck/types/deck";
 
+/**
+ * 単語登録ページ
+ */
 const WordCreatePage = () => {
   const [deckName, setDeckName] = useState("");
   const [word, setWord] = useState("");
