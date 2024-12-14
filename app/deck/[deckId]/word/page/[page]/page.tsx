@@ -20,11 +20,19 @@ interface WordListProps {
 }
 
 const WordListPage = async ({ params }: WordListProps) => {
+  //デッキIDを取得
   const deckId = parseInt(params.deckId);
+
+  //ページ番号を取得
   const currentPage = parseInt(params.page) || 1;
+
+  // クッキーからJWTを取得
   const cookieStore = cookies();
   const jwt = cookieStore.get("JWT")?.value || "";
+
+  // デッキ情報
   const data: WordInfo = await fetchWords(deckId, currentPage - 1, 5, jwt);
+
   return (
     <Suspense fallback={<LoadingIndicator />}>
       <div className="relative mt-1">
