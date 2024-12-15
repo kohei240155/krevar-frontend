@@ -56,6 +56,7 @@ const DeckListPage = async ({ params }: DeckListProps) => {
             />
           ) : (
             <div>
+              {/* デッキリスト */}
               {deckList.deckInfo.map((deck: DeckInfo) => (
                 <div key={deck.id} className="mb-4">
                   <DeckItem deck={deck} />
