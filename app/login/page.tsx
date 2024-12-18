@@ -7,6 +7,7 @@ import { BASE_URL } from "../../utils/api/api";
 import { setCookie } from "cookies-next";
 
 const LoginPage = () => {
+  // セッション情報
   const { status, data: session } = useSession();
   const router = useRouter();
   const idToken = session?.idToken;
