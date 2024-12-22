@@ -6,7 +6,8 @@ import { BASE_URL } from "../../utils/api/api";
 const SubscribeButton = ({ selectedPlan }: { selectedPlan: string }) => {
   const handleSubscription = async () => {
     try {
-      const userId = "4"; // ログインしているユーザーIDをここで取得する想定
+      // ログインしているユーザーIDをここで取得する想定
+      const userId = "4";
       const response = await fetch(`${BASE_URL}/api/create-checkout-session`, {
         method: "POST",
         headers: {
