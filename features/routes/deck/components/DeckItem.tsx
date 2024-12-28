@@ -7,6 +7,11 @@ export interface DeckItemProps {
   deck: DeckInfo;
 }
 
+/**
+ * デッキリストのアイテム
+ * @param param0
+ * @returns
+ */
 const DeckItem: React.FC<DeckItemProps> = ({ deck }) => {
   return (
     <li
