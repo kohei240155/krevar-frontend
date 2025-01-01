@@ -6,6 +6,10 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/api/api";
 import { setCookie } from "cookies-next";
 
+/**
+ * ログインページ
+ * @returns
+ */
 const LoginPage = () => {
   // セッション情報
   const { status, data: session } = useSession();
