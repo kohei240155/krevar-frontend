@@ -1,5 +1,9 @@
 import React from "react";
 
+/**
+ * プライバシーポリシーページ
+ * @returns
+ */
 const PrivacyPolicy = () => {
   return (
     <div className="p-5">
