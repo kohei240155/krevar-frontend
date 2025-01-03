@@ -3,6 +3,10 @@
 import React, { useState } from "react";
 import { BASE_URL } from "../../utils/api/api";
 
+/**
+ *  サブスクリプション
+ * @returns
+ */
 const SubscribeButton = ({ selectedPlan }: { selectedPlan: string }) => {
   const handleSubscription = async () => {
     try {
