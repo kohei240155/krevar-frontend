@@ -49,26 +49,26 @@ const DeckForm: React.FC<DeckFormProps> = ({ isEditMode }) => {
   const [cookies] = useCookies(["JWT"]);
   const jwt = cookies.JWT || "";
 
-  // ユーザー設定を取得
-  const fetchUserSettingsData = useCallback(async () => {
-    const data: UserSettings = await fetchUserSettings(jwt);
-    setNativeLanguageId(data.defaultNativeLanguageId);
-    setLearningLanguageId(data.defaultLearningLanguageId);
-  }, [jwt]);
+  // TEMP: ユーザー設定を取得
+  // const fetchUserSettingsData = useCallback(async () => {
+  //   const data: UserSettings = await fetchUserSettings(jwt);
+  //   setNativeLanguageId(data.defaultNativeLanguageId);
+  //   setLearningLanguageId(data.defaultLearningLanguageId);
+  // }, [jwt]);
 
-  // 言語一覧を取得
-  const fetchLanguageListData = useCallback(async () => {
-    const data: LanguageList[] = await fetchLanguageList(jwt);
-    if (data) {
-      const formattedData = data.map(
-        (language: { languageId: number; languageName: string }) => ({
-          id: language.languageId,
-          languageName: language.languageName,
-        })
-      );
-      setLanguageList(formattedData);
-    }
-  }, [jwt]);
+  // TEMP: 言語一覧を取得
+  // const fetchLanguageListData = useCallback(async () => {
+  //   const data: LanguageList[] = await fetchLanguageList(jwt);
+  //   if (data) {
+  //     const formattedData = data.map(
+  //       (language: { languageId: number; languageName: string }) => ({
+  //         id: language.languageId,
+  //         languageName: language.languageName,
+  //       })
+  //     );
+  //     setLanguageList(formattedData);
+  //   }
+  // }, [jwt]);
 
   // デッキデータを取得
   const fetchDeckData = useCallback(async () => {
@@ -80,24 +80,24 @@ const DeckForm: React.FC<DeckFormProps> = ({ isEditMode }) => {
     }
   }, [deckId, jwt]);
 
-  // 言語名を取得
-  const getLanguageName = (id: number) => {
-    const language = languageList.find((language) => language.id === id);
-    return language ? language.languageName : "";
-  };
+  // TEMP: 言語名を取得
+  // const getLanguageName = (id: number) => {
+  //   const language = languageList.find((language) => language.id === id);
+  //   return language ? language.languageName : "";
+  // };
 
   useEffect(() => {
-    // 言語一覧を取得
-    fetchLanguageListData();
+    // TEMP: 言語一覧を取得
+    // fetchLanguageListData();
 
     if (isEditMode) {
       // デッキ編集モードの場合はデッキデータを取得
       fetchDeckData();
     } else {
-      // デッキ作成モードの場合はユーザー設定を取得
-      fetchUserSettingsData();
+      // TEMP: デッキ作成モードの場合はユーザー設定を取得
+      // fetchUserSettingsData();
     }
-  }, [fetchUserSettingsData, fetchLanguageListData, isEditMode, fetchDeckData]);
+  }, [isEditMode, fetchDeckData]);
 
   const handleUpdate = async (event: React.FormEvent) => {
     const success = await updateDeck(
@@ -211,7 +211,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ isEditMode }) => {
                 })}
                 defaultValue={deckName}
                 onChange={(e) => setDeckName(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-gray-500 sm:text-sm"
+                className="mt-1 mb-16 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-gray-500 sm:text-sm"
               />
               {errors.deckName?.message && (
                 <span className="text-red-500 text-sm">
@@ -220,23 +220,23 @@ const DeckForm: React.FC<DeckFormProps> = ({ isEditMode }) => {
               )}
             </div>
 
-            {/* 母語の選択欄 */}
-            <LanguageSelector
+            {/* TEMP:母語の選択欄 */}
+            {/* <LanguageSelector
               selectedLanguageId={nativeLanguageId}
               onChange={setNativeLanguageId}
               languageList={languageList}
               label="Native Language:"
               getLanguageName={getLanguageName}
-            />
+            /> */}
 
-            {/* 学習言語の選択欄 */}
-            <LanguageSelector
+            {/* TEMP:学習言語の選択欄 */}
+            {/* <LanguageSelector
               selectedLanguageId={learningLanguageId}
               onChange={setLearningLanguageId}
               languageList={languageList}
               label="Learning Language:"
               getLanguageName={getLanguageName}
-            />
+            /> */}
 
             {/* ボタン */}
             <div className="flex justify-between mb-2">
