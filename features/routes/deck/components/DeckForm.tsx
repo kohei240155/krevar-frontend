@@ -38,7 +38,7 @@ const DeckForm: React.FC<DeckFormProps> = ({ isEditMode }) => {
   const [deckName, setDeckName] = useState("");
   // デッキID
   const deckId = parseInt(params?.deckId as string, 10);
-  // フォーム
+  // デッキ入力用フォーム
   const {
     register,
     handleSubmit,
